@@ -15,7 +15,7 @@ struct HomeView: View {
     @State var gridLayout: [GridItem] = [ ]
     @ObservedObject var health: Health
     //@ObservedObject var ml: ML
-    @State var enrolled = UserDefaults.standard.bool(forKey: "enrolled")
+   
     @State var share = false
     var body: some View {
         NavigationView {

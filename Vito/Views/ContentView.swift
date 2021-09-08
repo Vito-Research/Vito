@@ -73,7 +73,7 @@ struct ContentView: View {
 //                    HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
                    // HKCategoryType(.sleepAnalysis),
                     HKObjectType.quantityType(forIdentifier: .heartRate)!,
-                    HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
+                   // HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
                     HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
                     HKObjectType.quantityType(forIdentifier: .stepCount)!
                 ])
@@ -111,7 +111,7 @@ struct ContentView: View {
                 //}
                
             }
-            .onChange(of: health.risk) { value in
+            .onChange(of: health.codableRisk) { value in
                 
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(health.codableRisk) {

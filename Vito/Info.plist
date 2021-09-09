@@ -16,13 +16,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
-		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
-	<key>NSHealthShareUsageDescription</key>
-	<string>To gain insights on health data</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>To gain insights on health data</string>
 </dict>
 </plist>

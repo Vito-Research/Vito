@@ -51,3 +51,16 @@ enum DayOfWeek: Int, Codable, CaseIterable  {
     case Saturday = 7
     case Sunday = 1
 }
+struct Query: Hashable {
+    var id: String
+    var durationType: DurationType
+    var duration: Double
+    var anchorDate: Date
+}
+enum DurationType: String, Codable, CaseIterable  {
+    case Day = "Day"
+    case Week = "Week"
+    case Month = "Month"
+    case Year = "Year"
+   
+}

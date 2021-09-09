@@ -14,7 +14,7 @@ import HKCombine
 class Health: ObservableObject {
    
     
-    @Published var codableRisk = [CodableRisk(id: UUID().uuidString, date: Date(), risk: 0.0, explanation: [String]())]
+    @Published var codableRisk = [CodableRisk(id: UUID().uuidString, date: Date().addingTimeInterval(-1000000000000), risk: 0.0, explanation: [String]())]
     @Published var healthStore = HKHealthStore()
     @Published var risk = Risk(id: "", risk: 21, explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Explain it here!!"), Explanation(image: .questionmarkCircle, explanation: "Explain it here?"), Explanation(image: .circle, explanation: "Explain it here.")])
     @Published var readData: [HKQuantityTypeIdentifier] =  [.stepCount, .respiratoryRate, .oxygenSaturation]
@@ -28,12 +28,37 @@ class Health: ObservableObject {
     let calorieQuantity = HKUnit(from: "cal")
     let heartrateQuantity = HKUnit(from: "count/min")
       
+    @Published var queryDate = Query(id: "", durationType: .Day, duration: 1, anchorDate: Date())
+
+    
     init() {
-        // Enables background delivery and queries healthdata
-        // Fires daily
-      //  backgroundDelivery()
-     print("INIT FIRED")
+        getCodableRisk()
         
+    }
+    func getCodableRisk() {
+        let url3 = getDocumentsDirectory().appendingPathComponent("risk.txt")
+        do {
+            
+            let input = try String(contentsOf: url3)
+            
+            
+            let jsonData = Data(input.utf8)
+            do {
+                let decoder = JSONDecoder()
+                
+                do {
+                    let codableRisk = try decoder.decode([CodableRisk].self, from: jsonData)
+                    
+                    self.codableRisk = codableRisk
+                    
+                 
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        } catch {
+            
+        }
     }
     func backgroundDelivery() {
         let readType2 = HKObjectType.quantityType(forIdentifier: .heartRate)
@@ -67,7 +92,7 @@ class Health: ObservableObject {
                       to: data.date)
                 // Gets heartrate data from the specified dates above
                     self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
-                    self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
+                    //self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
                 }
                
                
@@ -191,7 +216,7 @@ class Health: ObservableObject {
     // Gets all months
     @Environment(\.calendar) var calendar
     let interval = DateInterval()
-    private var months: [Date] {
+     var months: [Date] {
         calendar.generateDates(
             inside: interval,
             matching: DateComponents(day: 1, hour: 0, minute: 0, second: 0)
@@ -257,7 +282,7 @@ class Health: ObservableObject {
             riskScore += 0.2
         }
         // Populates explaination depending on severity of risk
-            let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data"), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication,lack of sleep, or other factors."), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data"), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor")]
+        let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data"), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication,lack of sleep, or other factors."), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data"), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor")]
     // Initalize risk
     let risk = Risk(id: UUID().uuidString, risk: CGFloat(riskScore), explanation: explanation)
   

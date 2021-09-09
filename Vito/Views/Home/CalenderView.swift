@@ -49,43 +49,56 @@ fileprivate extension DateFormatter {
 
 struct CalendarView<DateView>: View where DateView: View {
     @Environment(\.calendar) var calendar
-
+    @ObservedObject var health: Health
+    @State var showData = false
     let interval: DateInterval
     let showHeaders: Bool
     let content: (Date) -> DateView
 
     init(
+        health: Health,
         interval: DateInterval,
         showHeaders: Bool = true,
         @ViewBuilder content: @escaping (Date) -> DateView
     ) {
+        self.health = health
         self.interval = interval
         self.showHeaders = showHeaders
         self.content = content
     }
-
     var body: some View {
         ScrollView() {
             ScrollViewReader { value in
         LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 30, maximum: 30)), count: 7), spacing: 0) {
-            ForEach(months, id: \.self) { month in
+            ForEach(months.reversed(), id: \.self) { month in
                 if month.get(.month) >= Date().get(.month) - 2 && month.get(.month) <= Date().get(.month)  {
                 Section(header: header(for: month)) {
                     ForEach(days(for: month), id: \.self) { date in
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                            Button(action: {
+                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
+                                showData.toggle()
+                            }) {
                                 
                             content(date).id(date)
                                 .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                             }
-                            
+                            .sheet(isPresented: $showData) {
+                                DataView(health: health)
+                            }
                         } else {
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                            Button(action: {
+                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
+                                showData.toggle()
+                            }) {
                             content(date).hidden()
                                 .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                                 
                             }
                             
+                            .sheet(isPresented: $showData) {
+                                DataView(health: health)
+                            }
                         }
                            
                     }
@@ -127,18 +140,7 @@ struct CalendarView<DateView>: View where DateView: View {
         else { return [] }
         return calendar.generateDates(
             inside: DateInterval(start: monthFirstWeek.start, end: monthLastWeek.end),
-            matching: DateComponents(hour: 0, minute: 0, second: 0)
+            matching: DateComponents(hour: 23, minute: 59, second: 0)
         )
-    }
-}
-
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView(interval: .init()) { _ in
-            Text("30")
-                .padding(8)
-                .background(Color.blue)
-                .cornerRadius(8)
-        }
     }
 }

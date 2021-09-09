@@ -11,11 +11,8 @@ import HealthKit
 
 struct OnboardingView: View {
     let healthStore = HKHealthStore()
-    //@State var onboardingViews = [Onboarding(id: UUID(), image: "privacy", title: "Privacy First", description: "Zero data leaves your device unless you approve sharing your data to further research."), Onboarding(id: UUID(), image: "data", title: "Types of Data", description: "Tap below to learn how you can use your data."), Onboarding(id: UUID(), image: "ml", title: "On Device Machine Learning", description: "Fine-tune your machine learning model on device to learn when you could possibly be sick."), Onboarding(id: UUID(), image: "feel", title: "Simply Rate How You Feel", description: "Rating how your feeling further trains your model to understand how you feel and to possibly alert to potential signs of disease."), Onboarding(id: UUID(), image: "you", title: "You Know Yourself Best", description: "Even if you receive a notification that you are possibly catching an illness, it's always up to you whether you choose to self isolate or ignore the alert.")]
     
-   // @State var onboardingViews = [Onboarding(id: UUID(), image: "privacy", title: "Privacy First", description: "Zero data leaves your device unless you approve sharing your data to further research."), Onboarding(id: UUID(), image: "data", title: "Types of Data", description: "Learn how you can use your data by tapping the data below."), Onboarding(id: UUID(), image: "you", title: "You Know Yourself Best", description: "Even if you receive a notification that you are possibly catching an illness, it's always up to you whether you choose to self isolate or ignore the alert.")]
-    
-    @State var onboardingViews = [Onboarding(id: UUID(), image: "data", title: "Your Heart Rate While Asleep is an Indicator of Health", description: "A higher heart rate while asleep may indicate signs of distress from your body"), Onboarding(id: UUID(), image: "doc", title: "Always Consult With Your Doctor", description: "This is not a medical app, therefore it does not provide medical advice or diagnose anyone, rather a health app that allows the user to learn more about their data and discuss it with their doctor.")]
+    @State var onboardingViews = [Onboarding(id: UUID(), image: "data", title: "Your Heart Rate While Asleep is an Indicator of Health", description: "A higher heart rate while asleep may indicate signs of distress from your body"), Onboarding(id: UUID(), image: "data", title: "Types of Data", description: "Learn how you can use your data by tapping the data below."), Onboarding(id: UUID(), image: "doc", title: "Always Consult With Your Doctor", description: "This is not a medical app, therefore it does not provide medical advice or diagnose anyone, rather a health app that allows the user to learn more about their data and discuss it with their doctor.")]
     @State var slideNum = 0
     @Binding var isOnboarding: Bool
     @Binding var isOnboarding2: Bool
@@ -128,10 +125,10 @@ struct OnboardingDetail: View {
                 .rotation3DEffect(.degrees(3), axis: (x: 0, y: 1, z: 0))
                 .shadow(color: Color(.lightGray).opacity(0.4), radius: 40)
             
-            #warning("reenable")
-//            if onboarding.image == "data" {
-//                DataTypesListView()
-//            }
+           
+            if onboarding.image == "data" {
+                DataTypesListView()
+            }
         }
         }
         .padding()

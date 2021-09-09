@@ -27,6 +27,7 @@ struct ContentView: View {
                     }
                 }
                 .onChange(of: scenePhase) { value in
+                    withAnimation(.easeOut) {
                     if value == .active {
                         intro = true
                     health.backgroundDelivery()
@@ -36,6 +37,7 @@ struct ContentView: View {
                         intro = false
                             }
                         }
+                }
                 }
                 }
             

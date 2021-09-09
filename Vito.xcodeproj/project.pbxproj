@@ -250,12 +250,12 @@
 		E1A4C84526E838B80031C161 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				E1A4C84626E838B80031C161 /* DataView.swift */,
 				E1A4C84826E838B80031C161 /* CardView.swift */,
 				E1A4C84926E838B80031C161 /* FeelingScoreView.swift */,
 				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
 				E1A4C84B26E838B80031C161 /* HomeView.swift */,
 				E1A4C84C26E838B80031C161 /* ActionCardView.swift */,
+				E1A4C84626E838B80031C161 /* DataView.swift */,
 				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
 				E1A4C84E26E838B80031C161 /* RiskCardView.swift */,
 				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
@@ -628,12 +628,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Vito/Vito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
 				DEVELOPMENT_TEAM = 9NG3C5HP77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vito/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To gain insights on heart rate data";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To gain insights on heart rate data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -649,7 +651,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -660,12 +662,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Vito/Vito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
 				DEVELOPMENT_TEAM = 9NG3C5HP77;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vito/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "To gain insights on heart rate data";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "To gain insights on heart rate data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -681,7 +685,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

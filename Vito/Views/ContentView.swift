@@ -43,7 +43,7 @@ struct ContentView: View {
             
         
         if !onboarding {
-            OnboardingView(isOnboarding: $onboarding, isOnboarding2: $onboarding)
+            OnboardingView(isOnboarding: $onboarding, isOnboarding2: $onboarding, health: health)
             
         } else {
             if !intro {

@@ -150,7 +150,7 @@ struct DataView: View {
             let filteredToDay = data.filter {
                 return $0.date.get(.hour) == day &&  $0.date.get(.month) == month.get(.month) &&  $0.date.get(.weekday) == query.anchorDate.get(.weekday)  &&  $0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)
             }
-                let filteredTo = filteredToDay.filter{$0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)}.filter{!$0.data.isNaN}.map{$0.data}
+                let filteredTo = filteredToDay.map{$0.data}
             // Get average for that day
                 healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: String(day), text: "", date: month, data: health.average(numbers: filteredTo)))
           

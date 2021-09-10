@@ -61,20 +61,36 @@ class Health: ObservableObject {
         }
     }
     func backgroundDelivery() {
+        DispatchQueue.main.async {
+            
+            let readData = Set([
+//                    HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+               // HKCategoryType(.sleepAnalysis),
+                HKObjectType.quantityType(forIdentifier: .heartRate)!,
+               // HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
+                HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+                HKObjectType.quantityType(forIdentifier: .stepCount)!
+            ])
+            
+            self.healthStore.requestAuthorization(toShare: [], read: readData) { (success, error) in
+                
+                if success {
         let readType2 = HKObjectType.quantityType(forIdentifier: .heartRate)
-        #warning("change to daily")
-        healthStore.enableBackgroundDelivery(for: readType2!, frequency: .daily) { success, error in
+      
+            if let readType2 = readType2 {
+                //if self.healthStore.authorizationStatus(for: readType2) == .sharingAuthorized {
+                self.healthStore.enableBackgroundDelivery(for: readType2, frequency: .daily) { success, error in
             if !success {
-                print("Error enabling background delivery for type \(readType2!.identifier): \(error.debugDescription)")
+                print("Error enabling background delivery for type \(readType2.identifier): \(error.debugDescription)")
             } else {
-                print("Success enabling background delivery for type \(readType2!.identifier)")
+                print("Success enabling background delivery for type \(readType2.identifier)")
               // Gets a date from 3 months back
                 let earlyDate = Calendar.current.date(
                   byAdding: .month,
                   value: -3,
                   to: Date())
               // Queries active energy to determine when the user is alseep
-                    self.healthData = []
+                self.healthData.removeAll()
                     self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
  
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -104,13 +120,15 @@ class Health: ObservableObject {
                     }
 
                    
-
+              //  }
             }
                     }
+            }
                 }
-           
+        }
+            }
             
-           
+        }
     }
     func syncAllData() {
       
@@ -282,7 +300,7 @@ class Health: ObservableObject {
             riskScore += 0.2
         }
         // Populates explaination depending on severity of risk
-        let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data"), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication,lack of sleep, or other factors."), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data"), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor")]
+        let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data"), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors."), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data"), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor")]
     // Initalize risk
     let risk = Risk(id: UUID().uuidString, risk: CGFloat(riskScore), explanation: explanation)
   

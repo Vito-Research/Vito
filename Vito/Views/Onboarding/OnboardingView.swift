@@ -12,11 +12,12 @@ import HealthKit
 struct OnboardingView: View {
     let healthStore = HKHealthStore()
     
-    @State var onboardingViews = [Onboarding(id: UUID(), image: "data", title: "Your Heart Rate While Asleep is an Indicator of Health", description: "A higher heart rate while asleep may indicate signs of distress from your body"), Onboarding(id: UUID(), image: "data", title: "Types of Data", description: "Learn how you can use your data by tapping the data below."), Onboarding(id: UUID(), image: "doc", title: "Always Consult With Your Doctor", description: "This is not a medical app, therefore it does not provide medical advice or diagnose anyone, rather a health app that allows the user to learn more about their data and discuss it with their doctor.")]
+    @State var onboardingViews = [Onboarding(id: UUID(), image: "bird", title: "Your Heart Rate While Asleep is an Indicator of Health", description: "A higher heart rate while asleep may indicate signs of distress from your body"), Onboarding(id: UUID(), image: "data", title: "Types of Data", description: "Learn how you can use your data by tapping the data below."), Onboarding(id: UUID(), image: "doc", title: "Always Consult With Your Doctor", description: "This is not a medical app, therefore it does not provide medical advice or diagnose anyone, rather a health app that allows the user to learn more about their data and discuss it with their doctor.")]
     @State var slideNum = 0
     @Binding var isOnboarding: Bool
     @Binding var isOnboarding2: Bool
     @State var time = 0
+    @ObservedObject var health: Health
     //@Binding var setting: Setting
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
@@ -36,6 +37,7 @@ struct OnboardingView: View {
                     // dismiss sheet
                     isOnboarding = true
                     UserDefaults.standard.set(true, forKey: "onboarding")
+                    
                 }
                 //setting.onOff = false
             }) {
@@ -81,6 +83,7 @@ struct OnboardingView: View {
                     // dismiss sheet
                    isOnboarding = true
                    UserDefaults.standard.set(true, forKey: "onboarding")
+                    health.backgroundDelivery()
                 }
                 
             }) {

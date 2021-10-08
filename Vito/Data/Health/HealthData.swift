@@ -36,11 +36,7 @@ struct Risk: Hashable {
     var risk: CGFloat
     var explanation: [Explanation]
 }
-struct Explanation: Hashable {
-    var image: SFSymbol
-    var explanation: String
-    var toggle: Bool?
-}
+
 
 enum DayOfWeek: Int, Codable, CaseIterable  {
     case Monday = 2

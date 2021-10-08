@@ -16,7 +16,7 @@ class Health: ObservableObject {
     
     @Published var codableRisk = [CodableRisk(id: UUID().uuidString, date: Date().addingTimeInterval(-1000000000000), risk: 0.0, explanation: [String]())]
     @Published var healthStore = HKHealthStore()
-    @Published var risk = Risk(id: "", risk: 21, explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Explain it here!!"), Explanation(image: .questionmarkCircle, explanation: "Explain it here?"), Explanation(image: .circle, explanation: "Explain it here.")])
+    @Published var risk = Risk(id: "", risk: 21, explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Explain it here!!", detail: ""), Explanation(image: .questionmarkCircle, explanation: "Explain it here?", detail: ""), Explanation(image: .circle, explanation: "Explain it here.", detail: "")])
     @Published var readData: [HKQuantityTypeIdentifier] =  [.stepCount, .respiratoryRate, .oxygenSaturation]
     @Published var healthData = [HealthData]()
     @Published var tempHealthData = HealthData(id: UUID().uuidString, type: .Feeling, title: "", text: "", date: Date(), data: 0.0)
@@ -30,7 +30,7 @@ class Health: ObservableObject {
       
     @Published var queryDate = Query(id: "", durationType: .Day, duration: 1, anchorDate: Date())
 
-    
+//    @Published var hasWatchOS8 = UserDefaults.standard.bool(forKey: "hasWatchOS8")
     init() {
         getCodableRisk()
         
@@ -91,32 +91,49 @@ class Health: ObservableObject {
                   to: Date())
               // Queries active energy to determine when the user is alseep
                 self.healthData.removeAll()
+               // self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate: Date())
                     self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
  
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 // loops thru the active energy data
-                   
+//                    if self.healthData.isEmpty {
+//                        self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
+//                        for data in self.healthData {
+//                            // Gets dates 5 minutes before and after the start date of low active energy
+//                            let earlyDate = Calendar.current.date(
+//                              byAdding: .minute,
+//                              value: -5,
+//                              to: data.date)
+//                            let lateDate = Calendar.current.date(
+//                              byAdding: .minute,
+//                              value: 5,
+//                              to: data.date)
+//                        // Gets heartrate data from the specified dates above
+//                            self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
+//
+//                        }
+//                    } else {
                 for data in self.healthData {
                     // Gets dates 5 minutes before and after the start date of low active energy
                     let earlyDate = Calendar.current.date(
                       byAdding: .minute,
-                      value: -5,
+                      value: -10,
                       to: data.date)
                     let lateDate = Calendar.current.date(
                       byAdding: .minute,
-                      value: 5,
+                      value: 10,
                       to: data.date)
                 // Gets heartrate data from the specified dates above
                     self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
-                    //self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
-                }
-               
+                    
+               // }
+                    }
                
                
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
               // Calculates risk based on heartrate data
-                        self.getRiskScorev2()
-
+                        self.risk = self.getRiskScorev2(date: Date())
+                      
                     }
 
                    
@@ -160,7 +177,7 @@ class Health: ObservableObject {
          
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
          
-                    self.getRiskScorev2()
+                    self.getRiskScorev2(date: Date())
 
                 }
 
@@ -242,8 +259,9 @@ class Health: ObservableObject {
     }
     
     // Calculates risk score
-    func getRiskScorev2() {
+    func getRiskScorev2(date: Date) -> Risk {
         // Filters to heartrate type
+        var varRisk = Risk(id: "nodata", risk: 21.0, explanation: [Explanation]())
         let filteredToHeartRate = healthData.filter {
             return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN
         }
@@ -279,11 +297,11 @@ class Health: ObservableObject {
         // Filter to current night
         #warning("If new month could cause an issue")
         let filteredToLastNight = filteredToHeartRate.filter {
-            return $0.date.get(.day) == Date().get(.day) && $0.date.get(.month) == Date().get(.month)
+            return $0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month)
         }
         
         let filteredToLastNightR = filteredToRespiratoryRate.filter {
-            return $0.date.get(.day) == Date().get(.day) && $0.date.get(.month) == Date().get(.month)
+            return $0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month)
         }
         print("LAST NIGHT")
         print(filteredToLastNight)
@@ -300,7 +318,7 @@ class Health: ObservableObject {
             riskScore += 0.2
         }
         // Populates explaination depending on severity of risk
-        let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data"), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors."), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data"), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor")]
+            let explanation =  riskScore == 1 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors.", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
     // Initalize risk
     let risk = Risk(id: UUID().uuidString, risk: CGFloat(riskScore), explanation: explanation)
   
@@ -308,8 +326,8 @@ class Health: ObservableObject {
     if averagePerNights.count > 0 && filteredToLastNight.count > 0 {
     withAnimation(.easeOut(duration: 1.3)) {
     // Populate risk var with local risk var
-    self.risk = risk
-        
+      
+        varRisk = risk
     }
       
         let riskScore = risk.risk
@@ -323,7 +341,7 @@ class Health: ObservableObject {
                                                        LocalNotifications.schedule(permissionStrategy: .askSystemPermissionIfNeeded) {
                                                            Today()
                                                                .at(hour: Date().get(.hour), minute: Date().get(.minute) + 1)
-                                                               .schedule(title: "Significant Risk", body: "Your health data may indicate that you may be becoming sick, please consult your doctor")
+                                                               .schedule(title: "Significant HR Increase", body: "Your health data may indicate your heartrate is increasing while asleep")
                                                        }
                                          
                                            }
@@ -332,16 +350,23 @@ class Health: ObservableObject {
                                            }
             }
         // Add risk to codeableRisk
-        self.codableRisk.append(CodableRisk(id: risk.id, date: Date(), risk: risk.risk, explanation: [String]()))
-     
+   
+        self.codableRisk.append(CodableRisk(id: risk.id, date:date, risk: risk.risk, explanation: [String]()))
+        
+        
     } else {
       // If averagePerNights is empty then populate risk with 21 to indicate that
-        self.risk = Risk(id: "NoData", risk: CGFloat(21), explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Wear your Apple Watch as you sleep to see your data")])
+        if date.get(.day) == Date().get(.day) {
+  varRisk = Risk(id: "NoData", risk: CGFloat(21), explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Wear your smart watch as you sleep to see your data", detail: "")])
+        }
     
     }
         } else {
-            self.risk = Risk(id: "NoData", risk: CGFloat(21), explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Wear your Apple Watch as you sleep to see your data")])
+            if date.get(.day) == Date().get(.day) {
+                varRisk = Risk(id: "NoData", risk: CGFloat(21), explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Wear your smart watch as you sleep to see your data", detail: "")])
+            }
         }
+        return varRisk
     }
 
    // Gets average of input and outputs
@@ -359,7 +384,7 @@ class Health: ObservableObject {
     }
     func getDocumentsDirectory() -> URL {
         // find all possible documents directories for this user
-        let paths = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
         // just send back the first one, which ought to be the only one
         return paths[0]

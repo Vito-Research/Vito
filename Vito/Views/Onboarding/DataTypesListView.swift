@@ -8,33 +8,35 @@
 import SwiftUI
 
 struct DataTypesListView: View {
-    @State var explanations = [Explanation(image: .heart, explanation: "Heart Rate"), Explanation(image: .person , explanation: "Steps"), Explanation(image: .sleep, explanation: "Active Energy")] //Explanation(image: .lungs, explanation: "Respiratory Rate"), Explanation(image: .oCircle, explanation: "Oxygen Saturation")]
-    @State var descriptions = ["Detects abnormally high heart rate while asleep.", "Used to omit data taken at night while your still active.", "Used to omit data taken at night while your still active."]//, "Monitors for high breathing rates while asleep (only WatchOS 8).", "Detects low oxygen in your blood (only Apple Watch 6)."]
+    @State var toggleData = [ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .heart, explanation: "Heart Rate", detail: "Abnormally high heart rate while asleep can be a sign of distress from your body")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .lungs, explanation: "Respiratory Rate", detail: "High respiratory rate while asleep can be a sign of distress from your body")), ToggleData(id: UUID(), toggle: false, explanation:  Explanation(image: .person , explanation: "Steps", detail: "Utilized to detect when you are alseep")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .flame, explanation: "Active Energy", detail: "Utilized to detect when you are alseep"))] //Explanation(image: .lungs, explanation: "Respiratory Rate"), Explanation(image: .oCircle, explanation: "Oxygen Saturation")]
+   //, Explanation(image: .sleep, explanation: "Active Energy"), Explanation(image: .lungs, explanation: "Respiratory Rate")
+   //, "Monitors for high breathing rates while asleep (only WatchOS 8).", "Detects low oxygen in your blood (only Apple Watch 6)."]
     var body: some View {
         VStack {
             
                
-            ForEach(explanations.indices, id:\.self) { i in
+            ForEach(toggleData.indices, id:\.self) { i in
                 Button(action: {
-                    if !(explanations[i].toggle ?? false) {
-                        explanations[i].toggle = true
+                    if !(toggleData[i].toggle) {
+                        toggleData[i].toggle = true
                     } else {
-                        explanations[i].toggle = false
+                        toggleData[i].toggle = false
                     }
                 }) {
                     VStack {
                 HStack {
                     
-                    Image(systemSymbol: explanations[i].image)
+                    Image(systemSymbol: toggleData[i].explanation.image)
                         .font(.title)
-                Text(explanations[i].explanation)
+                    Text(toggleData[i].explanation.explanation)
+                        .multilineTextAlignment(.leading)
                     .font(.custom("Poppins-Bold", size: 20, relativeTo: .headline))
                     Spacer()
                 }
-                    if (explanations[i].toggle ?? false) {
+                    if (toggleData[i].toggle) {
                 HStack {
                     
-                Text(descriptions[i])
+                    Text(toggleData[i].explanation.detail)
                     .font(.custom("Poppins", size: 16, relativeTo: .headline))
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top)
@@ -48,10 +50,6 @@ struct DataTypesListView: View {
         } .padding()
         }
     }
-}
 
-struct DataTypesListView_Previews: PreviewProvider {
-    static var previews: some View {
-        DataTypesListView()
-    }
+
 }

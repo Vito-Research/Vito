@@ -69,7 +69,7 @@ struct CalendarView<DateView>: View where DateView: View {
     var body: some View {
         ScrollView() {
             ScrollViewReader { value in
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 30, maximum: 30)), count: 7), spacing: 0) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 30, maximum: 50)), count: 7), spacing: 0) {
             ForEach(months.reversed(), id: \.self) { month in
                 if month.get(.month) >= Date().get(.month) - 2 && month.get(.month) <= Date().get(.month)  {
                 Section(header: header(for: month)) {

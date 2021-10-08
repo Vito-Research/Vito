@@ -14,7 +14,7 @@ struct DataView: View {
     @State var data = ChartData(values: [("", 0.0)])
     
     @Environment(\.calendar) var calendar
-    
+   
     var body: some View {
         
         VStack {
@@ -82,6 +82,10 @@ struct DataView: View {
                     
                   
                 })
+            if !health.risk.id.isEmpty {
+                RiskCardView(health: health, date: health.queryDate.anchorDate, isCalendar: true)
+                    .transition(.move(edge: .top))
+            }
             HStack {
                 Text("Heart Rate")
                     .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
@@ -90,7 +94,7 @@ struct DataView: View {
             
                 
             BarChartView(data: $data, title: "Heart Rate")
-
+               
            
             Spacer()
         } .padding()
@@ -103,12 +107,12 @@ struct DataView: View {
     }
     func lastDayOfMonth(date: Date) -> Date {
         guard
-        let monthInterval = calendar.dateInterval(of: .month, for: date),
-        let monthLastWeek = calendar.dateInterval(of: .weekOfMonth, for: monthInterval.end)?.end
+            let monthInterval = calendar.dateInterval(of: .month, for: date)?.end
+      //  let monthLastWeek = calendar.dateInterval(of: .day, for: monthInterval.end)?.end
            
         else { print("OOOF")
             return date }
-        return monthLastWeek
+        return monthInterval
     }
     func lastDayOfWeek(date: Date) -> Date {
         guard
@@ -132,7 +136,7 @@ struct DataView: View {
             }
                 let filteredTo = query.durationType == .Week ? filteredToDay.filter{$0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)}.filter{!$0.data.isNaN}.map{$0.data} : filteredToDay.filter{!$0.data.isNaN}.map{$0.data}
             // Get average for that day
-                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: String(day), text: "", date: month, data: health.average(numbers: filteredTo)))
+                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: DateFormatter.localizedString(from: (filteredToDay.last?.date ?? Date()), dateStyle: .short, timeStyle: .none), text: "", date: month, data: health.average(numbers: filteredTo)))
           
         }
         }
@@ -152,7 +156,7 @@ struct DataView: View {
             }
                 let filteredTo = filteredToDay.map{$0.data}
             // Get average for that day
-                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: String(day), text: "", date: month, data: health.average(numbers: filteredTo)))
+                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: DateFormatter.localizedString(from: (filteredToDay.last?.date ?? Date()), dateStyle: .none, timeStyle: .short), text: "", date: month, data: health.average(numbers: filteredTo)))
           
         }
             }

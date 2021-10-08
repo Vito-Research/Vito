@@ -14,7 +14,7 @@ struct ContentView: View {
     //@StateObject var ml = ML()
     @State var share = false
     @State var intro = true
-    @State var onboarding = UserDefaults.standard.bool(forKey: "onboarding")
+    @State var onboarding = UserDefaults.standard.integer(forKey: "onboarding")
     @Environment(\.scenePhase) var scenePhase
     var body: some View {
         ZStack {
@@ -29,7 +29,7 @@ struct ContentView: View {
                 .onChange(of: scenePhase) { value in
                     withAnimation(.easeOut) {
                     if value == .active {
-                        intro = true
+                    intro = true
                     health.backgroundDelivery()
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
@@ -42,8 +42,8 @@ struct ContentView: View {
                 }
             
         
-        if !onboarding {
-            OnboardingView(isOnboarding: $onboarding, isOnboarding2: $onboarding, health: health)
+        if onboarding == 0 {
+            OnboardingView(isOnboarding: $onboarding, health: health)
             
         } else {
             if !intro {
@@ -83,29 +83,7 @@ struct ContentView: View {
                 health.healthStore.requestAuthorization(toShare: [], read: readData) { (success, error) in
                     
                 }
-                let url3 = health.getDocumentsDirectory().appendingPathComponent("risk.txt")
-                do {
-                    
-                    let input = try String(contentsOf: url3)
-                    
-                    
-                    let jsonData = Data(input.utf8)
-                    do {
-                        let decoder = JSONDecoder()
-                        
-                        do {
-                            let codableRisk = try decoder.decode([CodableRisk].self, from: jsonData)
-                            
-                            health.codableRisk = codableRisk
-                            
-                         
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    }
-                } catch {
-                    
-                }
+              
 //                for type in health.readData {
 //                health.getHealthData(type: type, dateDistanceType: .Month, dateDistance: 24) { _ in
 //
@@ -140,7 +118,7 @@ struct ContentView: View {
             }
             }
     }
-            if intro {
+            if intro && onboarding != 0 {
         IntroView()
             }
         }

@@ -20,14 +20,21 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
         ScrollView {
+            
             LazyVGrid(columns: gridLayout) {
                 if !health.risk.id.isEmpty {
                 RiskCardView(health: health)
                         .transition(.move(edge: .top))
                 }
+               
+                CardView(card: Card( image: "data", title: "Learn More?", description: "Learn more about our values and how the algorithm works", cta: "Learn More"))
+                    .padding()
 
                 
             }
+               
+           
+            
         } .navigationTitle("")
                 .navigationBarHidden(true)
         .onAppear() {

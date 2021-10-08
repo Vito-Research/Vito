@@ -14,8 +14,14 @@ struct RiskCardView: View {
     @State var explain = true
     @State var learnMore = false
     @State var openData = false
+    @State var date = Date()
+    
+    @State var risk = Risk(id: "nodata", risk: 21.0, explanation: [Explanation]())
+    
+    @State var isCalendar = false
     var body: some View {
         VStack {
+            if !isCalendar {
             HStack {
                 NavigationLink(destination: DataViewv2(health: health)) {
                  
@@ -38,13 +44,14 @@ struct RiskCardView: View {
                     
                 }
             }
+            }
             
-            HalvedCircularBar(progress: $health.risk.risk, health: health, min: $min, max: $max)
+            HalvedCircularBar(progress: $risk.risk, health: health, min: $min, max: $max)
                
             
                 
                
-                
+            if !isCalendar {
             if explain {
                 ZStack {
                     Color(UIColor.systemBackground)
@@ -77,8 +84,10 @@ struct RiskCardView: View {
             }
                 }
             }
+            }
         } .padding()
             .onAppear() {
+                risk = health.getRiskScorev2(date: date)
                 min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
                 max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
@@ -100,7 +109,7 @@ struct HalvedCircularBar: View {
                 
                 RoundedRectangle(cornerRadius: 10)
                     .trim(from: 0.0, to: 1.0)
-                    .foregroundColor(Color(health.risk.risk > 0.8 ? "red" : "green"))
+                    .foregroundColor(Color(progress > 0.8 ? "red" : "green"))
                     //.stroke(Color(progress > 0.8 ? "red" : "green"), lineWidth: 20)
                     .opacity(0.8)
                     .frame( height: 125)
@@ -112,7 +121,7 @@ struct HalvedCircularBar: View {
 //                    .frame(width: 200, height: 200)
 //                    .rotationEffect(Angle(degrees: -215))
                
-                Text(health.risk.risk == 21 ? "Not Enough Data" : health.risk.risk > 0.5 ? "WARNING" : "OK")
+                Text(progress == 21 ? "Not Enough Data" : progress > 0.5 ? "WARNING" : "OK")
                     .font(.custom("Poppins-Bold", size: 20, relativeTo: .headline))
                    // .foregroundColor(Color(progress > 0.8 ? "red" : "green"))
                     .foregroundColor(.white)
@@ -136,7 +145,7 @@ struct HalvedCircularBar: View {
                
             }
             } else {
-                Text(health.risk.risk == 21 ? "Not Enough Data" : "\(Int((self.health.risk.risk)*100))%")
+                Text(progress == 21 ? "Not Enough Data" : "\(Int((progress)*100))%")
                     .font(.custom("Poppins-Bold", size: 20, relativeTo: .headline))
                     .foregroundColor(Color("blue"))
                     .frame( height: 125)

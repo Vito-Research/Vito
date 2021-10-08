@@ -23,10 +23,11 @@ struct DataView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .multilineTextAlignment(.leading)
                     .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
-                DatePicker("", selection: $health.queryDate.anchorDate, displayedComponents: .date)
-                    .font(.custom("Poppins", size: 12, relativeTo: .headline))
-                .datePickerStyle(CompactDatePickerStyle())
-                .padding()
+                Spacer()
+//                DatePicker("", selection: $health.queryDate.anchorDate, displayedComponents: .date)
+//                    .font(.custom("Poppins", size: 12, relativeTo: .headline))
+//                .datePickerStyle(CompactDatePickerStyle())
+//                .padding()
                 .onAppear() {
                   //  health.queryDate.anchorDate = date
                     let points = getHeartRateData().filter{!$0.data.isNaN}

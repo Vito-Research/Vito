@@ -91,6 +91,9 @@ struct RiskCardView: View {
                 min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
                 max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
+            .onChange(of: date) { value in
+                risk = health.getRiskScorev2(date: date)
+            }
     }
 }
 
@@ -139,7 +142,7 @@ struct HalvedCircularBar: View {
 //                } .padding(.bottom)
                 
             } .onAppear() {
-                
+                print(progress)
 //                min = min*0.705
 //                max = max*0.705
                

@@ -29,20 +29,23 @@ class ML: ObservableObject {
         
         completionHandler(healthData)
     }
-    func exportDataToCSV(data: [HealthData], completionHandler: @escaping (Bool) -> Void) {
+    func exportDataToCSV(data: [HealthData], codableRisk: [CodableRisk], completionHandler: @escaping (Bool) -> Void) {
         var trainingData = DataFrame()
+        var trainingData2 = DataFrame()
         print("Exporting...")
         let filteredToHeartRate = data.filter { data in
-            return data.title == HKQuantityTypeIdentifier.heartRate.rawValue
+            return data.title == HKQuantityTypeIdentifier.heartRate.rawValue && data.date.getTimeOfDay() == "Night"
         }
-        let filteredToNight = filteredToHeartRate.filter { data in
-            return data.date.get(.hour) >  0 && data.date.get(.hour) <  4
+        let filteredToRisk = codableRisk.filter { data in
+            return !data.risk.isNaN && data.risk != 21.0
         }
         
-        let startDates = filteredToNight.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
+      
+        
+        let startDates = filteredToHeartRate.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
         let startDateColumn = Column(name: "Start_Date", contents: startDates)
        
-        let startTimes = filteredToNight.map{$0.date.getFormattedDate(format: "HH:mm:ss")}
+        let startTimes = filteredToHeartRate.map{$0.date.getFormattedDate(format: "HH:mm:ss")}
         
         trainingData.append(column: startDateColumn)
         
@@ -50,17 +53,30 @@ class ML: ObservableObject {
         
         trainingData.append(column: startTimeColumn)
         
-        let nightlyHeartRateColumn = Column(name: "Heartrate", contents: filteredToNight.map{$0.data})
+        let nightlyHeartRateColumn = Column(name: "Heartrate", contents: filteredToHeartRate.map{$0.data})
         trainingData.append(column: nightlyHeartRateColumn)
         
+        let startDatesRisk = filteredToRisk.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
+        let startDateColumnRisk = Column(name: "Start_Date_Risk", contents: startDatesRisk)
+        trainingData2.append(column: startDateColumnRisk)
         
+        let startTimesRisk = filteredToRisk.map{$0.date.getFormattedDate(format: "HH:mm:ss")}
+        let startTimeColumnRisk = Column(name: "Start_Time_Risk", contents: startTimesRisk)
+        trainingData2.append(column: startTimeColumnRisk)
+        let risks = filteredToRisk.map{$0.risk}
+        let nightlyRiskColumn = Column(name: "Risk", contents: filteredToRisk.map{$0.risk})
+        trainingData2.append(column: nightlyRiskColumn)
         do {
-        try trainingData.writeCSV(to: getDocumentsDirectory().appendingPathComponent("A.csv"))
+            
+            trainingData.append(trainingData2)
+        try trainingData.writeCSV(to: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv"))
+            try trainingData2.writeCSV(to: getDocumentsDirectory().appendingPathComponent("Vito_Risk_Data.csv"))
             //print(getDocumentsDirectory().appendingPathComponent("A.csv").dataRepresentation)
         } catch {
             print(error)
             
         }
+        
         completionHandler(true)
     }
     func trainCompareOnDevice(userData: [HealthData], target: String, target2: String, completionHandler: @escaping (ModelResponse) -> Void) {
@@ -168,7 +184,7 @@ class ML: ObservableObject {
    }
     func getDocumentsDirectory() -> URL {
         // find all possible documents directories for this user
-        let paths = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
         // just send back the first one, which ought to be the only one
         return paths[0]

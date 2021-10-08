@@ -117,11 +117,11 @@ class Health: ObservableObject {
                     // Gets dates 5 minutes before and after the start date of low active energy
                     let earlyDate = Calendar.current.date(
                       byAdding: .minute,
-                      value: -10,
+                      value: -5,
                       to: data.date)
                     let lateDate = Calendar.current.date(
                       byAdding: .minute,
-                      value: 10,
+                      value: 5,
                       to: data.date)
                 // Gets heartrate data from the specified dates above
                     self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
@@ -159,7 +159,7 @@ class Health: ObservableObject {
          
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for data in self.healthData {
-              
+                if data.date.getTimeOfDay() == "Night" {
                 let earlyDate = Calendar.current.date(
                   byAdding: .minute,
                   value: -5,
@@ -181,7 +181,7 @@ class Health: ObservableObject {
 
                 }
 
-             
+            }
 
         }
 
@@ -263,7 +263,7 @@ class Health: ObservableObject {
         // Filters to heartrate type
         var varRisk = Risk(id: "nodata", risk: 21.0, explanation: [Explanation]())
         let filteredToHeartRate = healthData.filter {
-            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN && $0.date.getTimeOfDay() == "Night"
         }
         let filteredToRespiratoryRate = healthData.filter {
             return $0.title == HKQuantityTypeIdentifier.respiratoryRate.rawValue && !$0.data.isNaN
@@ -272,15 +272,15 @@ class Health: ObservableObject {
         var averagePerNightsR = [Double]()
         for month in months {
             // If month is within 3 months in the past then proceed
-            if (month.get(.month) >= Date().get(.month) - 2 && month.get(.month) <= Date().get(.month))  {
+            if (month.get(.month) >= date.get(.month) - 2 && month.get(.month) <= date.get(.month))  {
                 
         for day in 0...32 {
             // Filter to day and to month that's not today
             let filteredToDay = filteredToHeartRate.filter {
-                return $0.date.get(.day) == day && $0.date.get(.day) != Date().get(.day) &&  $0.date.get(.month) == month.get(.month)
+                return $0.date.get(.day) == day && $0.date.get(.day) != date.get(.day) &&  $0.date.get(.month) == month.get(.month)
             }
             let filteredToDayR = filteredToRespiratoryRate.filter {
-                return $0.date.get(.day) == day && $0.date.get(.day) != Date().get(.day) &&  $0.date.get(.month) == month.get(.month)
+                return $0.date.get(.day) == day && $0.date.get(.day) != date.get(.day) &&  $0.date.get(.month) == month.get(.month)
             }
             // Get average for that day
             averagePerNights.append(average(numbers: filteredToDay.map{$0.data}))

@@ -120,14 +120,14 @@ struct OnboardingDetail: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
                 .fixedSize(horizontal: false, vertical: true)
-            
+            if !onboarding.image.isEmpty {
             Image(onboarding.image)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                 .rotation3DEffect(.degrees(3), axis: (x: 0, y: 1, z: 0))
                 .shadow(color: Color(.lightGray).opacity(0.4), radius: 40)
-            
+            }
            
             if !onboarding.toggleData.isEmpty {
                 DataTypesListView(toggleData: onboarding.toggleData)

@@ -14,11 +14,11 @@ import HKCombine
 class Health: ObservableObject {
    
     
-    @Published var codableRisk = [CodableRisk(id: UUID().uuidString, date: Date().addingTimeInterval(-1000000000000), risk: 0.0, explanation: [String]())]
+    @Published var codableRisk = [CodableRisk(id: "NoData", date: Date().addingTimeInterval(-1000000000000), risk: 0.0, explanation: [String]())]
     @Published var healthStore = HKHealthStore()
-    @Published var risk = Risk(id: "", risk: 21, explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Explain it here!!", detail: ""), Explanation(image: .questionmarkCircle, explanation: "Explain it here?", detail: ""), Explanation(image: .circle, explanation: "Explain it here.", detail: "")])
-    @Published var readData: [HKQuantityTypeIdentifier] =  [.stepCount, .respiratoryRate, .oxygenSaturation]
-    @Published var healthData = [HealthData]()
+    @Published var risk = Risk(id: "NoData", risk: 21, explanation: [Explanation(image: .exclamationmarkCircle, explanation: "Explain it here!!", detail: ""), Explanation(image: .questionmarkCircle, explanation: "Explain it here?", detail: ""), Explanation(image: .circle, explanation: "Explain it here.", detail: "")])
+   // @Published var readData: [HKQuantityTypeIdentifier] =  [.stepCount, .respiratoryRate, .oxygenSaturation]
+     var healthData = [HealthData]()
     @Published var tempHealthData = HealthData(id: UUID().uuidString, type: .Feeling, title: "", text: "", date: Date(), data: 0.0)
     @Published var healthChartData = ChartData(values: [("", 0.0)])
     @Published var todayHeartRate = [HealthData]()
@@ -60,19 +60,21 @@ class Health: ObservableObject {
             
         }
     }
+    let readData = Set([
+            HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+          //  HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!,
+            HKObjectType.quantityType(forIdentifier: .respiratoryRate)!,
+        HKObjectType.quantityType(forIdentifier: .heartRate)!,
+       // HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
+        HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+        HKObjectType.quantityType(forIdentifier: .stepCount)!
+    ])
     func backgroundDelivery() {
         DispatchQueue.main.async {
             
-            let readData = Set([
-//                    HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
-               // HKCategoryType(.sleepAnalysis),
-                HKObjectType.quantityType(forIdentifier: .heartRate)!,
-               // HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
-                HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-                HKObjectType.quantityType(forIdentifier: .stepCount)!
-            ])
             
-            self.healthStore.requestAuthorization(toShare: [], read: readData) { (success, error) in
+            self.healthStore.requestAuthorization(toShare: [], read: self.readData) { (success, error) in
+            self.healthStore.requestAuthorization(toShare: [], read:  Set([HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!])) { (success, error) in
                 
                 if success {
         let readType2 = HKObjectType.quantityType(forIdentifier: .heartRate)
@@ -92,9 +94,9 @@ class Health: ObservableObject {
               // Queries active energy to determine when the user is alseep
                 self.healthData.removeAll()
                // self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate: Date())
-                    self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
- 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    //self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
+                self.retrieveSleepAnalysis(time: 30)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 // loops thru the active energy data
 //                    if self.healthData.isEmpty {
 //                        self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
@@ -115,19 +117,28 @@ class Health: ObservableObject {
 //                    } else {
                 for data in self.healthData {
                     // Gets dates 5 minutes before and after the start date of low active energy
+                    let earlyDate = data.date
+                    let lateDate =  data.text.toDate() ?? Date()
+                    for date in Date.datesHourly(from: earlyDate, to: lateDate) {
                     let earlyDate = Calendar.current.date(
                       byAdding: .minute,
                       value: -5,
-                      to: data.date)
+                      to: date)
                     let lateDate = Calendar.current.date(
                       byAdding: .minute,
                       value: 5,
-                      to: data.date)
+                      to: date)
                 // Gets heartrate data from the specified dates above
-                    self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
-                    
+                   
+                        //self.getActiveEnergyHealthData(startDate:earlyDate ?? Date(), endDate: lateDate ?? Date())
+                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRate, quanityType: self.heartrateQuantity)
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRateVariabilitySDNN, quanityType: HKUnit(from: "ms"))
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .respiratoryRate, quanityType: self.heartrateQuantity)
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .stepCount, quanityType: HKUnit(from: "count"))
+                  
                // }
                     }
+                }
                
                
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -144,50 +155,65 @@ class Health: ObservableObject {
                 }
         }
             }
+            }
             
         }
     }
     func syncAllData() {
       
+          
+        self.healthData.removeAll()
+       // self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate: Date())
+            //self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
+        self.retrieveSleepAnalysis(time: 90)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        // loops thru the active energy data
+//                    if self.healthData.isEmpty {
+//                        self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
+//                        for data in self.healthData {
+//                            // Gets dates 5 minutes before and after the start date of low active energy
+//                            let earlyDate = Calendar.current.date(
+//                              byAdding: .minute,
+//                              value: -5,
+//                              to: data.date)
+//                            let lateDate = Calendar.current.date(
+//                              byAdding: .minute,
+//                              value: 5,
+//                              to: data.date)
+//                        // Gets heartrate data from the specified dates above
+//                            self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
+//
+//                        }
+//                    } else {
+        for data in self.healthData {
+            // Gets dates 5 minutes before and after the start date of low active energy
+            let earlyDate = data.date
+            let lateDate =  data.text.toDate() ?? Date()
+            for date in Date.datesHourly(from: earlyDate, to: lateDate) {
             let earlyDate = Calendar.current.date(
-              byAdding: .month,
-              value: -3,
-              to: Date())
+              byAdding: .minute,
+              value: -5,
+              to: date)
+            let lateDate = Calendar.current.date(
+              byAdding: .minute,
+              value: 5,
+              to: date)
+        // Gets heartrate data from the specified dates above
            
-           
-                self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
-         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            for data in self.healthData {
-                if data.date.getTimeOfDay() == "Night" {
-                let earlyDate = Calendar.current.date(
-                  byAdding: .minute,
-                  value: -5,
-                  to: data.date)
-                let lateDate = Calendar.current.date(
-                  byAdding: .minute,
-                  value: 5,
-                  to: data.date)
-              
-                self.getHeartRateHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date())
-
+                //self.getActiveEnergyHealthData(startDate:earlyDate ?? Date(), endDate: lateDate ?? Date())
+            self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRate, quanityType: self.heartrateQuantity)
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRateVariabilitySDNN, quanityType: HKUnit(from: "ms"))
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .respiratoryRate, quanityType: self.heartrateQuantity)
+//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .stepCount, quanityType: HKUnit(from: "count"))
+          
+       // }
             }
-           
-           
-         
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-         
-                    self.getRiskScorev2(date: Date())
-
-                }
-
-            }
-
         }
+       
 
            
                 }
-    
+    }
   // If this is @State, it breaks the code, keep it as a regular var
     var cancellableBag = Set<AnyCancellable>()
     var cancellableBag2 = Set<AnyCancellable>()
@@ -206,20 +232,78 @@ class Health: ObservableObject {
                   
                     // If active energy is low (below 1.4 in healthkit app terms) and does not equal zero then add the heartrate data to healthData
                     
-                    if sample.quantity.doubleValue(for: self.calorieQuantity) < 101 && sample.quantity.doubleValue(for: self.calorieQuantity) != 0.0 {
+                  //  if sample.quantity.doubleValue(for: self.calorieQuantity) < 101 && sample.quantity.doubleValue(for: self.calorieQuantity) != 0.0 {
                     self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKSampleType.quantityType(forIdentifier: .activeEnergyBurned)?.identifier ?? "", text: "", date: sample.startDate, data: sample.endDate.timeIntervalSince1970))
                    
-                    } else {
-                       
-                    }
+//                    } else {
+//
+//                    }
                 }
             // Does something, lol
             }).store(in: &cancellableBag)
     }
-    func getHeartRateHealthData(startDate: Date, endDate: Date) {
+
+    func retrieveSleepAnalysis(time: Int) {
+        
+        // first, we define the object type we want
+        if let sleepType = HKObjectType.categoryType(forIdentifier: HKCategoryTypeIdentifier.sleepAnalysis) {
+            
+            // Use a sortDescriptor to get the recent data first
+            let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+            
+            // we create our query with a block completion to execute
+            let query = HKSampleQuery(sampleType: sleepType, predicate: nil, limit: time, sortDescriptors: [sortDescriptor]) { (query, tmpResult, error) -> Void in
+                
+                if error != nil {
+                    
+                    // something happened
+                    return
+                    
+                }
+                
+                if let result = tmpResult {
+                    
+                    // do something with my data
+                    for item in result {
+                        if let sample = item as? HKCategorySample {
+                           
+                           // print("Healthkit sleep: \(sample.startDate) \(sample.endDate) - value: \(value)")
+                            self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: sample.endDate.getFormattedDate(format: "Y:m:d"), text: "", date: sample.startDate, data: (sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue) || (sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue) ? 1 : 0))
+                        }
+                    }
+                }
+            }
+            
+            // finally, we execute our query
+            healthStore.execute(query)
+        }
+    }
+    func getSleepData(startDate: Date, endDate: Date) {
+       
+        healthStore
+            .get(sample: HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!, start: startDate, end: endDate)
+            .receive(on: DispatchQueue.main)
+            .replaceError(with: [HKQuantitySample]())
+            .sink(receiveCompletion: { subscription in
+
+            }, receiveValue: { samples in
+                // Loops thru active energy samples
+                for sample in samples {
+                  
+                    // If active energy is low (below 1.4 in healthkit app terms) and does not equal zero then add the heartrate data to healthData
+                    
+                   
+                    self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKSampleType.categoryType(forIdentifier: .sleepAnalysis)!.identifier , text: "", date: sample.startDate, data: sample.endDate.timeIntervalSince1970))
+                   
+                    
+                }
+            // Does something, lol
+            }).store(in: &cancellableBag)
+    }
+    func getHealthData(startDate: Date, endDate: Date, id: HKQuantityTypeIdentifier, quanityType: HKUnit) {
 
         healthStore
-            .get(sample: HKSampleType.quantityType(forIdentifier: .heartRate)!, start: startDate, end: endDate)
+            .get(sample: HKSampleType.quantityType(forIdentifier: id)!, start: startDate, end: endDate)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { subscription in
          
@@ -227,7 +311,7 @@ class Health: ObservableObject {
          
                 // If there's smaples then add the sample to healthData
                 if samples.count > 0 {
-                self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKSampleType.quantityType(forIdentifier: .heartRate)?.identifier ?? "", text: "", date: startDate, data: self.average(numbers: samples.map{$0.quantity.doubleValue(for: self.heartrateQuantity)})))
+                self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKSampleType.quantityType(forIdentifier: id)?.identifier ?? "", text: "", date: startDate, data: self.average(numbers: samples.map{$0.quantity.doubleValue(for: quanityType)})))
                 }
             // Does something, lol
             }).store(in: &cancellableBag2)
@@ -261,9 +345,9 @@ class Health: ObservableObject {
     // Calculates risk score
     func getRiskScorev2(date: Date) -> Risk {
         // Filters to heartrate type
-        var varRisk = Risk(id: "nodata", risk: 21.0, explanation: [Explanation]())
+        var varRisk = Risk(id: "NoData", risk: 21.0, explanation: [Explanation]())
         let filteredToHeartRate = healthData.filter {
-            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN && $0.date.getTimeOfDay() == "Night"
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
         }
         let filteredToRespiratoryRate = healthData.filter {
             return $0.title == HKQuantityTypeIdentifier.respiratoryRate.rawValue && !$0.data.isNaN
@@ -272,7 +356,7 @@ class Health: ObservableObject {
         var averagePerNightsR = [Double]()
         for month in months {
             // If month is within 3 months in the past then proceed
-            if (month.get(.month) >= date.get(.month) - 2 && month.get(.month) <= date.get(.month))  {
+            //if (month.get(.month) >= date.get(.month) - 2 && month.get(.month) <= date.get(.month))  {
                 
         for day in 0...32 {
             // Filter to day and to month that's not today
@@ -286,7 +370,7 @@ class Health: ObservableObject {
             averagePerNights.append(average(numbers: filteredToDay.map{$0.data}))
             averagePerNightsR.append(average(numbers: filteredToDayR.map{$0.data}))
         }
-            }
+           // }
         }
         // Get median of the averages for each day
         print(averagePerNights)
@@ -390,4 +474,3 @@ class Health: ObservableObject {
         return paths[0]
     }
 }
-

@@ -60,7 +60,7 @@ extension Array where Element:Equatable {
 extension Array where Element == Double {
     func median() -> Double {
         let sortedArray = sorted()
-        if self.indices.contains(1) {
+        if count > 0 {
         if count % 2 != 0 {
             return Double(sortedArray[count / 2])
         } else {
@@ -122,6 +122,17 @@ extension Date {
         while date <= toDate {
             dates.append(date)
             guard let newDate = Calendar.current.date(byAdding: .day, value: 1, to: date) else { break }
+            date = newDate
+        }
+        return dates
+    }
+    static func datesHourly(from fromDate: Date, to toDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var date = fromDate
+        
+        while date <= toDate {
+            dates.append(date)
+            guard let newDate = Calendar.current.date(byAdding: .hour, value: 1, to: date) else { break }
             date = newDate
         }
         return dates

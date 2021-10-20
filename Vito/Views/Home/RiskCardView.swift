@@ -87,12 +87,12 @@ struct RiskCardView: View {
             }
         } .padding()
             .onAppear() {
-                risk = health.getRiskScorev2(date: date)
+                risk = health.getRiskScorev2(date: Date())
                 min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
                 max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
             .onChange(of: date) { value in
-                risk = health.getRiskScorev2(date: date)
+                risk = health.getRiskScorev2(date: Date())
             }
     }
 }

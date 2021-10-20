@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */ = {isa = PBXBuildFile; fileRef = E176BCD827152AD900B8946F /* AW_rhr.csv */; };
 		E1A4C82126E837620031C161 /* VitoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C82026E837620031C161 /* VitoApp.swift */; };
 		E1A4C82526E837640031C161 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1A4C82426E837640031C161 /* Assets.xcassets */; };
 		E1A4C82826E837640031C161 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1A4C82726E837640031C161 /* Preview Assets.xcassets */; };
@@ -73,9 +74,11 @@
 		E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B626E839630031C161 /* SFSafeSymbols */; };
 		E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B926E839700031C161 /* HKCombine */; };
 		E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A4C8BD26E83BA60031C161 /* HealthKit.framework */; };
+		E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */ = {isa = PBXBuildFile; productRef = E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E176BCD827152AD900B8946F /* AW_rhr.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AW_rhr.csv; sourceTree = "<group>"; };
 		E1A4C81D26E837620031C161 /* Vito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1A4C82026E837620031C161 /* VitoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitoApp.swift; sourceTree = "<group>"; };
 		E1A4C82426E837640031C161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 			files = (
 				E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */,
 				E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */,
+				E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */,
 				E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */,
 				E1A4C8B426E839500031C161 /* NiceNotifications in Frameworks */,
 			);
@@ -257,6 +261,7 @@
 				E1A4C84C26E838B80031C161 /* ActionCardView.swift */,
 				E1A4C84626E838B80031C161 /* DataView.swift */,
 				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
+				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 				E1A4C84E26E838B80031C161 /* RiskCardView.swift */,
 				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
 			);
@@ -379,6 +384,7 @@
 				E1A4C8B326E839500031C161 /* NiceNotifications */,
 				E1A4C8B626E839630031C161 /* SFSafeSymbols */,
 				E1A4C8B926E839700031C161 /* HKCombine */,
+				E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */,
 			);
 			productName = Vito;
 			productReference = E1A4C81D26E837620031C161 /* Vito.app */;
@@ -412,6 +418,7 @@
 				E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */,
 				E1A4C8B526E839630031C161 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */,
+				E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */,
 			);
 			productRefGroup = E1A4C81E26E837620031C161 /* Products */;
 			projectDirPath = "";
@@ -446,6 +453,7 @@
 				E1A4C87B26E838B80031C161 /* Poppins-Medium.ttf in Resources */,
 				E1A4C82826E837640031C161 /* Preview Assets.xcassets in Resources */,
 				E1A4C88726E838B80031C161 /* Poppins-Italic.ttf in Resources */,
+				E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */,
 				E1A4C88826E838B80031C161 /* Poppins-MediumItalic.ttf in Resources */,
 				E1A4C82526E837640031C161 /* Assets.xcassets in Resources */,
 			);
@@ -737,6 +745,14 @@
 				kind = branch;
 			};
 		};
+		E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/SigmaSwiftStatistics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -754,6 +770,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */;
 			productName = HKCombine;
+		};
+		E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */;
+			productName = SigmaSwiftStatistics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

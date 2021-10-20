@@ -20,7 +20,7 @@ class ML: ObservableObject {
         var healthData = [HealthData]()
        
         for row in data.rows {
-            
+            //print(row)
             let date = ((row["Start_Date"] as! String) + " " + (row["Start_Time"] as! String)).toDate()!
             healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date, data: Double(row["Heartrate"] as! Int)))
             
@@ -40,7 +40,24 @@ class ML: ObservableObject {
             return !data.risk.isNaN && data.risk != 21.0
         }
         
-      
+        let filteredToSteps = data.filter { data in
+            return data.title == HKQuantityTypeIdentifier.stepCount.rawValue && data.date.getTimeOfDay() == "Night"
+        }
+        
+        let filteredToHRV = data.filter { data in
+            return data.title == HKQuantityTypeIdentifier.heartRateVariabilitySDNN.rawValue && data.date.getTimeOfDay() == "Night"
+        }
+        
+        let filteredToActiveEnergy = data.filter { data in
+            return data.title == HKQuantityTypeIdentifier.activeEnergyBurned.rawValue && data.date.getTimeOfDay() == "Night"
+        }
+        
+        let filteredToSleep = data.filter { data in
+            return data.title == HKCategoryTypeIdentifier.sleepAnalysis.rawValue && data.date.getTimeOfDay() == "Night"
+        }
+        let filteredToRespitoryRate = data.filter { data in
+            return data.title == HKQuantityTypeIdentifier.respiratoryRate.rawValue && data.date.getTimeOfDay() == "Night"
+        }
         
         let startDates = filteredToHeartRate.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
         let startDateColumn = Column(name: "Start_Date", contents: startDates)
@@ -63,7 +80,24 @@ class ML: ObservableObject {
         let startTimesRisk = filteredToRisk.map{$0.date.getFormattedDate(format: "HH:mm:ss")}
         let startTimeColumnRisk = Column(name: "Start_Time_Risk", contents: startTimesRisk)
         trainingData2.append(column: startTimeColumnRisk)
-        let risks = filteredToRisk.map{$0.risk}
+        
+//        let isSleepingColumn = Column(name: "Is_Sleeping", contents: filteredToSleep.map{$0.data})
+//        trainingData.append(column: isSleepingColumn)
+        
+        let respitoryRateColumn = Column(name: "Respitory_Rate", contents: filteredToRespitoryRate.map{$0.data})
+        trainingData.append(column: respitoryRateColumn)
+        
+        let HRVColumn = Column(name: "HRV", contents: filteredToHRV.map{$0.data})
+        trainingData.append(column: HRVColumn)
+        
+        let stepsColumn = Column(name: "Steps", contents: filteredToSteps.map{$0.data})
+        trainingData.append(column: stepsColumn)
+        
+        let activeColumn = Column(name: "Active_Energy", contents: filteredToActiveEnergy.map{$0.data})
+        trainingData.append(column: activeColumn)
+        
+      
+      
         let nightlyRiskColumn = Column(name: "Risk", contents: filteredToRisk.map{$0.risk})
         trainingData2.append(column: nightlyRiskColumn)
         do {

@@ -118,7 +118,10 @@ class Health: ObservableObject {
                 for data in self.healthData {
                     // Gets dates 5 minutes before and after the start date of low active energy
                     let earlyDate = data.date
+                    
+                
                     let lateDate =  data.text.toDate() ?? Date()
+                    print(lateDate)
                     for date in Date.datesHourly(from: earlyDate, to: lateDate) {
                     let earlyDate = Calendar.current.date(
                       byAdding: .minute,
@@ -267,8 +270,12 @@ class Health: ObservableObject {
                     for item in result {
                         if let sample = item as? HKCategorySample {
                            
-                           // print("Healthkit sleep: \(sample.startDate) \(sample.endDate) - value: \(value)")
-                            self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: sample.endDate.getFormattedDate(format: "Y:m:d"), text: "", date: sample.startDate, data: (sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue) || (sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue) ? 1 : 0))
+                            print("Healthkit sleep: \(sample.startDate) \(sample.endDate) - value: \(sample.value)")
+                            
+                            if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue || sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue  {
+                            self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text:  sample.endDate.getFormattedDate(format: "yyyy-MM-dd HH:mm:ss"), date: sample.startDate, data: (sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue) ? 1 : 0))
+                            }
+                            //(sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue)
                         }
                     }
                 }

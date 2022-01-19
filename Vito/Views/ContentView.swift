@@ -30,7 +30,8 @@ struct ContentView: View {
                     withAnimation(.easeOut) {
                     if value == .active {
                     intro = true
-                    health.backgroundDelivery()
+                        #warning("disbled")
+                   // health.backgroundDelivery()
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                             withAnimation(.easeInOut(duration: 2.0)) {

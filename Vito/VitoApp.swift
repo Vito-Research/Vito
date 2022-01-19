@@ -9,6 +9,7 @@ import SwiftUI
 import TabularData
 @main
 struct VitoApp: App {
+    @StateObject var health = HealthV2()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
    // @StateObject var health = Health()
     @State var share = false

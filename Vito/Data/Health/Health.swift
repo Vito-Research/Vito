@@ -97,8 +97,8 @@ class Health: ObservableObject {
                 self.healthData.removeAll()
                // self.getRespiratoryHealthData(startDate: earlyDate ?? Date(), endDate: Date())
                     //self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
-                self.retrieveSleepAnalysis(time: 30)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.retrieveSleepAnalysis(time: 100, start: earlyDate ?? Date())
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 // loops thru the active energy data
 //                    if self.healthData.isEmpty {
 //                        self.getActiveEnergyHealthData(startDate: earlyDate ?? Date(), endDate: Date())
@@ -117,6 +117,7 @@ class Health: ObservableObject {
 //
 //                        }
 //                    } else {
+                    self.healthData = self.groupByDay().first ?? []
                     for i in self.healthData.indices {
                     // Gets dates 5 minutes before and after the start date of low active energy
                     let earlyDate = self.healthData[i].date
@@ -124,35 +125,43 @@ class Health: ObservableObject {
                 
                     let lateDate =  self.healthData[i].text.toDate() ?? Date()
                     print(lateDate)
-                    for date in Date.datesHourly(from: earlyDate, to: lateDate) {
-                    let earlyDate = Calendar.current.date(
-                      byAdding: .minute,
-                      value: -30,
-                      to: date)
-                    let lateDate = Calendar.current.date(
-                      byAdding: .minute,
-                      value: 30,
-                      to: date)
-                        if let earlyDate = earlyDate {
-                            if let lateDate = lateDate {
-                                for i2 in Array(self.readData).indices {
+                        for i2 in Array(self.readData).indices {
                         self.getHealthData(startDate: earlyDate, endDate: lateDate, i: i2)
-                                }
                         }
-                        }
-//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRateVariabilitySDNN, quanityType: HKUnit(from: "ms"))
-//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .respiratoryRate, quanityType: self.heartrateQuantity)
-//                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .stepCount, quanityType: HKUnit(from: "count"))
-                  
-               // }
-                    }
+//                    for date in Date.datesHourly(from: earlyDate, to: lateDate) {
+//                    let earlyDate = Calendar.current.date(
+//                      byAdding: .minute,
+//                      value: -30,
+//                      to: date)
+//                    let lateDate = Calendar.current.date(
+//                      byAdding: .minute,
+//                      value: 30,
+//                      to: date)
+//                        if let earlyDate = earlyDate {
+//                            if let lateDate = lateDate {
+//                                for i2 in Array(self.readData).indices {
+//                        self.getHealthData(startDate: earlyDate, endDate: lateDate, i: i2)
+//                                }
+//                        }
+//                        }
+////                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .heartRateVariabilitySDNN, quanityType: HKUnit(from: "ms"))
+////                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .respiratoryRate, quanityType: self.heartrateQuantity)
+////                    self.getHealthData(startDate: earlyDate ?? Date(), endDate:  lateDate ?? Date(), id: .stepCount, quanityType: HKUnit(from: "count"))
+//
+//               // }
+//                    }
                 }
                
                
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        let avg  = self.getAvgPerNight(self.healthData)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
               // Calculates risk based on heartrate data
-                        self.risk = self.getRiskScorev2(date: Date())
-                      
+                        //self.risk = self.getRiskScorev2(date: Date())
+                        let risk = (self.getRiskScore(self.healthData, avgs: avg))
+                        print("HEERE")
+                        print(risk)
+                                    }
                     }
 
                    
@@ -167,7 +176,12 @@ class Health: ObservableObject {
             
         }
     }
- 
+    func groupByDay() -> [[HealthData]] {
+        guard !self.healthData.isEmpty else { return [] }
+        let dictionaryByMonth = Dictionary(grouping: self.healthData, by: { $0.date.get(.day) })
+      let months = Array(1...30) // rotate this array if you want to go from October to September
+      return months.compactMap({ dictionaryByMonth[$0] })
+    }
   // If this is @State, it breaks the code, keep it as a regular var
     var cancellableBag = Set<AnyCancellable>()
     var cancellableBag2 = Set<AnyCancellable>()
@@ -197,16 +211,16 @@ class Health: ObservableObject {
             }).store(in: &cancellableBag)
     }
 
-    func retrieveSleepAnalysis(time: Int) {
+    func retrieveSleepAnalysis(time: Int, start: Date) {
         
         // first, we define the object type we want
         if let sleepType = HKObjectType.categoryType(forIdentifier: HKCategoryTypeIdentifier.sleepAnalysis) {
             
             // Use a sortDescriptor to get the recent data first
             let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-            
+            let predicate = HKQuery.predicateForSamples(withStart: start, end: Date(), options: [])
             // we create our query with a block completion to execute
-            let query = HKSampleQuery(sampleType: sleepType, predicate: nil, limit: time, sortDescriptors: [sortDescriptor]) { (query, tmpResult, error) -> Void in
+            let query = HKSampleQuery(sampleType: sleepType, predicate: predicate, limit: time, sortDescriptors: [sortDescriptor]) { (query, tmpResult, error) -> Void in
                 
                 if error != nil {
                     
@@ -261,7 +275,7 @@ class Health: ObservableObject {
     func getHealthData(startDate: Date, endDate: Date, i: Int) {
 
         healthStore
-            .statistic(for: Array(readData)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 100)
+            .statistic(for: Array(readData)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 1000)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { subscription in
          
@@ -398,7 +412,76 @@ class Health: ObservableObject {
         }
         return varRisk
     }
-
+    func getRiskScore(_ health: [HealthData], avgs: [Double]) -> [Double] {
+        var riskScores = [Double]()
+        let medianOfAvg = calculateMedian(array: avgs)
+        print(medianOfAvg)
+        for avg in avgs {
+            
+            riskScores.append(avg >= Double(medianOfAvg) + 4.0 ? 1.0 : avg >= Double(medianOfAvg) + 3.0 ? 0.3 : 0.0)
+        }
+        return riskScores
+    }
+    func getAvgPerNight(_ health: [HealthData]) -> [Double] {
+        var avgPerNight = [Double]()
+        let health = healthData.filter {
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
+        }
+        let dates =  health.map{$0.date}.sorted(by: { $0.compare($1) == .orderedDescending })
+        if let startDate = dates.last      {
+            
+            
+            if let endDate = dates.first {
+                
+                for date in Date.dates(from: startDate, to: endDate) {
+                    
+                    let todaysDate = health.filter{formatDate($0.date) == formatDate(date)}
+                    
+                    avgPerNight.append(average(numbers: todaysDate.map{$0.data}))
+                    print(avgPerNight)
+                }
+            }
+            
+        }
+        return avgPerNight
+    }
+    
+    func formatDate(_ startDate: Date) -> String {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "MMM dd,yyyy"
+        
+        return dateFormatterGet.string(from: startDate) //{
+        //            return dateFormatterPrint.string(from: date)
+        
+        
+    }
+    
+    func formatDate(_ startDate: String) -> String {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "MMM dd,yyyy"
+        
+        if let date = dateFormatterGet.date(from: startDate) {
+            return dateFormatterPrint.string(from: date)
+            
+        } else {
+            print("There was an error decoding the string")
+        }
+        return ""
+    }
+    func calculateMedian(array: [Double]) -> Float {
+        let sorted = array.sorted().filter{!$0.isNaN}
+        if sorted.count % 2 == 0 {
+                return Float((sorted[(sorted.count / 2)] + sorted[(sorted.count / 2) - 1])) / 2
+            } else {
+                return Float(sorted[(sorted.count - 1) / 2])
+            }
+        }
    // Gets average of input and outputs
     func average(numbers: [Double]) -> Double {
        // print(numbers)

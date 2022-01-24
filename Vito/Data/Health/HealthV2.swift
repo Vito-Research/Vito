@@ -143,7 +143,7 @@ class HealthV2: ObservableObject {
         print(medianOfAvg)
         for avg in avgs {
             
-            riskScores.append(avg.data >= Double(medianOfAvg) + 4.0 ? 1.0 : avg.data >= Double(medianOfAvg) + 3.0 ? 0.3 : 0.0)
+            riskScores.append(avg.data >= Double(medianOfAvg) + 5.0 ? 1.0 : avg.data >= Double(medianOfAvg) + 4.0 ? 0.3 : 0.0)
         }
         return riskScores
     }
@@ -217,6 +217,108 @@ class HealthV2: ObservableObject {
             print("There was an error decoding the string")
         }
         return ""
+    }
+    func sync() {
+        var noDates = [String]()
+        if let earlyDate = Calendar.current.date(
+            byAdding: .month,
+            value: -3,
+            to: Date()) {
+            //Task {
+                for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
+                    //print(date)
+//                    DispatchQueue.main.async {
+//                        //let sleep  = self.readSleep(from: Calendar.current.startOfDay(for: date), to:  Calendar.current.startOfDay(for: date).addingTimeInterval(86400))
+//                        print("SLEEP")
+//
+//
+//                    }
+                  
+                   // print(sleep.map{$0.date})
+                    //DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                      
+                    
+                   
+                   // }
+                   
+               // }
+                //DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    let calendar = Calendar.current
+                   
+                    for hour in 0...4 {
+                        
+                        let midnight = calendar.date(
+                          bySettingHour: hour,
+                          minute: 0,
+                          second: 0,
+                          of: date)!
+                        #warning("expand")
+                        let morning = calendar.date(
+                          bySettingHour: hour ,
+                          minute: 59,
+                          second: 0,
+                          of: date)!
+                        
+                    self.getHealthData(startDate: midnight, endDate: morning, i: 1)
+                    self.getHealthData(startDate: midnight, endDate: morning, i: 0)
+//                    }
+                   
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                       // print(self.hrData)
+                        noDates = self.hrData.filter{$0.data < 2 && $0.title == HKQuantityTypeIdentifier.stepCount.rawValue}.map{"\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))"}
+                        
+                        print(self.hrData.map{$0.data})
+                        //self.hrData = self.hrData.filter{$0.date.getTimeOfDay() == "Night"}
+                        //let grouped = self.groupByMonth()
+                        
+//                               var monthlyGrouped = [HealthData]()
+//                                for group in grouped {
+//                                    print(group)
+//                                    hrData2.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: group.first?.date ?? Date(), data: self.average(numbers: group.map{$0.data})))
+//                                }
+                        
+//                                let grouped2 = self.groupByDay(monthlyGrouped)
+//
+//                                for group in grouped2 {
+//                                    print(group.first)
+//                                    hrData2.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: group.first?.date ?? Date(), data: self.average(numbers: group.map{$0.data})))
+//                                }
+                       // DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                        
+                          
+                            
+                    
+                        }
+                    //}
+               // }
+                    }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                
+                //print(self.hrData.sliced(by: [.year, .month, .day], for: \.date).keys)
+               
+                var filteredData = self.hrData.filter{!noDates.contains("\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))") && $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data < 200}
+                filteredData = filteredData.sliced(by: [.year, .month, .day], for: \.date).map{ HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: $0.key, data: self.average(numbers: $0.value.map{$0.data}))}
+                filteredData =  filteredData.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+                print(filteredData.map{$0.date})
+            let avgs = self.getAvgPerNight(filteredData)
+                let risks  = self.getRiskScore(filteredData, avgs: avgs)
+                print(risks)
+                for i in filteredData.indices {
+                   
+                //let riskScore = self.average(numbers: Array(risks.dropFirst(risks.count - 2)))
+//            if riskScore == 1 {
+//                print("ALERT")
+//               
+//            }
+                    let data = filteredData[i]
+             //   let explanation =  riskScore > 0.99 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors.", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+                
+                    self.codableRisk.append(CodableRisk(id: UUID().uuidString, date: data.date, risk: risks[i], explanation: []))
+              //  self.risk = Risk(id: UUID().uuidString, risk: riskScore, explanation: explanation)
+            }
+            }
+        }
     }
     func backgroundDelivery() {
         var hrData2 = [HealthData]()

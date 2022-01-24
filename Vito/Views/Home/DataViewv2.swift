@@ -20,16 +20,7 @@ struct DataViewv2: View {
             HStack {
               
                 Button(action: {
-                    let earlyDate = Calendar.current.date(
-                      byAdding: .month,
-                      value: -3,
-                      to: Date()) ?? Date()
-                    health.codableRisk = []
-                    for date in Date.dates(from: earlyDate, to: Date()) {
-                        #warning("Reenable")
-//                   let risk = health.getRiskScorev2(date: date)
-//                        health.codableRisk.append(CodableRisk(id: risk.id, date: date, risk: risk.risk, explanation: []))
-                    }
+                    health.sync()
                 }) {
                     Label("Sync", systemSymbol: .repeat)
                         .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
@@ -102,17 +93,17 @@ struct DataViewv2: View {
                
 //        HStack {
 //          
-//            CalendarView(health: health, interval: year) { date in
-//                      Text(String(self.calendar.component(.day, from: date)))
-//                    .frame(width: 40, height: 40, alignment: .center)
-//                
-//                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
-//                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? .systemBlue : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
-//                                           .clipShape(RoundedRectangle(cornerRadius: 10))
-//                }
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                       
-//                    }
+            CalendarView(health: health, interval: year) { date in
+                      Text(String(self.calendar.component(.day, from: date)))
+                    .frame(width: 40, height: 40, alignment: .center)
+                
+                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
+                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? .systemBlue : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
+                                           .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                       
+                    
         }}
           
     }

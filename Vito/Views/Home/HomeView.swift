@@ -13,7 +13,7 @@ import CoreML
 struct HomeView: View {
     @State private var orientation = UIDeviceOrientation.unknown
     @State var gridLayout: [GridItem] = [ ]
-    @ObservedObject var health: Health
+    @ObservedObject var health: HealthV2
     //@ObservedObject var ml: ML
    
     @State var share = false

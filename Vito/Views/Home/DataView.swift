@@ -10,7 +10,7 @@ import HealthKit
 struct DataView: View {
     @State private var date = Date()
     @State private var average = 0.0
-    @ObservedObject var health: Health
+    @ObservedObject var health: HealthV2
     @State var data = ChartData(values: [("", 0.0)])
     
     @Environment(\.calendar) var calendar

@@ -10,7 +10,7 @@ import SFSafeSymbols
 import TabularData
 struct DataViewv2: View {
     @Environment(\.calendar) var calendar
-    @ObservedObject var health: Health
+    @ObservedObject var health: HealthV2
     private var year: DateInterval {
         calendar.dateInterval(of: .year, for: Date())!
      }
@@ -26,8 +26,9 @@ struct DataViewv2: View {
                       to: Date()) ?? Date()
                     health.codableRisk = []
                     for date in Date.dates(from: earlyDate, to: Date()) {
-                   let risk = health.getRiskScorev2(date: date)
-                        health.codableRisk.append(CodableRisk(id: risk.id, date: date, risk: risk.risk, explanation: []))
+                        #warning("Reenable")
+//                   let risk = health.getRiskScorev2(date: date)
+//                        health.codableRisk.append(CodableRisk(id: risk.id, date: date, risk: risk.risk, explanation: []))
                     }
                 }) {
                     Label("Sync", systemSymbol: .repeat)
@@ -40,7 +41,7 @@ struct DataViewv2: View {
                         if let filepath = Bundle.main.path(forResource: "P355472-AppleWatch-hr", ofType: "csv") {
                             do {
                                
-                                health.healthData  = []
+                               // health.healthData  = []
                               // ML().importCSV(data: try DataFrame(contentsOfCSVFile: URL(fileURLWithPath: filepath))) { healthData in
                               //  health.healthData = healthData
                           //  }
@@ -64,7 +65,8 @@ struct DataViewv2: View {
                        
                       
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            health.getRiskScorev2(date: Date())
+                            #warning("reenable")
+                            // health.getRiskScorev2(date: Date())
                         }
                         }
                    
@@ -98,19 +100,19 @@ struct DataViewv2: View {
                 }
             } .padding()
                
-        HStack {
-          
-            CalendarView(health: health, interval: year) { date in
-                      Text(String(self.calendar.component(.day, from: date)))
-                    .frame(width: 40, height: 40, alignment: .center)
-                
-                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
-                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? .systemBlue : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
-                                           .clipShape(RoundedRectangle(cornerRadius: 10))
-                }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                       
-                    }
+//        HStack {
+//          
+//            CalendarView(health: health, interval: year) { date in
+//                      Text(String(self.calendar.component(.day, from: date)))
+//                    .frame(width: 40, height: 40, alignment: .center)
+//                
+//                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
+//                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? .systemBlue : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
+//                                           .clipShape(RoundedRectangle(cornerRadius: 10))
+//                }
+//                        .clipShape(RoundedRectangle(cornerRadius: 10))
+//                       
+//                    }
         }}
           
     }

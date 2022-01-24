@@ -8,7 +8,7 @@
 import SwiftUI
 import SFSafeSymbols
 struct RiskCardView: View {
-    @ObservedObject var health: Health
+    @ObservedObject var health: HealthV2
     @State var min: CGFloat = UserDefaults.standard.double(forKey: "minRisk")
     @State var max: CGFloat = UserDefaults.standard.double(forKey: "maxRisk")
     @State var explain = true
@@ -87,12 +87,13 @@ struct RiskCardView: View {
             }
         } .padding()
             .onAppear() {
-                risk = health.getRiskScorev2(date: Date())
+                //risk = health.getRiskScorev2(date: Date())
                 min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
                 max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
             .onChange(of: date) { value in
-                risk = health.getRiskScorev2(date: Date())
+                #warning("Reenable Later")
+               // risk = health.getRiskScorev2(date: Date())
             }
     }
 }
@@ -102,7 +103,7 @@ import SwiftUI
 struct HalvedCircularBar: View {
     
     @Binding var progress: CGFloat
-    @ObservedObject var health: Health
+    @ObservedObject var health: HealthV2
     @Binding var min: CGFloat
     @Binding var max: CGFloat
     var body: some View {

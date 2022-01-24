@@ -10,7 +10,7 @@ import HealthKit
 import NiceNotifications
 //import TabularData
 struct ContentView: View {
-    @StateObject var health = Health()
+    @StateObject var health = HealthV2()
     //@StateObject var ml = ML()
     @State var share = false
     @State var intro = true

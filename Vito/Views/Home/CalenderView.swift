@@ -62,15 +62,23 @@ struct CalendarView<DateView>: View where DateView: View {
         @ViewBuilder content: @escaping (Date) -> DateView
     ) {
         self.health = health
-        self.interval = interval
+        if let earlyDate = Calendar.current.date(
+            byAdding: .month,
+            value: -12,
+            to: Date()) {
+        self.interval = DateInterval(start: earlyDate, end: Date())
+        } else {
+            self.interval = interval
+        }
         self.showHeaders = showHeaders
         self.content = content
     }
+    @State var selectedDate = 12
     var body: some View {
        // ScrollView() {
-            TabView {
+        TabView(selection: $selectedDate) {
                
-                ForEach(months, id: \.self) { month in
+            ForEach(Array(zip(months, months.indices)), id: \.1) { (month, i) in
                     VStack {
                        // header(for: month)
                            
@@ -108,9 +116,9 @@ struct CalendarView<DateView>: View where DateView: View {
                     }
                 }
                 }
+                    } .tag(i)
             }
-            }
-            } .tabViewStyle(.page)
+        } .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
             //}
             //Spacer()
 

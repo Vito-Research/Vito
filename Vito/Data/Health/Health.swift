@@ -307,7 +307,7 @@ class Health: ObservableObject {
         // Filters to heartrate type
         var varRisk = Risk(id: "NoData", risk: 21.0, explanation: [Explanation]())
         let filteredToHeartRate = healthData.filter {
-            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data > 40 && $0.data < 200 && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
         }
         let filteredToRespiratoryRate = healthData.filter {
             return $0.title == HKQuantityTypeIdentifier.respiratoryRate.rawValue && !$0.data.isNaN
@@ -333,7 +333,7 @@ class Health: ObservableObject {
            // }
         }
         // Get median of the averages for each day
-        print(averagePerNights)
+        //print(averagePerNights)
         let median = averagePerNights.filter{!$0.isNaN}.median()
         let medianR = averagePerNightsR.filter{!$0.isNaN}.median()
         print("MEDIAN")
@@ -348,7 +348,7 @@ class Health: ObservableObject {
             return $0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month)
         }
         print("LAST NIGHT")
-        print(filteredToLastNight)
+        //print(filteredToLastNight)
         print( average(numbers: filteredToLastNight.map{$0.data}))
         // Calculate risk
         if median != 21 {
@@ -415,7 +415,7 @@ class Health: ObservableObject {
     func getRiskScore(_ health: [HealthData], avgs: [Double]) -> [Double] {
         var riskScores = [Double]()
         let medianOfAvg = calculateMedian(array: avgs)
-        print(medianOfAvg)
+       // print(medianOfAvg)
         for avg in avgs {
             
             riskScores.append(avg >= Double(medianOfAvg) + 4.0 ? 1.0 : avg >= Double(medianOfAvg) + 3.0 ? 0.3 : 0.0)
@@ -425,7 +425,7 @@ class Health: ObservableObject {
     func getAvgPerNight(_ health: [HealthData]) -> [Double] {
         var avgPerNight = [Double]()
         let health = healthData.filter {
-            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data > 40 && $0.data < 200 && !$0.data.isNaN //&& $0.date.getTimeOfDay() == "Night"
         }
         let dates =  health.map{$0.date}.sorted(by: { $0.compare($1) == .orderedDescending })
         if let startDate = dates.last      {
@@ -438,7 +438,7 @@ class Health: ObservableObject {
                     let todaysDate = health.filter{formatDate($0.date) == formatDate(date)}
                     
                     avgPerNight.append(average(numbers: todaysDate.map{$0.data}))
-                    print(avgPerNight)
+                        // print(avgPerNight)
                 }
             }
             

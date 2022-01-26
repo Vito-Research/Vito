@@ -97,8 +97,8 @@ struct DataViewv2: View {
                       Text(String(self.calendar.component(.day, from: date)))
                     .frame(width: 40, height: 40, alignment: .center)
                 
-                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
-                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? .systemBlue : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
+                    .background(date > Date() ? Color("") : Color((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month) }.last?.id == "NoData") ? "" : ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month)}.last?.risk ?? 0) > 0.5 ? "red" : "green")))
+                    .foregroundColor(date > Date() ? Color(.systemBlue) : Color( ((health.codableRisk.filter{$0.date.get(.day) == date.get(.day) && $0.date.get(.month) == date.get(.month)}.last?.risk ?? 0) > 0.5 ? .white : .white)))
                                            .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                         .clipShape(RoundedRectangle(cornerRadius: 10))

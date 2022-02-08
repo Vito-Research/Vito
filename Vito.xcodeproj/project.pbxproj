@@ -76,6 +76,14 @@
 		E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A4C8BD26E83BA60031C161 /* HealthKit.framework */; };
 		E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */ = {isa = PBXBuildFile; productRef = E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */; };
 		ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A7FF427980F58000EEB57 /* HealthV2.swift */; };
+		ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EA827A7AA8F00C51DDA /* Healthv3.swift */; };
+		ED926EAB27A7AACA00C51DDA /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */; };
+		ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */ = {isa = PBXBuildFile; fileRef = ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */; };
+		EDFEA41B27B1B2B900F07106 /* Orig_NonFitbit_HR2.csv in Resources */ = {isa = PBXBuildFile; fileRef = EDFEA41A27B1B2B900F07106 /* Orig_NonFitbit_HR2.csv */; };
+		EDFEA41D27B1B96500F07106 /* Orig_NonFitbit_HR3.csv in Resources */ = {isa = PBXBuildFile; fileRef = EDFEA41C27B1B96500F07106 /* Orig_NonFitbit_HR3.csv */; };
+		EDFEA41F27B1BB0E00F07106 /* Orig_NonFitbit_HR4.csv in Resources */ = {isa = PBXBuildFile; fileRef = EDFEA41E27B1BB0E00F07106 /* Orig_NonFitbit_HR4.csv */; };
+		EDFEA42127B1BE0800F07106 /* Orig_NonFitbit_HR5.csv in Resources */ = {isa = PBXBuildFile; fileRef = EDFEA42027B1BE0800F07106 /* Orig_NonFitbit_HR5.csv */; };
+		EDFEA42327B1BEF700F07106 /* Orig_NonFitbit_HR6.csv in Resources */ = {isa = PBXBuildFile; fileRef = EDFEA42227B1BEF700F07106 /* Orig_NonFitbit_HR6.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,6 +155,14 @@
 		E1A4C8BB26E83BA60031C161 /* Vito.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vito.entitlements; sourceTree = "<group>"; };
 		E1A4C8BD26E83BA60031C161 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		ED4A7FF427980F58000EEB57 /* HealthV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthV2.swift; sourceTree = "<group>"; };
+		ED926EA827A7AA8F00C51DDA /* Healthv3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv3.swift; sourceTree = "<group>"; };
+		ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
+		ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orig_NonFitbit_HR.csv; sourceTree = "<group>"; };
+		EDFEA41A27B1B2B900F07106 /* Orig_NonFitbit_HR2.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Orig_NonFitbit_HR2.csv; path = "../../../../../Downloads/COVID-19-Phase2-Wearables/P273173/Orig_NonFitbit_HR2.csv"; sourceTree = "<group>"; };
+		EDFEA41C27B1B96500F07106 /* Orig_NonFitbit_HR3.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Orig_NonFitbit_HR3.csv; path = "../../../../../Downloads/COVID-19-Phase2-Wearables/P280260/Orig_NonFitbit_HR3.csv"; sourceTree = "<group>"; };
+		EDFEA41E27B1BB0E00F07106 /* Orig_NonFitbit_HR4.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Orig_NonFitbit_HR4.csv; path = "../../../../../Downloads/COVID-19-Phase2-Wearables/P154978/Orig_NonFitbit_HR4.csv"; sourceTree = "<group>"; };
+		EDFEA42027B1BE0800F07106 /* Orig_NonFitbit_HR5.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Orig_NonFitbit_HR5.csv; path = "../../../../../Downloads/COVID-19-Phase2-Wearables/P644403/Orig_NonFitbit_HR5.csv"; sourceTree = "<group>"; };
+		EDFEA42227B1BEF700F07106 /* Orig_NonFitbit_HR6.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Orig_NonFitbit_HR6.csv; path = "../../../../../Downloads/COVID-19-Phase2-Wearables/P887564/Orig_NonFitbit_HR6.csv"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +206,7 @@
 				E1A4C82026E837620031C161 /* VitoApp.swift */,
 				E1A4C86B26E838B80031C161 /* Data */,
 				E1A4C87526E838B80031C161 /* Extensions.swift */,
+				ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */,
 				E1A4C82E26E838B70031C161 /* Poppins */,
 				E1A4C84226E838B80031C161 /* Views */,
 				E1A4C82426E837640031C161 /* Assets.xcassets */,
@@ -344,6 +361,13 @@
 			children = (
 				E1A4C86D26E838B80031C161 /* Health.swift */,
 				ED4A7FF427980F58000EEB57 /* HealthV2.swift */,
+				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
+				ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */,
+				EDFEA41A27B1B2B900F07106 /* Orig_NonFitbit_HR2.csv */,
+				EDFEA41C27B1B96500F07106 /* Orig_NonFitbit_HR3.csv */,
+				EDFEA41E27B1BB0E00F07106 /* Orig_NonFitbit_HR4.csv */,
+				EDFEA42027B1BE0800F07106 /* Orig_NonFitbit_HR5.csv */,
+				EDFEA42227B1BEF700F07106 /* Orig_NonFitbit_HR6.csv */,
 				E1A4C86E26E838B80031C161 /* TimeData.swift */,
 				E1A4C86F26E838B80031C161 /* HealthData.swift */,
 			);
@@ -444,19 +468,25 @@
 				E1A4C87626E838B80031C161 /* Poppins-ExtraLight.ttf in Resources */,
 				E1A4C88626E838B80031C161 /* Poppins-SemiBold.ttf in Resources */,
 				E1A4C88326E838B80031C161 /* Poppins-Bold.ttf in Resources */,
+				EDFEA41D27B1B96500F07106 /* Orig_NonFitbit_HR3.csv in Resources */,
 				E1A4C87726E838B80031C161 /* Poppins-ThinItalic.ttf in Resources */,
 				E1A4C87826E838B80031C161 /* Poppins-ExtraLightItalic.ttf in Resources */,
 				E1A4C87F26E838B80031C161 /* Poppins-BlackItalic.ttf in Resources */,
 				E1A4C87D26E838B80031C161 /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				E1A4C87926E838B80031C161 /* Poppins-BoldItalic.ttf in Resources */,
+				EDFEA41F27B1BB0E00F07106 /* Orig_NonFitbit_HR4.csv in Resources */,
+				ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */,
 				E1A4C87C26E838B80031C161 /* Poppins-SemiBoldItalic.ttf in Resources */,
 				E1A4C88026E838B80031C161 /* OFL.txt in Resources */,
 				E1A4C88126E838B80031C161 /* Poppins-Regular.ttf in Resources */,
 				E1A4C87E26E838B80031C161 /* Poppins-ExtraBold.ttf in Resources */,
 				E1A4C87B26E838B80031C161 /* Poppins-Medium.ttf in Resources */,
 				E1A4C82826E837640031C161 /* Preview Assets.xcassets in Resources */,
+				EDFEA42327B1BEF700F07106 /* Orig_NonFitbit_HR6.csv in Resources */,
+				EDFEA42127B1BE0800F07106 /* Orig_NonFitbit_HR5.csv in Resources */,
 				E1A4C88726E838B80031C161 /* Poppins-Italic.ttf in Resources */,
 				E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */,
+				EDFEA41B27B1B2B900F07106 /* Orig_NonFitbit_HR2.csv in Resources */,
 				E1A4C88826E838B80031C161 /* Poppins-MediumItalic.ttf in Resources */,
 				E1A4C82526E837640031C161 /* Assets.xcassets in Resources */,
 			);
@@ -477,6 +507,7 @@
 				E1A4C8AF26E838B80031C161 /* ML.swift in Sources */,
 				E1A4C8A026E838B80031C161 /* LineChartView.swift in Sources */,
 				E1A4C89326E838B80031C161 /* BarChartView.swift in Sources */,
+				ED926EAB27A7AACA00C51DDA /* UserDefaultExt.swift in Sources */,
 				E1A4C89C26E838B80031C161 /* PieChartView.swift in Sources */,
 				E1A4C89F26E838B80031C161 /* Legend.swift in Sources */,
 				E1A4C82126E837620031C161 /* VitoApp.swift in Sources */,
@@ -489,6 +520,7 @@
 				E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */,
 				E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */,
 				E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */,
+				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
 				E1A4C89426E838B80031C161 /* BarChartRow.swift in Sources */,
 				E1A4C8A926E838B80031C161 /* Health.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,

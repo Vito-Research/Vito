@@ -46,7 +46,7 @@ struct RiskCardView: View {
             }
             }
             
-            HalvedCircularBar(progress: $risk.risk, health: health, min: $min, max: $max)
+            HalvedCircularBar(progress: $health.risk.risk, health: health, min: $min, max: $max)
                
             
                 
@@ -125,7 +125,7 @@ struct HalvedCircularBar: View {
 //                    .frame(width: 200, height: 200)
 //                    .rotationEffect(Angle(degrees: -215))
                
-                Text(progress == 21 ? "Not Enough Data" : progress > 0.5 ? "WARNING" : "OK")
+                Text(progress == 21 ? "Not Enough Data" : progress > 0.5 ? "Alert" : "OK")
                     .font(.custom("Poppins-Bold", size: 20, relativeTo: .headline))
                    // .foregroundColor(Color(progress > 0.8 ? "red" : "green"))
                     .foregroundColor(.white)

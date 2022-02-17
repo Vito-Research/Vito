@@ -43,7 +43,7 @@ struct CardView: View {
                     } .buttonStyle(CTAButtonStyle())
                         
                     } .sheet(isPresented: $show) {
-                        OnboardingView(onboardingViews: onboarding, isOnboarding: $i, health: HealthV2())
+                        OnboardingView(onboardingViews: onboarding, isOnboarding: $i, health: Healthv3())
                             .onChange(of: i) { value in
                                 if i > 0 {
                                     show = false

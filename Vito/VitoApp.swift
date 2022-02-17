@@ -10,10 +10,9 @@ import TabularData
 import HealthKit
 @main
 struct VitoApp: App {
-   // @StateObject var health = Healthv3()
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var health = Health()
-    @StateObject var healthv3 = Healthv3()
+    // @StateObject var healthv3 = Healthv3()
     @State var share = false
     var body: some Scene {
         WindowGroup {

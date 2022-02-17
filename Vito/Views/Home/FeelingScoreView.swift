@@ -8,7 +8,7 @@
 //import SwiftUI
 //
 //struct FeelingScoreInputView: View {
-//    @ObservedObject var health: HealthV2
+//    @ObservedObject var health: Healthv3
 //    @State var tapped = false
 //    var body: some View {
 //        VStack {

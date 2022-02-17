@@ -17,7 +17,7 @@ struct OnboardingView: View {
     @State var slideNum = 0
     @Binding var isOnboarding: Int
     @State var time = 0
-    @ObservedObject var health: HealthV2
+    @ObservedObject var health: Healthv3
     //@Binding var setting: Setting
     @Environment(\.presentationMode) var presentationMode
     var body: some View {

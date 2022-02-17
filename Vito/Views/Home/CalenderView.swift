@@ -49,14 +49,14 @@ fileprivate extension DateFormatter {
 
 struct CalendarView<DateView>: View where DateView: View {
     @Environment(\.calendar) var calendar
-    @ObservedObject var health: HealthV2
+    @ObservedObject var health: Healthv3
     @State var showData = false
     let interval: DateInterval
     let showHeaders: Bool
     let content: (Date) -> DateView
 
     init(
-        health: HealthV2,
+        health: Healthv3,
         interval: DateInterval,
         showHeaders: Bool = true,
         @ViewBuilder content: @escaping (Date) -> DateView
@@ -88,7 +88,7 @@ struct CalendarView<DateView>: View where DateView: View {
                     ForEach(days(for: month), id: \.self) { date in
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
                             Button(action: {
-                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
+                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date)
                                 showData.toggle()
                             }) {
 

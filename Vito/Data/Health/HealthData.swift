@@ -13,6 +13,7 @@ struct HealthData: Identifiable, Codable, Hashable {
     var title: String
     var text: String
     var date: Date
+    var endDate: Date?
     var data: Double
     var risk: Double?
     

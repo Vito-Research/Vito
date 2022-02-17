@@ -84,7 +84,7 @@ struct DataView: View {
                 
                 average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
                 data.points = points.map{("\($0.date.get(.hour))", $0.data)}
-                    
+              
                   
                 })
             if !health.risk.id.isEmpty {
@@ -107,14 +107,13 @@ struct DataView: View {
         }
 
     func getHeartRateData() -> [HealthData] {
-//        print(health.queryDate)
-//        print(health.hrData.count)
+
         let components = Calendar.current.dateComponents(health.queryDate.durationType == .Month ? [.month, .year] : health.queryDate.durationType == .Week ? [.weekOfMonth, .month, .year] : [.day, .month, .year], from: health.queryDate.anchorDate)
         let date = Calendar.current.date(from: components)!
-//        print(health.hrData.sliced(by: [.day, .month, .year], for: \.date))
+
        
         return (health.queryDate.durationType == .Month ? health.hrData.sliced(by: [.month, .year], for: \.date)[date] : health.queryDate.durationType == .Week ? health.hrData.sliced(by: [.weekOfMonth, .month, .year], for: \.date)[date] : health.hrData.sliced(by: [.day, .month, .year], for: \.date)[date]) ?? [HealthData]()
-//        return health.queryDate.durationType == .Month ? groupByDay(query: Query(id: UUID().uuidString, durationType: .Month, duration: 1, anchorDate: lastDayOfMonth(date: health.queryDate.anchorDate)), data: health.hrData.filter{$0.title == HKQuantityTypeIdentifier.heartRate.rawValue && getDateRange(query: Query(id: UUID().uuidString, durationType: .Month, duration: 1, anchorDate: lastDayOfMonth(date: health.queryDate.anchorDate)), date: $0.date) }) :  health.queryDate.durationType == .Week ? groupByWeek(query: health.queryDate, data: health.hrData.filter{$0.title == HKQuantityTypeIdentifier.heartRate.rawValue && getDateRange(query: Query(id: UUID().uuidString, durationType: .Week, duration: 1, anchorDate: lastDayOfWeek(date: health.queryDate.anchorDate)), date: $0.date)}) : groupByHour(query: Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: health.queryDate.anchorDate), data: health.hrData.filter{$0.title == HKQuantityTypeIdentifier.heartRate.rawValue && getDateRange(query: health.queryDate, date: $0.date) }.map{HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: $0.date, data: $0.data)})
+
     }
     func lastDayOfMonth(date: Date) -> Date {
         guard

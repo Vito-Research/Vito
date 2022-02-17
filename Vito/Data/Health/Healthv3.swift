@@ -74,6 +74,10 @@ class Healthv3: ObservableObject {
             matching: DateComponents(day: 1, hour: 0, minute: 0, second: 0)
         )
     }
+    
+    @Published var currentRisk = 0.0
+    
+    
     // Called on class initialization
     init() {
         // Gets when user is alseep and gets risk score
@@ -91,7 +95,7 @@ class Healthv3: ObservableObject {
         filteredData = filteredData.sliced(by: [.year, .month, .day], for: \.date).map{ HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: $0.key, data: self.average(numbers: $0.value.map{$0.data}))}
         filteredData =  filteredData.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
         self.healthData = filteredData
-        self.getAvgPerNight(filteredData)
+        self.avgs  = self.getAvgPerNight(filteredData)
         
         
     }
@@ -100,10 +104,10 @@ class Healthv3: ObservableObject {
     }
     func getWhenAsleep() {
         // Gets the date 12 months ago
-        // if -12 (instead of -3), becomes more sensitive
+        // if value = -12, becomes more sensitive
         if let earlyDate = Calendar.current.date(
             byAdding: .month,
-            value: -3,
+            value: -12,
             to: Date()) {
             // Loops through the dates by adding a day
             for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
@@ -143,13 +147,13 @@ class Healthv3: ObservableObject {
                 }
             }
         }
-        // After 3 seconds, get the average per night
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        // After 5 seconds, get the average per night
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             
-            self.getAvgPerNight(self.hrData)
+            self.avgs = self.getAvgPerNight(self.hrData)
             
-            // After 3 seconds, get the risk score per night
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            // After 5 seconds, get the risk score per night
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                 let risks  = self.getRiskScore(self.hrData, avgs: self.avgs)
                 // Set the riskData to risks
                 self.riskData = risks
@@ -308,10 +312,10 @@ class Healthv3: ObservableObject {
         // Return risk scores
         return riskScores
     }
-    func getAvgPerNight(_ health2: [HealthData])  {
-        
+    func getAvgPerNight(_ health2: [HealthData]) -> [HealthData]  {
+        var avgs = [HealthData]()
         // Reset averages
-        self.avgs = []
+        
         // Filter to valid HR data
         let health = health2.filter {
         #warning("disabled Night")
@@ -343,6 +347,7 @@ class Healthv3: ObservableObject {
             }
             
         }
+        return avgs
     }
     
     func average(numbers: [Double]) -> Double {

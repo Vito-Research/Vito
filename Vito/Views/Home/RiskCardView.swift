@@ -46,7 +46,7 @@ struct RiskCardView: View {
             }
             }
             
-            HalvedCircularBar(progress: $health.risk.risk, health: health, min: $min, max: $max)
+            HalvedCircularBar(progress: $risk.risk, health: health, min: $min, max: $max)
                
             
                 
@@ -87,14 +87,26 @@ struct RiskCardView: View {
             }
         } .padding()
             .onAppear() {
-                //risk = health.getRiskScorev2(date: Date())
-                min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
-                max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
+//                let healthData = getHeartRateData().filter{!$0.data.isNaN}
+//                risk = Risk(id: UUID().uuidString, risk: health.getRiskScore(healthData, avgs: health.getAvgPerNight(healthData)).filter{$0.date == health.queryDate.anchorDate}.last?.risk ?? 0.0, explanation: [])
+//                min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
+//                max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
             .onChange(of: date) { value in
-                #warning("Reenable Later")
-               // risk = health.getRiskScorev2(date: Date())
+//                let healthData = getHeartRateData().filter{!$0.data.isNaN}
+//                risk = Risk(id: UUID().uuidString, risk: health.getRiskScore(healthData, avgs: health.getAvgPerNight(healthData)).filter{$0.date == health.queryDate.anchorDate}.last?.risk ?? 0.0, explanation: [])
+//                min = (health.codableRisk.map{$0.risk}.min() ?? 0)*0.705
+//                max = (health.codableRisk.map{$0.risk}.max() ?? 0)*0.705
             }
+    }
+    func getHeartRateData() -> [HealthData] {
+//        print(health.queryDate)
+//        print(health.hrData.count)
+        let components = Calendar.current.dateComponents(health.queryDate.durationType == .Month ? [.month, .year] : health.queryDate.durationType == .Week ? [.weekOfMonth, .month, .year] : [.day, .month, .year], from: health.queryDate.anchorDate)
+        let date = Calendar.current.date(from: components)!
+//        print(health.hrData.sliced(by: [.day, .month, .year], for: \.date))
+       
+        return (health.queryDate.durationType == .Month ? health.hrData.sliced(by: [.month, .year], for: \.date)[date] : health.queryDate.durationType == .Week ? health.hrData.sliced(by: [.weekOfMonth, .month, .year], for: \.date)[date] : health.hrData.sliced(by: [.day, .month, .year], for: \.date)[date]) ?? [HealthData]()
     }
 }
 
@@ -106,8 +118,11 @@ struct HalvedCircularBar: View {
     @ObservedObject var health: Healthv3
     @Binding var min: CGFloat
     @Binding var max: CGFloat
+    
+    
     var body: some View {
         VStack {
+            
             if progress != 21 {
             ZStack {
                 
@@ -155,6 +170,11 @@ struct HalvedCircularBar: View {
                     .frame( height: 125)
                     .padding(.vertical)
             }
+        } .onAppear() {
+            let riskData = health.riskData.sliced(by: [.day, .month, .year], for: \.date)
+            let components = Calendar.current.dateComponents([.day, .month, .year], from: health.queryDate.anchorDate)
+            let date2 = Calendar.current.date(from: components)!
+            progress = CGFloat(riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal}.last ?? 0.0)
         }
     }
     

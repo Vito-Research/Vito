@@ -89,6 +89,7 @@ struct CalendarView<DateView>: View where DateView: View {
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
                             Button(action: {
                                 health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date)
+                               
                                 showData.toggle()
                             }) {
 

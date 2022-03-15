@@ -14,9 +14,32 @@ struct VitoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     // @StateObject var healthv3 = Healthv3()
     @State var share = false
+    @StateObject var fitbit = Fitbit()
+    @StateObject var model = WebViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WebView(webView: model.webView)
+                .onAppear() {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0)  {
+                        fitbit.accessToken = model.webView.url?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "")
+                        let removeAfter = fitbit.accessToken?.components(separatedBy: "&user_id")
+                        fitbit.accessToken = removeAfter?[0]
+                        
+                        print(fitbit.accessToken)
+                        Task {
+                            print(try await fitbit.getHeartrate())
+                        }
+                    
+                  
+                    }
+                }
+                .onChange(of: model.webView.url) { newValue in
+                    fitbit.accessToken = newValue?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "")
+                    Task {
+                    print(try await fitbit.getHeartrate())
+                    }
+                }
+            //ContentView()
                
 //            EmptyView()
 //                .sheet(isPresented: $share) {

@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import HealthKit
 import HKCombine
+import Accelerate
 
 // Makes class stay on main thread
 @MainActor
@@ -20,6 +21,8 @@ class Healthv3: ObservableObject {
     
     // Saves median of averages to skip data query
     @UserDefault("medianOfAvgs", defaultValue: 0.0)  var medianOfAvgs: Double
+    
+    @UserDefault("uses2", defaultValue: 0)  var uses2: Int
     
     // Stores avg hr per night
     @Published var avgs: [HealthData] = [HealthData]()
@@ -75,39 +78,28 @@ class Healthv3: ObservableObject {
         )
     }
     
-    @Published var currentRisk = 0.0
-    
     
     // Called on class initialization
     init() {
-        // Gets when user is alseep and gets risk score
-        getWhenAsleep()
+        // Gets when user is alseep, gets risk score, and enables background delivery
+        backgroundDelivery()
         
     }
    
-    
-    func calculateRisk() {
-        
-        var noDates = [String]()
-        noDates = self.hrData.filter{$0.data < 2 && $0.title == HKQuantityTypeIdentifier.stepCount.rawValue}.map{"\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))"}
-        
-        var filteredData = self.hrData.filter{!noDates.contains("\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))") && $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data < 200 && $0.data > 40}
-        filteredData = filteredData.sliced(by: [.year, .month, .day], for: \.date).map{ HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: $0.key, data: self.average(numbers: $0.value.map{$0.data}))}
-        filteredData =  filteredData.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
-        self.healthData = filteredData
-        self.avgs  = self.getAvgPerNight(filteredData)
-        
-        
-    }
+   
     func backgroundDelivery() {
-        
+        if let rr =  HKObjectType.quantityType(forIdentifier: .respiratoryRate) {
+        self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { sucess, error in
+            self.getWhenAsleep()
+        }
+        }
     }
     func getWhenAsleep() {
         // Gets the date 12 months ago
         // if value = -12, becomes more sensitive
         if let earlyDate = Calendar.current.date(
             byAdding: .month,
-            value: -12,
+            value: -3,
             to: Date()) {
             // Loops through the dates by adding a day
             for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
@@ -116,8 +108,10 @@ class Healthv3: ObservableObject {
                     value: 12,
                     to: date) {
                     // Loop through the hours in a day
+                    
                     for date in Date.datesHourly(from: date, to: earlyDate) {
                         // Get RR in that hour
+                        if date.getTimeOfDay() == "Night" {
                         getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
                             // If RR exists for that date keep going
                             if let sleep =  sleep {
@@ -143,6 +137,7 @@ class Healthv3: ObservableObject {
                             }
                         }
                         
+                        }
                     }
                 }
             }
@@ -154,12 +149,12 @@ class Healthv3: ObservableObject {
             
             // After 5 seconds, get the risk score per night
             DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                let risks  = self.getRiskScore(self.hrData, avgs: self.avgs)
+                let risks  = self.getRiskScorev3(self.hrData, avgs: self.avgs)
                 // Set the riskData to risks
                 self.riskData = risks
                 // Set risk (the last night's risk) to the last risk
                 if let lastRisk = risks.last?.risk {
-                    let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors.", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+                    let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
                     self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
                 }
             }
@@ -209,7 +204,7 @@ class Healthv3: ObservableObject {
         
     }
  // Calculates median
-    func calculateMedian(array: [Double]) -> Float {
+    func calculateMedian(array: [Double]) -> Float? {
         let sorted = array.sorted().filter{!$0.isNaN}
         if !sorted.isEmpty {
             if sorted.count % 2 == 0 {
@@ -218,100 +213,149 @@ class Healthv3: ObservableObject {
                 return Float(sorted[(sorted.count - 1) / 2])
             }
         }
-        // Returns 21.0 if error
-        return 21.0
+        
+        return nil
     }
     
     // Gets risk score
-    func getRiskScore(_ health: [HealthData], avgs: [HealthData]) -> [HealthData] {
-        
-        var riskScores = [HealthData]()
-        
-        
-       // Alert level stays persistant through the loop
-        var alertLvl = 0
-        // let medianOfAvg = calculateMedian(array: avgs.map{$0.data})
-        for (avg, i2) in Array(zip(avgs, avgs.indices)) {
-            // Needs more than 3 days to calculate
-            if i2 > 3 {
-                // Gets the median of averages up to night i2
-                let medianOfAvg = calculateMedian(array: avgs.dropLast(avgs.count - i2).map{$0.data})
-                
-                // if avg.date.getTimeOfDay() == "Night" {
-                
-                // If the medianOfAvg + 3 is greater than the data, then alertLvl is set to zero
-                if avg.data < (Double(medianOfAvg) + 3.0)  {
-                    // if alertLvl != 0 {
-                    
-                    alertLvl = 0
-                    // }
-                } else {
-                    // Switch through each alert possibility
-                    switch(alertLvl) {
-                    case 0:
-                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
-                            alertLvl = 2
-                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
-                            alertLvl = 1
-                        }
-                        break
-                    case 1:
-                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
-                            alertLvl = 5
-                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
-                            alertLvl = 3
-                        }
-                        break
-                    case 2:
-                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
-                            alertLvl = 5
-                        }  else if avg.data >= (Double(medianOfAvg) + 3.0) {
-                            alertLvl = 3
-                        }
-                        break
-                    case 3:
-                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
-                            alertLvl = 4
-                        }  else {
-                            alertLvl = 3
-                        }
-                        break
-                    
-                    // Yellow Alert Level
-                    case 4:
-                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
-                            alertLvl = 5
-                        } else if avg.data >= (Double(medianOfAvg) + 3.0)  {
-
-                            alertLvl = 3
-                        }
-                        break
-                        
-                    // Red Alert Level
-                    case 5:
-                        if avg.data >= (Double(medianOfAvg) + 4.0) {
-                            alertLvl = 5
-                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
-                            alertLvl = 3
-                        }
-                        break
-                    default:
-                        alertLvl = 0
-                        break
-                    }
-                    
-                    
-                   
-                }
-                
-            }
-            // Append the risk score
-            riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: avg.date, data: avg.data, risk: alertLvl > 4 ? 1 : 0))
-        }
-        
-        // Return risk scores
-        return riskScores
-    }
+//    func getRiskScore(_ health: [HealthData], avgs: [HealthData]) -> [HealthData] {
+//
+//        var riskScores = [HealthData]()
+//
+//
+//       // Alert level stays persistant through the loop
+//        var alertLvl = 0
+//        // let medianOfAvg = calculateMedian(array: avgs.map{$0.data})
+//        for (avg, i2) in Array(zip(avgs, avgs.indices)) {
+//            // Needs more than 3 days to calculate
+//            if i2 > 3 {
+//                // Gets the median of averages up to night i2
+//                let medianOfAvg = calculateMedian(array: avgs.dropLast(avgs.count - i2).map{$0.data})
+//
+//                // if avg.date.getTimeOfDay() == "Night" {
+//
+//                // If the medianOfAvg + 3 is greater than the data, then alertLvl is set to zero
+//                if avg.data < (Double(medianOfAvg) + 3.0)  {
+//                    // if alertLvl != 0 {
+//
+//                    alertLvl = 0
+//                    // }
+//                } else {
+//                    // Switch through each alert possibility
+//                    switch(alertLvl) {
+//                    case 0:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                            alertLvl = 2
+//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                            alertLvl = 1
+//                        }
+//                        break
+//                    case 1:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                            alertLvl = 5
+//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                            alertLvl = 3
+//                        }
+//                        break
+//                    case 2:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                            alertLvl = 5
+//                        }  else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                            alertLvl = 3
+//                        }
+//                        break
+//                    case 3:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                            alertLvl = 4
+//                        }  else {
+//                            alertLvl = 3
+//                        }
+//                        break
+//
+//                    // Yellow Alert Level
+//                    case 4:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                            alertLvl = 5
+//                        } else if avg.data >= (Double(medianOfAvg) + 3.0)  {
+//
+//                            alertLvl = 3
+//                        }
+//                        break
+//
+//                    // Red Alert Level
+//                    case 5:
+//                        if avg.data >= (Double(medianOfAvg) + 4.0) {
+//                            alertLvl = 5
+//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                            alertLvl = 3
+//                        }
+//                        break
+//                    default:
+//                        alertLvl = 0
+//                        break
+//                    }
+//
+//
+//
+//                }
+//
+//            }
+//            // Append the risk score
+//            riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: avg.date, data: avg.data, risk: Double(alertLvl)))
+//        }
+//
+//        // Return risk scores
+//        return riskScores
+//    }
+    func getRiskScorev3(_ health: [HealthData], avgs: [HealthData]) -> [HealthData]
+   {
+       
+       var riskScores = [HealthData]()
+       
+       var alertLvl = AlertLevelv3()
+       
+       var confirmedRedAlerts = [HealthData]()
+      // Alert level stays persistant through the loop
+       
+       // let medianOfAvg = calculateMedian(array: avgs.map{$0.data})
+       for (avg, i2) in Array(zip(avgs, avgs.indices)) {
+           // Needs more than 3 days to calculate
+          // if i2 > 3 {
+               // Gets the median of averages up to night i2
+           alertLvl.calculateMedian((Int(avg.data)), avg.date)
+          // print(alertLvl)
+           riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: avg.date, data: Double(Int(avg.data)), risk: alertLvl.returnAlert()))
+//           let filteredAvgs = (avgs.dropLast((avgs.count - i2)))//.filter{!redAlerts.map{$0.date.formatted(date: .numeric, time: .omitted)}.contains($0.date.formatted(date: .numeric, time: .omitted))}
+//               let medianOfAvg = calculateMedian(array: filteredAvgs.map{$0.data})
+           
+              // }
+       }
+//       var track = [HealthData]()
+//       for (avg, i2) in Array(zip(redAlerts, redAlerts.indices)) {
+//
+//           let today = avg
+//           if redAlerts.indices.contains(i2 + 1) {
+//           let next = redAlerts[i2 + 1]
+//               if next.date.distance(to: today.date) <= 86400 {
+//           if(track.contains(today)) {
+//               confirmedRedAlerts.append(redAlerts[i2 + 1])
+//               track.append(next)
+//           } else {
+//               confirmedRedAlerts.append(redAlerts[i2 + 1])
+//               track.append(today)
+//               track.append(next)
+//           }
+//               }
+//
+//       }
+//
+//       }
+      
+       // Return risk scores
+      
+   
+       return riskScores
+}
     func getAvgPerNight(_ health2: [HealthData]) -> [HealthData]  {
         var avgs = [HealthData]()
         // Reset averages
@@ -319,7 +363,7 @@ class Healthv3: ObservableObject {
         // Filter to valid HR data
         let health = health2.filter {
         #warning("disabled Night")
-            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN  && $0.data < 200 && $0.data > 0 //&& $0.date.getTimeOfDay() == "Night"
+            return $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && !$0.data.isNaN  && $0.data < 200 && $0.data > 0 && $0.date.getTimeOfDay() == "Night"
         }
         // Get start and end data
         let dates =  health.map{$0.date}.sorted(by: { $0.compare($1) == .orderedAscending })
@@ -352,56 +396,56 @@ class Healthv3: ObservableObject {
     
     func average(numbers: [Double]) -> Double {
         // print(numbers)
-        return Double(numbers.reduce(0,+))/Double(numbers.count)
+        return vDSP.mean(numbers)
     }
-    func populateAveragesData(_for targetDates: [Date], low: Int, high: Int, stepDates: [Date]) {
-        
-        var noDates = [String]()
-        if let earlyDate = Calendar.current.date(
-            byAdding: .month,
-            value: -12,
-            to: Date()) {
-            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
-                
-            
-                for date in stepDates {
-                    self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.stepCount.rawValue, text: HKQuantityTypeIdentifier.stepCount.rawValue, date: date, data: 100))
-                    print(date)
-                }
-               // for hour in 0...6 {
-                    
-                  
-                    if targetDates.map({$0.formatted(date: .abbreviated, time: .omitted)}).contains( date.formatted(date: .abbreviated, time: .omitted)) {
-                        for i in 0...3 {
-                            self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date.addingTimeInterval(TimeInterval(1200 * i)), data: Double(high)))
-                        }
-                    } else {
-                        for i in 0...3 {
-                            self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date.addingTimeInterval(TimeInterval(1200 * i)), data: Double(low)))
-                        }
-                    }
-                    
-                    noDates = self.hrData.filter{$0.data < 2 && $0.title == HKQuantityTypeIdentifier.stepCount.rawValue}.map{"\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))"}
-                    
-                    
-              //  }
-                
-            }
-        }
-        
-        
-        var filteredData = self.hrData.filter{!noDates.contains("\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))") && $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data < 200 && $0.data > 40}
-        filteredData = filteredData.sliced(by: [.year, .month, .day], for: \.date).map{ HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: $0.key, data: self.average(numbers: $0.value.map{$0.data}))}
-        filteredData =  filteredData.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
-        // print(filteredData.map{$0.date})
-        self.getAvgPerNight(filteredData)
-        let risks  = self.getRiskScore(filteredData, avgs: self.avgs)
-        print(risks)
-        
-        for risk in risks {
-            self.codableRisk.append(CodableRisk(id: UUID().uuidString, date: risk.date, risk: risk.data, explanation: []))
-        }
-    }
+//    func populateAveragesData(_for targetDates: [Date], low: Int, high: Int, stepDates: [Date]) {
+//
+//        var noDates = [String]()
+//        if let earlyDate = Calendar.current.date(
+//            byAdding: .month,
+//            value: -12,
+//            to: Date()) {
+//            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
+//
+//
+//                for date in stepDates {
+//                    self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.stepCount.rawValue, text: HKQuantityTypeIdentifier.stepCount.rawValue, date: date, data: 100))
+//                    print(date)
+//                }
+//               // for hour in 0...6 {
+//
+//
+//                    if targetDates.map({$0.formatted(date: .abbreviated, time: .omitted)}).contains( date.formatted(date: .abbreviated, time: .omitted)) {
+//                        for i in 0...3 {
+//                            self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date.addingTimeInterval(TimeInterval(1200 * i)), data: Double(high)))
+//                        }
+//                    } else {
+//                        for i in 0...3 {
+//                            self.hrData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date.addingTimeInterval(TimeInterval(1200 * i)), data: Double(low)))
+//                        }
+//                    }
+//
+//                    noDates = self.hrData.filter{$0.data < 2 && $0.title == HKQuantityTypeIdentifier.stepCount.rawValue}.map{"\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))"}
+//
+//
+//              //  }
+//
+//            }
+//        }
+//
+//
+//        var filteredData = self.hrData.filter{!noDates.contains("\($0.date.get(.hour))" + "\($0.date.get(.day))" + "\($0.date.get(.month))") && $0.title == HKQuantityTypeIdentifier.heartRate.rawValue && $0.data < 200 && $0.data > 40}
+//        filteredData = filteredData.sliced(by: [.year, .month, .day], for: \.date).map{ HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: $0.key, data: self.average(numbers: $0.value.map{$0.data}))}
+//        filteredData =  filteredData.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
+//        // print(filteredData.map{$0.date})
+//        self.getAvgPerNight(filteredData)
+//        let risks  = self.getRiskScore(filteredData, avgs: self.avgs)
+//        print(risks)
+//
+//        for risk in risks {
+//            self.codableRisk.append(CodableRisk(id: UUID().uuidString, date: risk.date, risk: risk.data, explanation: []))
+//        }
+//    }
     func formatDate(_ startDate: Date) -> String {
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"

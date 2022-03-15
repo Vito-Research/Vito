@@ -29,13 +29,14 @@ struct ContentView: View {
                 .onChange(of: scenePhase) { value in
                     withAnimation(.easeOut) {
                     if value == .active {
-                    intro = true
+                    //intro = true
+                        
                         #warning("disbled")
                    // health.backgroundDelivery()
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                             withAnimation(.easeInOut(duration: 2.0)) {
-                        intro = false
+                       // intro = false
                             }
                         }
                 }

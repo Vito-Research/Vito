@@ -61,17 +61,17 @@ class ML: ObservableObject {
         }
         
         let startDates = filteredToHeartRate.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
-        let startDateColumn = Column(name: "Start_Date", contents: startDates)
+        let startDateColumn = Column(name: "record_id", contents: startDates)
        
         let startTimes = filteredToHeartRate.map{$0.date.getFormattedDate(format: "HH:mm:ss")}
         
         trainingData.append(column: startDateColumn)
         
-        let startTimeColumn = Column(name: "Start_Time", contents: startTimes)
+        let startTimeColumn = Column(name: "start_time", contents: startTimes)
         
         trainingData.append(column: startTimeColumn)
         
-        let nightlyHeartRateColumn = Column(name: "Heartrate", contents: filteredToHeartRate.map{$0.data})
+        let nightlyHeartRateColumn = Column(name: "heartrate", contents: filteredToHeartRate.map{$0.data})
         trainingData.append(column: nightlyHeartRateColumn)
 //
 //        let startDatesRisk = filteredToRisk.map{$0.date.getFormattedDate(format: "yyyy-MM-dd")}
@@ -99,8 +99,14 @@ class ML: ObservableObject {
         
       
       
-        let nightlyRiskColumn = Column(name: "Risk", contents: filteredToRisk.map{$0.risk})
+        let nightlyRiskColumn = Column(name: "risk", contents: filteredToRisk.map{$0.risk})
         trainingData.append(column: nightlyRiskColumn)
+        var recordsArr = [String]()
+        for i in filteredToRisk.indices {
+            recordsArr.append(UUID().uuidString)
+        }
+        //let records = Column(name: "record_id", contents: recordsArr)
+        //trainingData.append(column: records)
         do {
             
             trainingData.append(trainingData2)

@@ -78,6 +78,8 @@
 		ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A7FF427980F58000EEB57 /* HealthV2.swift */; };
 		ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EA827A7AA8F00C51DDA /* Healthv3.swift */; };
 		ED926EAB27A7AACA00C51DDA /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */; };
+		ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F527E40BA000044435 /* FitbitData.swift */; };
+		ED96A2F827E4168600044435 /* RedCapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F727E4168600044435 /* RedCapData.swift */; };
 		ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED99067C27D92A1C0016F875 /* AlertLevel.swift */; };
 		ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */ = {isa = PBXBuildFile; fileRef = ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */; };
 		EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44C27E09BE400EE064B /* Fitbit.swift */; };
@@ -155,6 +157,8 @@
 		ED4A7FF427980F58000EEB57 /* HealthV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthV2.swift; sourceTree = "<group>"; };
 		ED926EA827A7AA8F00C51DDA /* Healthv3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv3.swift; sourceTree = "<group>"; };
 		ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
+		ED96A2F527E40BA000044435 /* FitbitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitbitData.swift; sourceTree = "<group>"; };
+		ED96A2F727E4168600044435 /* RedCapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedCapData.swift; sourceTree = "<group>"; };
 		ED99067C27D92A1C0016F875 /* AlertLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLevel.swift; sourceTree = "<group>"; };
 		ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orig_NonFitbit_HR.csv; sourceTree = "<group>"; };
 		EDDFD44C27E09BE400EE064B /* Fitbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitbit.swift; sourceTree = "<group>"; };
@@ -359,6 +363,8 @@
 				ED4A7FF427980F58000EEB57 /* HealthV2.swift */,
 				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
 				EDDFD44C27E09BE400EE064B /* Fitbit.swift */,
+				ED96A2F527E40BA000044435 /* FitbitData.swift */,
+				ED96A2F727E4168600044435 /* RedCapData.swift */,
 				EDDFD44E27E0B30A00EE064B /* WebView.swift */,
 				ED99067C27D92A1C0016F875 /* AlertLevel.swift */,
 				ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */,
@@ -509,6 +515,7 @@
 				E1A4C8A326E838B80031C161 /* MultiLineChartView.swift in Sources */,
 				E1A4C89626E838B80031C161 /* BarChartCell.swift in Sources */,
 				E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */,
+				ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */,
 				E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */,
 				E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */,
 				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
@@ -531,6 +538,7 @@
 				E1A4C89126E838B80031C161 /* RiskCardView.swift in Sources */,
 				E1A4C89E26E838B80031C161 /* LineView.swift in Sources */,
 				E1A4C88B26E838B80031C161 /* CardView.swift in Sources */,
+				ED96A2F827E4168600044435 /* RedCapData.swift in Sources */,
 				E1A4C8A126E838B80031C161 /* MagnifierRect.swift in Sources */,
 				EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */,
 				E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */,

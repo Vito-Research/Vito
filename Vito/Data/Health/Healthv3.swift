@@ -46,7 +46,15 @@ class Healthv3: ObservableObject {
     var cancellableBag = Set<AnyCancellable>()
     
     // The health data read
-    let readData = [
+    let readData: Set<HKSampleType> = [
+        
+        
+        HKObjectType.quantityType(forIdentifier: .heartRate)!,
+        HKObjectType.quantityType(forIdentifier: .stepCount)!,
+        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!
+        
+    ]
+    let readData2 = [
         
         
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
@@ -83,15 +91,22 @@ class Healthv3: ObservableObject {
     init() {
         // Gets when user is alseep, gets risk score, and enables background delivery
         backgroundDelivery()
-        
+        Task {
+            do {
+       try await sendToRedCap()
+            } catch {
+            }
+            }
     }
    
    
     func backgroundDelivery() {
+          healthStore.requestAuthorization(toShare: [], toRead: readData)
         if let rr =  HKObjectType.quantityType(forIdentifier: .respiratoryRate) {
         self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { sucess, error in
             self.getWhenAsleep()
         }
+        
         }
     }
     func getWhenAsleep() {
@@ -166,7 +181,7 @@ class Healthv3: ObservableObject {
         
         healthStore
         // Stat = average in a time period or total amount in a time period
-            .statistic(for: Array(readData)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 1000)
+            .statistic(for: Array(readData2)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 1000)
         
             .receive(on: DispatchQueue.main)
         
@@ -479,4 +494,32 @@ class Healthv3: ObservableObject {
         // just send back the first one, which ought to be the only one
         return paths[0]
     }
+    var session = URLSession.shared
+    func sendToRedCap() async throws -> FitbitData? {
+     
+            
+            var request = URLRequest(url: URL(string: "https://redcapdemo.vanderbilt.edu/api/")!)
+   //
+        ML().exportDataToCSV(data: healthData, codableRisk: codableRisk) { isDone in
+           
+        }
+        request.httpMethod = "POST"
+        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        let data = RedCapData(data: String(data: try Data(contentsOf: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv")), encoding: .utf8) ?? "")
+        print(data)
+        print(request)
+        
+            let res = try await session.upload(
+                 for: request,
+                 from: try JSONEncoder().encode(data)
+                    
+             )
+            print(res.1)
+            let jsonDecoder = JSONDecoder()
+            
+            return try jsonDecoder.decode(FitbitData.self, from: res.0)
+    //
+    }
 }
+

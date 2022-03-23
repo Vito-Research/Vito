@@ -5,7 +5,7 @@
 ## Goals
 
 - Reduce spread of COVID-19 via smartwatches
-- More effecient and convenient algrothims
+- More efficient and convenient algorithms 
 - Set ambitious privacy standards
 - Encourage community involvement
 

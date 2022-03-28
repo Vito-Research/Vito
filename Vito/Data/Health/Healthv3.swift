@@ -90,40 +90,14 @@ class Healthv3: ObservableObject {
     var alertLvl = AlertLevelv3()
     init() {
         
-        if let earlyDate = Calendar.current.date(
-            byAdding: .month,
-            value: -3,
-            to: Date()) {
-        
-            for day in Date.dates(from: earlyDate, to: Date()) {
-              //  print(day)
-                Task {
-            do {
-                let hv4 = Healthv4()
-                if var newData = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
-                    if newData.data.isNormal {
-//                    alertLvl.calculateMedian(Int(newData.data), newData.date)
-//
-//                    newData.risk = alertLvl.returnAlert()
-                    self.hrData.append(newData)
-                }
-                
-                }
-//                let (samples, _, _) = try await hv4.queryHealthKit(HKObjectType.quantityType(forIdentifier: .heartRate)!, startDate: day, endDate: day.addingTimeInterval(86400))
-//                print(samples)
-//                let atRestHR = samples?.filter{$0.metadata?.values.first as! NSNumber == 1}
-//                let average = average(numbers: atRestHR.map{$0.map{$0.}})
-                
-                
-            } catch {
-            }
-                
-            }
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
-        }
+        backgroundDelivery()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 20.0) {
+//            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
+//            if let lastRisk = self.riskData.last?.risk {
+//                let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+//                self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
+//            }
+//        }
     }
     // Called on class initialization
 //    init() {
@@ -164,8 +138,41 @@ class Healthv3: ObservableObject {
     func backgroundDelivery() {
         self.healthStore.requestAuthorization(toShare: [], read: self.readData) { (success, error) in
         if let rr =  HKObjectType.quantityType(forIdentifier: .respiratoryRate) {
-        self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { sucess, error in
-           
+            self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { [self] sucess, error in
+            if let earlyDate = Calendar.current.date(
+                byAdding: .month,
+                value: -3,
+                to: Date()) {
+                Task {
+                for day in Date.dates(from: earlyDate, to: Date()) {
+                  //  print(day)
+                    
+                do {
+                    let hv4 = Healthv4()
+                    if var newData = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
+                        if newData.data.isNormal {
+    //                    alertLvl.calculateMedian(Int(newData.data), newData.date)
+    //
+    //                    newData.risk = alertLvl.returnAlert()
+                            newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date)
+                        self.hrData.append(newData)
+                        self.riskData.append(newData)
+                        
+                    }
+                    
+                    }
+    //                let (samples, _, _) = try await hv4.queryHealthKit(HKObjectType.quantityType(forIdentifier: .heartRate)!, startDate: day, endDate: day.addingTimeInterval(86400))
+    //                print(samples)
+    //                let atRestHR = samples?.filter{$0.metadata?.values.first as! NSNumber == 1}
+    //                let average = average(numbers: atRestHR.map{$0.map{$0.}})
+                    
+                    
+                } catch {
+                }
+                    
+                }
+                }
+            }
         }
         
         }
@@ -515,9 +522,9 @@ class Healthv3: ObservableObject {
            // Needs more than 3 days to calculate
           // if i2 > 3 {
                // Gets the median of averages up to night i2
-           alertLvl.calculateMedian((Int(avg.data)), avg.date)
+           
           // print(alertLvl)
-           riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: avg.date, data: Double(Int(avg.data)), risk: alertLvl.returnAlert()))
+           riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: avg.date, data: Double(Int(avg.data)), risk: alertLvl.calculateMedian((Int(avg.data)), avg.date)))
 //           let filteredAvgs = (avgs.dropLast((avgs.count - i2)))//.filter{!redAlerts.map{$0.date.formatted(date: .numeric, time: .omitted)}.contains($0.date.formatted(date: .numeric, time: .omitted))}
 //               let medianOfAvg = calculateMedian(array: filteredAvgs.map{$0.data})
            

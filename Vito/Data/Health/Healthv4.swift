@@ -100,7 +100,7 @@ actor Healthv4 {
                 predicate: datePredicate,
                 anchor: nil,
                 limit: HKObjectQueryNoLimit) { (_, samples, deletedSamples, newAnchor, error) in
-                print(samples)
+                //print(samples)
                 // When the query ends, check for errors.
                 if let error = error {
                     continuation.resume(throwing: error)

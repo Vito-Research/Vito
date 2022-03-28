@@ -41,7 +41,7 @@ struct AlertLevelv3 {
         }
     }
     
-    mutating func calculateMedian(_ hr: Int, _ date: Date?) {
+    mutating func calculateMedian(_ hr: Int, _ date: Date?) -> Double {
         
         switch self.state {
             
@@ -56,7 +56,7 @@ struct AlertLevelv3 {
                     alert.clusterCount += 1
                     
                     self.state = .Five(alert)
-                    
+                    return 1
                 } else if hr == Int(median) + 3 {
                     
                     self.state = .Three(Alert(hr: alert.hr))
@@ -66,7 +66,8 @@ struct AlertLevelv3 {
             }
             
             
-            break
+            
+            
         case .Four(var alert):
             
             
@@ -76,7 +77,7 @@ struct AlertLevelv3 {
                 if hr >= Int(median) + 4 {
                     
                     self.state = .Five(alert)
-                    
+                    return 1
                 } else if hr == Int(median) + 3 {
                     
                     self.state = .Three(Alert(hr: alert.hr))
@@ -85,7 +86,7 @@ struct AlertLevelv3 {
                     self.state = .Zero(Alert(hr: alert.hr))
                 }
             }
-            
+            return 0
             break
         case .Three(var alert):
             
@@ -104,7 +105,7 @@ struct AlertLevelv3 {
                 }
             }
             
-            
+            return 0
             break
             
         case .Two(var alert):
@@ -119,7 +120,7 @@ struct AlertLevelv3 {
                     
                     
                     self.state = .Five(alert)
-                    
+                    return 1
                 } else if hr == Int(median) + 3 {
                     
                     self.state = .Three(Alert(hr: alert.hr))
@@ -129,7 +130,7 @@ struct AlertLevelv3 {
                     self.state = .Zero(Alert(hr: alert.hr))
                 }
             }
-            
+            return 0
             break
         case .One(var alert):
             
@@ -147,7 +148,7 @@ struct AlertLevelv3 {
                     self.state = .Zero(Alert(hr: alert.hr))
                 }
             }
-            
+            return 0
             
             break
         case .Zero(var alert):
@@ -171,10 +172,10 @@ struct AlertLevelv3 {
                 self.state = .Zero(Alert(hr: alert.hr))
             }
             
-            
+            return 0
             
         }
-        
+       return 0
     }
     func calculateMedian(array: [Double]) -> Float? {
         let sorted = array.sorted().filter{!$0.isNaN}

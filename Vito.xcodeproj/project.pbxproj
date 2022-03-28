@@ -82,6 +82,7 @@
 		ED96A2F827E4168600044435 /* RedCapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F727E4168600044435 /* RedCapData.swift */; };
 		ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED99067C27D92A1C0016F875 /* AlertLevel.swift */; };
 		ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */ = {isa = PBXBuildFile; fileRef = ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */; };
+		EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */; };
 		EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44C27E09BE400EE064B /* Fitbit.swift */; };
 		EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44E27E0B30A00EE064B /* WebView.swift */; };
 /* End PBXBuildFile section */
@@ -161,6 +162,7 @@
 		ED96A2F727E4168600044435 /* RedCapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedCapData.swift; sourceTree = "<group>"; };
 		ED99067C27D92A1C0016F875 /* AlertLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLevel.swift; sourceTree = "<group>"; };
 		ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orig_NonFitbit_HR.csv; sourceTree = "<group>"; };
+		EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv4.swift; sourceTree = "<group>"; };
 		EDDFD44C27E09BE400EE064B /* Fitbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitbit.swift; sourceTree = "<group>"; };
 		EDDFD44E27E0B30A00EE064B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -362,6 +364,7 @@
 				E1A4C86D26E838B80031C161 /* Health.swift */,
 				ED4A7FF427980F58000EEB57 /* HealthV2.swift */,
 				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
+				EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */,
 				EDDFD44C27E09BE400EE064B /* Fitbit.swift */,
 				ED96A2F527E40BA000044435 /* FitbitData.swift */,
 				ED96A2F727E4168600044435 /* RedCapData.swift */,
@@ -523,6 +526,7 @@
 				E1A4C8A926E838B80031C161 /* Health.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,
 				E1A4C8AC26E838B80031C161 /* Card.swift in Sources */,
+				EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */,
 				E1A4C89026E838B80031C161 /* DataViewv2.swift in Sources */,
 				E1A4C88A26E838B80031C161 /* DataView.swift in Sources */,
 				E1A4C88E26E838B80031C161 /* HomeView.swift in Sources */,

@@ -49,7 +49,7 @@ struct AlertLevelv3 {
             
             alert.hr.append(hr)
             
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 
                 if hr >= Int(median) + 4 {
                     
@@ -71,7 +71,7 @@ struct AlertLevelv3 {
             
             
             alert.hr.append(hr)
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 
                 if hr >= Int(median) + 4 {
                     
@@ -90,7 +90,7 @@ struct AlertLevelv3 {
         case .Three(var alert):
             
             alert.hr.append(hr)
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 if hr >= Int(median) + 4 {
                     
                     self.state = .Four(alert)
@@ -111,7 +111,7 @@ struct AlertLevelv3 {
             
             alert.hr.append(hr)
             
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 if hr >= Int(median) + 4 {
                     
                     
@@ -134,7 +134,7 @@ struct AlertLevelv3 {
         case .One(var alert):
             
             alert.hr.append(hr)
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 if hr >= Int(median) + 4 {
                     
                     self.state = .Four(alert)
@@ -154,7 +154,7 @@ struct AlertLevelv3 {
             
             alert.hr.append(hr)
             
-            if let median = Healthv3().calculateMedian(array: alert.hr.map{Double($0)}) {
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 if hr >= Int(median) + 4 {
                     
                     self.state = .Two(alert)
@@ -175,5 +175,21 @@ struct AlertLevelv3 {
             
         }
         
+    }
+    func calculateMedian(array: [Double]) -> Float? {
+        let sorted = array.sorted().filter{!$0.isNaN}
+        if !sorted.isEmpty {
+            if sorted.count % 2 == 0 {
+                return Float((sorted[(sorted.count / 2)] + sorted[(sorted.count / 2) - 1])) / 2
+            } else {
+                return Float(sorted[(sorted.count - 1) / 2])
+            }
+        }
+        
+        return nil
+    }
+    func average(numbers: [Double]) -> Double {
+        // print(numbers)
+        return vDSP.mean(numbers)
     }
 }

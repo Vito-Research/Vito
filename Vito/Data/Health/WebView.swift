@@ -30,7 +30,7 @@ class WebViewModel: ObservableObject {
     init() {
         webView = WKWebView(frame: .zero)
         
-        url = URL(string: "")!
+        url = URL(string: "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=2389P9&redirect_uri=https%3A%2F%2Fandreasink.web.app&scope=heartrate%20sleep%20activity&expires_in=2592000")!
 
         loadUrl()
     }

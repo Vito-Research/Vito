@@ -14,8 +14,8 @@ struct VitoApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     // @StateObject var healthv3 = Healthv3()
     @State var share = false
-    @StateObject var fitbit = Fitbit()
-    @StateObject var model = WebViewModel()
+   // @StateObject var fitbit = Fitbit()
+   // @StateObject var model = WebViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -5,6 +5,7 @@
 //  Created by Andreas Ink on 1/31/22.
 //
 
+
 import SwiftUI
 import Combine
 import HealthKit
@@ -51,7 +52,7 @@ class Healthv3: ObservableObject {
         
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
         HKObjectType.quantityType(forIdentifier: .stepCount)!,
-        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!
+        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!, HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         
     ]
     let readData2 = [
@@ -59,7 +60,8 @@ class Healthv3: ObservableObject {
         
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
         HKObjectType.quantityType(forIdentifier: .stepCount)!,
-        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!
+        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!,
+       
         
     ]
     
@@ -85,29 +87,204 @@ class Healthv3: ObservableObject {
             matching: DateComponents(day: 1, hour: 0, minute: 0, second: 0)
         )
     }
-    
-    
-    // Called on class initialization
+    var alertLvl = AlertLevelv3()
     init() {
-        // Gets when user is alseep, gets risk score, and enables background delivery
-        backgroundDelivery()
-        Task {
+        
+        if let earlyDate = Calendar.current.date(
+            byAdding: .month,
+            value: -3,
+            to: Date()) {
+        
+            for day in Date.dates(from: earlyDate, to: Date()) {
+              //  print(day)
+                Task {
             do {
-       try await sendToRedCap()
+                let hv4 = Healthv4()
+                if var newData = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
+                    if newData.data.isNormal {
+//                    alertLvl.calculateMedian(Int(newData.data), newData.date)
+//
+//                    newData.risk = alertLvl.returnAlert()
+                    self.hrData.append(newData)
+                }
+                
+                }
+//                let (samples, _, _) = try await hv4.queryHealthKit(HKObjectType.quantityType(forIdentifier: .heartRate)!, startDate: day, endDate: day.addingTimeInterval(86400))
+//                print(samples)
+//                let atRestHR = samples?.filter{$0.metadata?.values.first as! NSNumber == 1}
+//                let average = average(numbers: atRestHR.map{$0.map{$0.}})
+                
+                
             } catch {
             }
+                
             }
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
+        }
     }
+    // Called on class initialization
+//    init() {
+//        // Gets when user is alseep, gets risk score, and enables background delivery
+//       // backgroundDelivery()
+//        self.healthStore.requestAuthorization(toShare: [], read: self.readData) { (success, error) in
+//            self.retrieveSleepAnalysis(time: 100)
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//                var stateMachine = AlertLevelv3()
+//
+//                for day in Date.dates(from: <#T##Date#>, to: <#T##Date#>)
+//            //for day in self.healthData.sliced(by: [.day, .month, .year], for: \.date) {
+//               // print(day)
+//                self.getHealthData(startDate: day.value.map{$0.date}.min() ?? Date(), endDate: day.value.map{$0.date}.max()  ?? Date(), i: 0) { hr in
+//                    if var hr =  hr {
+//                        self.hrData.append(hr)
+//                        stateMachine.calculateMedian(Int(hr.data), day.key)
+//                        hr.risk = stateMachine.returnAlert()
+//                        print(hr.risk)
+//                        self.riskData.append(hr)
+//                    }
+//                }
+//                //}
+//
+//            }
+//       // self.getWhenNight()
+//        }
+//        Task {
+//            do {
+//       //try await sendToRedCap()
+//            } catch {
+//            }
+//            }
+//    }
    
    
     func backgroundDelivery() {
-          healthStore.requestAuthorization(toShare: [], toRead: readData)
+        self.healthStore.requestAuthorization(toShare: [], read: self.readData) { (success, error) in
         if let rr =  HKObjectType.quantityType(forIdentifier: .respiratoryRate) {
         self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { sucess, error in
-            self.getWhenAsleep()
+           
         }
         
         }
+    }
+    }
+    func retrieveSleepAnalysis(time: Int) {
+           print("YE")
+           // first, we define the object type we want
+           if let sleepType = HKObjectType.categoryType(forIdentifier: HKCategoryTypeIdentifier.sleepAnalysis) {
+               
+               // Use a sortDescriptor to get the recent data first
+               let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+               
+               // we create our query with a block completion to execute
+              
+               let query = HKSampleQuery(sampleType: sleepType, predicate: nil, limit: time, sortDescriptors: [sortDescriptor]) { (query, tmpResult, error) -> Void in
+                   
+                   if error != nil {
+                       
+                       // something happened
+                       return
+                       
+                   }
+                   
+                   if let result = tmpResult {
+                       
+                       // do something with my data
+                       for item in result {
+                           if let sample = item as? HKCategorySample {
+                              
+                               print("Healthkit sleep: \(sample.startDate) \(sample.endDate) - value: \(sample.value)")
+                               
+                               //if sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue || sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue  {
+                               self.healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text:  sample.endDate.getFormattedDate(format: "yyyy-MM-dd HH:mm:ss"), date: sample.startDate, data: (sample.value == HKCategoryValueSleepAnalysis.asleep.rawValue) ? 1 : 0))
+                           //    }
+                               //(sample.value == HKCategoryValueSleepAnalysis.inBed.rawValue)
+                           }
+                       }
+                   }
+               }
+               
+               // finally, we execute our query
+               healthStore.execute(query)
+           }
+       }
+    
+    func getWhenNight() {
+        var stateMachine = AlertLevelv3()
+        if let earlyDate = Calendar.current.date(
+            byAdding: .month,
+            value: -2,
+            to: Date()) {
+            // Loops through the dates by adding a day
+            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
+                if let earlyDate = Calendar.current.date(
+                    byAdding: .hour,
+                    value: 12,
+                    to: date) {
+                    if let lateTime = Calendar.current.date(
+                        byAdding: .hour,
+                        value: 8,
+                        to: date) {
+                    // Loop through the hours in a day
+                    
+                   // for date in Date.datesHourly(from: date, to: earlyDate) {
+                        // Get RR in that hour
+                       // if date.getTimeOfDay() == "Night" {
+                      //  getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
+                            // If RR exists for that date keep going
+                         //   if let sleep =  sleep {
+                                // Loop through each hour within the time period of the RR
+                           //     for date in Date.datesHourly(from: sleep.date, to: sleep.endDate ?? Date()) {
+                                    
+                                    // Get if steps are present in the time range
+                                    self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 1) { steps in
+                                        
+                                        // If steps are no-existant or below 100 for that hour, query HR data
+                                        if steps == nil || (steps?.data ?? 0) < 100 {
+                                            
+                                            self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 0) { hr in
+                                                if var hr =  hr {
+                                                    self.hrData.append(hr)
+                                                    stateMachine.calculateMedian(Int(hr.data), date)
+                                                    hr.risk = stateMachine.returnAlert()
+                                                    print(hr.risk)
+                                                    self.riskData.append(hr)
+                                                }
+                                                
+                                            }
+//                                        }
+//                                    }
+//                                }
+                         //   }
+                        }
+                                    }
+                        
+                       // }
+                    }
+                }
+            }
+        }
+        // After 5 seconds, get the average per night
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//
+//            self.avgs = self.getAvgPerNight(self.hrData)
+//
+//            // After 5 seconds, get the risk score per night
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//                let risks  = self.getRiskScorev3(self.hrData, avgs: self.avgs)
+//                // Set the riskData to risks
+//                self.riskData = risks
+//                // Set risk (the last night's risk) to the last risk
+//                if let lastRisk = risks.last?.risk {
+//                    let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+//                    self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
+//                }
+//            }
+//
+//        }
     }
     func getWhenAsleep() {
         // Gets the date 12 months ago
@@ -180,11 +357,12 @@ class Healthv3: ObservableObject {
     func getHealthData(startDate: Date, endDate: Date, i: Int, completionHandler: @escaping (HealthData?) -> Void) {
         
         healthStore
+        
         // Stat = average in a time period or total amount in a time period
-            .statistic(for: Array(readData2)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 1000)
+            .statistic(for: Array(readData2)[i], with: self.quanityTypes[i] == "Avg" ? .discreteAverage : .cumulativeSum, from: startDate, to: endDate, 10)
         
             .receive(on: DispatchQueue.main)
-        
+            
             .sink(receiveCompletion: { subscription in
                 // If error (no stats) then return nil
                 if "\(subscription)".contains("failure") {
@@ -522,4 +700,3 @@ class Healthv3: ObservableObject {
     //
     }
 }
-

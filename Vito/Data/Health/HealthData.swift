@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SFSafeSymbols
-struct HealthData: Identifiable, Codable, Hashable {
+struct HealthData: Identifiable, Codable, Hashable, Sendable {
     var id: String
     var type: DataType
     var title: String

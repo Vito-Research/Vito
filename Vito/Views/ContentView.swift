@@ -73,18 +73,7 @@ struct ContentView: View {
                 //}
                 LocalNotifications.schedule(permissionStrategy: .askSystemPermissionIfNeeded) {
                 }
-                let readData = Set([
-//                    HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
-                   // HKCategoryType(.sleepAnalysis),
-                    HKObjectType.quantityType(forIdentifier: .heartRate)!,
-                   // HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
-                    HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-                    HKObjectType.quantityType(forIdentifier: .stepCount)!
-                ])
-                
-                health.healthStore.requestAuthorization(toShare: [], read: readData) { (success, error) in
-                    
-                }
+               
               
 //                for type in health.readData {
 //                health.getHealthData(type: type, dateDistanceType: .Month, dateDistance: 24) { _ in

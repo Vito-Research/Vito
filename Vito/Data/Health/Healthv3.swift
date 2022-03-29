@@ -52,7 +52,9 @@ class Healthv3: ObservableObject {
         
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
         HKObjectType.quantityType(forIdentifier: .stepCount)!,
-        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!, HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
+        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!,
+        HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+        HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
         
     ]
     let readData2 = [
@@ -61,12 +63,14 @@ class Healthv3: ObservableObject {
         HKObjectType.quantityType(forIdentifier: .heartRate)!,
         HKObjectType.quantityType(forIdentifier: .stepCount)!,
         HKObjectType.quantityType(forIdentifier: .respiratoryRate)!,
+        HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
+        
        
         
     ]
     
     // The units of the readData
-    let units: [HKUnit] = [HKUnit(from: "count/min"), HKUnit(from: "count"), HKUnit(from: "count/min")]
+    let units: [HKUnit] = [HKUnit(from: "count/min"), HKUnit(from: "ms"), HKUnit(from: "count"), HKUnit(from: "count/min")]
     
     // The quanity types of the readData
     let quanityTypes: [String] = ["Avg", "", "Avg"]
@@ -88,6 +92,8 @@ class Healthv3: ObservableObject {
         )
     }
     var alertLvl = AlertLevelv3()
+    var alertLvlRR = AlertLevelv3()
+    var alertLvlHRV = AlertLevelv3()
     init() {
         
         backgroundDelivery()
@@ -154,13 +160,39 @@ class Healthv3: ObservableObject {
     //                    alertLvl.calculateMedian(Int(newData.data), newData.date)
     //
     //                    newData.risk = alertLvl.returnAlert()
-                            newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date)
-                        self.hrData.append(newData)
-                        self.riskData.append(newData)
+                            newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date, yellowThres: 3, redThres: 4)
+                            self.riskData.append(newData)
+                            self.hrData.append(newData)
+                        } else {
+                            
+                        }
+                    }
+                        if var newDataRR = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .respiratoryRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
+                            if newDataRR.data.isNormal {
+                            newDataRR.risk = self.alertLvlRR.calculateMedian(Int(newDataRR.data), newDataRR.date, yellowThres: 0, redThres: 1)
+                                //self.riskData.append(newDataRR)
+                                print(newDataRR)
+                            }
+                        }
+                            if var newDataHRV = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!, unit: HKUnit(from: "ms"), start: day, end: day.addingTimeInterval(86400)) {
+                                
+                                if newDataHRV.data.isNormal {
+                                    newDataHRV.risk = self.alertLvlHRV.calculateMedianHRV(Int(newDataHRV.data), newDataHRV.date, yellowThres: 4, redThres: 5)
+//                                    print(newDataHRV)
+//                                    self.riskData.append(newDataHRV)
+                                }
+                            }
+                       
+                            
+                               
+                            
+                            
                         
-                    }
+                       
+                        
                     
-                    }
+                    
+                    
     //                let (samples, _, _) = try await hv4.queryHealthKit(HKObjectType.quantityType(forIdentifier: .heartRate)!, startDate: day, endDate: day.addingTimeInterval(86400))
     //                print(samples)
     //                let atRestHR = samples?.filter{$0.metadata?.values.first as! NSNumber == 1}
@@ -219,66 +251,133 @@ class Healthv3: ObservableObject {
            }
        }
     
-    func getWhenNight() {
-        var stateMachine = AlertLevelv3()
-        if let earlyDate = Calendar.current.date(
-            byAdding: .month,
-            value: -2,
-            to: Date()) {
-            // Loops through the dates by adding a day
-            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
-                if let earlyDate = Calendar.current.date(
-                    byAdding: .hour,
-                    value: 12,
-                    to: date) {
-                    if let lateTime = Calendar.current.date(
-                        byAdding: .hour,
-                        value: 8,
-                        to: date) {
-                    // Loop through the hours in a day
-                    
-                   // for date in Date.datesHourly(from: date, to: earlyDate) {
-                        // Get RR in that hour
-                       // if date.getTimeOfDay() == "Night" {
-                      //  getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
-                            // If RR exists for that date keep going
-                         //   if let sleep =  sleep {
-                                // Loop through each hour within the time period of the RR
-                           //     for date in Date.datesHourly(from: sleep.date, to: sleep.endDate ?? Date()) {
-                                    
-                                    // Get if steps are present in the time range
-                                    self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 1) { steps in
-                                        
-                                        // If steps are no-existant or below 100 for that hour, query HR data
-                                        if steps == nil || (steps?.data ?? 0) < 100 {
-                                            
-                                            self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 0) { hr in
-                                                if var hr =  hr {
-                                                    self.hrData.append(hr)
-                                                    stateMachine.calculateMedian(Int(hr.data), date)
-                                                    hr.risk = stateMachine.returnAlert()
-                                                    print(hr.risk)
-                                                    self.riskData.append(hr)
-                                                }
-                                                
-                                            }
+//    func getWhenNight() {
+//        var stateMachine = AlertLevelv3()
+//        if let earlyDate = Calendar.current.date(
+//            byAdding: .month,
+//            value: -2,
+//            to: Date()) {
+//            // Loops through the dates by adding a day
+//            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
+//                if let earlyDate = Calendar.current.date(
+//                    byAdding: .hour,
+//                    value: 12,
+//                    to: date) {
+//                    if let lateTime = Calendar.current.date(
+//                        byAdding: .hour,
+//                        value: 8,
+//                        to: date) {
+//                    // Loop through the hours in a day
+//
+//                   // for date in Date.datesHourly(from: date, to: earlyDate) {
+//                        // Get RR in that hour
+//                       // if date.getTimeOfDay() == "Night" {
+//                      //  getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
+//                            // If RR exists for that date keep going
+//                         //   if let sleep =  sleep {
+//                                // Loop through each hour within the time period of the RR
+//                           //     for date in Date.datesHourly(from: sleep.date, to: sleep.endDate ?? Date()) {
+//
+//                                    // Get if steps are present in the time range
+//                                    self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 1) { steps in
+//
+//                                        // If steps are no-existant or below 100 for that hour, query HR data
+//                                        if steps == nil || (steps?.data ?? 0) < 100 {
+//
+//                                            self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 0) { hr in
+//                                                if var hr =  hr {
+//                                                    self.hrData.append(hr)
+//                                                    stateMachine.calculateMedian(Int(hr.data), date)
+//                                                    hr.risk = stateMachine.returnAlert()
+//                                                    print(hr.risk)
+//                                                    self.riskData.append(hr)
+//                                                }
+//
+//                                            }
+////                                        }
+////                                    }
+////                                }
+//                         //   }
+//                        }
+//                                    }
+//
+//                       // }
+//                    }
+//                }
+//            }
+//        }
+//        // After 5 seconds, get the average per night
+////        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+////
+////            self.avgs = self.getAvgPerNight(self.hrData)
+////
+////            // After 5 seconds, get the risk score per night
+////            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+////                let risks  = self.getRiskScorev3(self.hrData, avgs: self.avgs)
+////                // Set the riskData to risks
+////                self.riskData = risks
+////                // Set risk (the last night's risk) to the last risk
+////                if let lastRisk = risks.last?.risk {
+////                    let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+////                    self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
+////                }
+////            }
+////
+////        }
+//    }
+//    func getWhenAsleep() {
+//        // Gets the date 12 months ago
+//        // if value = -12, becomes more sensitive
+//        if let earlyDate = Calendar.current.date(
+//            byAdding: .month,
+//            value: -3,
+//            to: Date()) {
+//            // Loops through the dates by adding a day
+//            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
+//                if let earlyDate = Calendar.current.date(
+//                    byAdding: .hour,
+//                    value: 12,
+//                    to: date) {
+//                    // Loop through the hours in a day
+//                    
+//                    for date in Date.datesHourly(from: date, to: earlyDate) {
+//                        // Get RR in that hour
+//                        if date.getTimeOfDay() == "Night" {
+//                        getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
+//                            // If RR exists for that date keep going
+//                            if let sleep =  sleep {
+//                                // Loop through each hour within the time period of the RR
+//                                for date in Date.datesHourly(from: sleep.date, to: sleep.endDate ?? Date()) {
+//                                    
+//                                    // Get if steps are present in the time range
+//                                    self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 1) { steps in
+//                                        
+//                                        // If steps are no-existant or below 100 for that hour, query HR data
+//                                        if steps == nil || (steps?.data ?? 0) < 100 {
+//                                            
+//                                            self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 0) { hr in
+//                                                if let hr =  hr {
+//                                                    self.hrData.append(hr)
+//                                                
+//                                                }
+//                                                
+//                                            }
 //                                        }
 //                                    }
 //                                }
-                         //   }
-                        }
-                                    }
-                        
-                       // }
-                    }
-                }
-            }
-        }
-        // After 5 seconds, get the average per night
+//                            }
+//                        }
+//                        
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        // After 5 seconds, get the average per night
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//
+//            
 //            self.avgs = self.getAvgPerNight(self.hrData)
-//
+//            
 //            // After 5 seconds, get the risk score per night
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
 //                let risks  = self.getRiskScorev3(self.hrData, avgs: self.avgs)
@@ -290,76 +389,9 @@ class Healthv3: ObservableObject {
 //                    self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
 //                }
 //            }
-//
+//            
 //        }
-    }
-    func getWhenAsleep() {
-        // Gets the date 12 months ago
-        // if value = -12, becomes more sensitive
-        if let earlyDate = Calendar.current.date(
-            byAdding: .month,
-            value: -3,
-            to: Date()) {
-            // Loops through the dates by adding a day
-            for date in Date.dates(from: Calendar.current.startOfDay(for: earlyDate), to: Date()) {
-                if let earlyDate = Calendar.current.date(
-                    byAdding: .hour,
-                    value: 12,
-                    to: date) {
-                    // Loop through the hours in a day
-                    
-                    for date in Date.datesHourly(from: date, to: earlyDate) {
-                        // Get RR in that hour
-                        if date.getTimeOfDay() == "Night" {
-                        getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 2) { sleep in
-                            // If RR exists for that date keep going
-                            if let sleep =  sleep {
-                                // Loop through each hour within the time period of the RR
-                                for date in Date.datesHourly(from: sleep.date, to: sleep.endDate ?? Date()) {
-                                    
-                                    // Get if steps are present in the time range
-                                    self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 1) { steps in
-                                        
-                                        // If steps are no-existant or below 100 for that hour, query HR data
-                                        if steps == nil || (steps?.data ?? 0) < 100 {
-                                            
-                                            self.getHealthData(startDate: date.addingTimeInterval(-3600), endDate: date.addingTimeInterval(3600), i: 0) { hr in
-                                                if let hr =  hr {
-                                                    self.hrData.append(hr)
-                                                
-                                                }
-                                                
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        }
-                    }
-                }
-            }
-        }
-        // After 5 seconds, get the average per night
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-            
-            self.avgs = self.getAvgPerNight(self.hrData)
-            
-            // After 5 seconds, get the risk score per night
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                let risks  = self.getRiskScorev3(self.hrData, avgs: self.avgs)
-                // Set the riskData to risks
-                self.riskData = risks
-                // Set risk (the last night's risk) to the last risk
-                if let lastRisk = risks.last?.risk {
-                    let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
-                    self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
-                }
-            }
-            
-        }
-    }
+//    }
     
     func getHealthData(startDate: Date, endDate: Date, i: Int, completionHandler: @escaping (HealthData?) -> Void) {
         
@@ -434,8 +466,8 @@ class Healthv3: ObservableObject {
 //
 //                // if avg.date.getTimeOfDay() == "Night" {
 //
-//                // If the medianOfAvg + 3 is greater than the data, then alertLvl is set to zero
-//                if avg.data < (Double(medianOfAvg) + 3.0)  {
+//                // If the medianOfAvg + yellowThres is greater than the data, then alertLvl is set to zero
+//                if avg.data < (Double(medianOfAvg) + yellowThres.0)  {
 //                    // if alertLvl != 0 {
 //
 //                    alertLvl = 0
@@ -444,28 +476,28 @@ class Healthv3: ObservableObject {
 //                    // Switch through each alert possibility
 //                    switch(alertLvl) {
 //                    case 0:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0)  {
 //                            alertLvl = 2
-//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                        } else if avg.data >= (Double(medianOfAvg) + yellowThres.0) {
 //                            alertLvl = 1
 //                        }
 //                        break
 //                    case 1:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0)  {
 //                            alertLvl = 5
-//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                        } else if avg.data >= (Double(medianOfAvg) + yellowThres.0) {
 //                            alertLvl = 3
 //                        }
 //                        break
 //                    case 2:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0)  {
 //                            alertLvl = 5
-//                        }  else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                        }  else if avg.data >= (Double(medianOfAvg) + yellowThres.0) {
 //                            alertLvl = 3
 //                        }
 //                        break
 //                    case 3:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0)  {
 //                            alertLvl = 4
 //                        }  else {
 //                            alertLvl = 3
@@ -474,9 +506,9 @@ class Healthv3: ObservableObject {
 //
 //                    // Yellow Alert Level
 //                    case 4:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0)  {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0)  {
 //                            alertLvl = 5
-//                        } else if avg.data >= (Double(medianOfAvg) + 3.0)  {
+//                        } else if avg.data >= (Double(medianOfAvg) + yellowThres.0)  {
 //
 //                            alertLvl = 3
 //                        }
@@ -484,9 +516,9 @@ class Healthv3: ObservableObject {
 //
 //                    // Red Alert Level
 //                    case 5:
-//                        if avg.data >= (Double(medianOfAvg) + 4.0) {
+//                        if avg.data >= (Double(medianOfAvg) + redThres.0) {
 //                            alertLvl = 5
-//                        } else if avg.data >= (Double(medianOfAvg) + 3.0) {
+//                        } else if avg.data >= (Double(medianOfAvg) + yellowThres.0) {
 //                            alertLvl = 3
 //                        }
 //                        break
@@ -507,55 +539,55 @@ class Healthv3: ObservableObject {
 //        // Return risk scores
 //        return riskScores
 //    }
-    func getRiskScorev3(_ health: [HealthData], avgs: [HealthData]) -> [HealthData]
-   {
-       
-       var riskScores = [HealthData]()
-       
-       var alertLvl = AlertLevelv3()
-       
-       var confirmedRedAlerts = [HealthData]()
-      // Alert level stays persistant through the loop
-       
-       // let medianOfAvg = calculateMedian(array: avgs.map{$0.data})
-       for (avg, i2) in Array(zip(avgs, avgs.indices)) {
-           // Needs more than 3 days to calculate
-          // if i2 > 3 {
-               // Gets the median of averages up to night i2
-           
-          // print(alertLvl)
-           riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: avg.date, data: Double(Int(avg.data)), risk: alertLvl.calculateMedian((Int(avg.data)), avg.date)))
-//           let filteredAvgs = (avgs.dropLast((avgs.count - i2)))//.filter{!redAlerts.map{$0.date.formatted(date: .numeric, time: .omitted)}.contains($0.date.formatted(date: .numeric, time: .omitted))}
-//               let medianOfAvg = calculateMedian(array: filteredAvgs.map{$0.data})
-           
-              // }
-       }
-//       var track = [HealthData]()
-//       for (avg, i2) in Array(zip(redAlerts, redAlerts.indices)) {
+        //func getRiskScorev3(_ health: [HealthData], avgs: [HealthData]) -> [HealthData]
+//   {
 //
-//           let today = avg
-//           if redAlerts.indices.contains(i2 + 1) {
-//           let next = redAlerts[i2 + 1]
-//               if next.date.distance(to: today.date) <= 86400 {
-//           if(track.contains(today)) {
-//               confirmedRedAlerts.append(redAlerts[i2 + 1])
-//               track.append(next)
-//           } else {
-//               confirmedRedAlerts.append(redAlerts[i2 + 1])
-//               track.append(today)
-//               track.append(next)
-//           }
-//               }
+//       var riskScores = [HealthData]()
 //
+//       var alertLvl = AlertLevelv3()
+//
+//       var confirmedRedAlerts = [HealthData]()
+//      // Alert level stays persistant through the loop
+//
+//       // let medianOfAvg = calculateMedian(array: avgs.map{$0.data})
+//       for (avg, i2) in Array(zip(avgs, avgs.indices)) {
+//           // Needs more than 3 days to calculate
+//          // if i2 > 3 {
+//               // Gets the median of averages up to night i2
+//
+//          // print(alertLvl)
+//           riskScores.append(HealthData(id: UUID().uuidString, type: .Health, title: "", text: "", date: avg.date, data: Double(Int(avg.data)), risk: alertLvl.calculateMedian((Int(avg.data)), avg.date)))
+////           let filteredAvgs = (avgs.dropLast((avgs.count - i2)))//.filter{!redAlerts.map{$0.date.formatted(date: .numeric, time: .omitted)}.contains($0.date.formatted(date: .numeric, time: .omitted))}
+////               let medianOfAvg = calculateMedian(array: filteredAvgs.map{$0.data})
+//
+//              // }
 //       }
+////       var track = [HealthData]()
+////       for (avg, i2) in Array(zip(redAlerts, redAlerts.indices)) {
+////
+////           let today = avg
+////           if redAlerts.indices.contains(i2 + 1) {
+////           let next = redAlerts[i2 + 1]
+////               if next.date.distance(to: today.date) <= 86400 {
+////           if(track.contains(today)) {
+////               confirmedRedAlerts.append(redAlerts[i2 + 1])
+////               track.append(next)
+////           } else {
+////               confirmedRedAlerts.append(redAlerts[i2 + 1])
+////               track.append(today)
+////               track.append(next)
+////           }
+////               }
+////
+////       }
+////
+////       }
 //
-//       }
-      
-       // Return risk scores
-      
-   
-       return riskScores
-}
+//       // Return risk scores
+//
+//
+//       return riskScores
+//}
     func getAvgPerNight(_ health2: [HealthData]) -> [HealthData]  {
         var avgs = [HealthData]()
         // Reset averages

@@ -20,7 +20,7 @@ struct DataViewv2: View {
             HStack {
                 
                 Button(action: {
-                    health.getWhenAsleep()
+                    health.backgroundDelivery()
                 }) {
                     Label("Sync", systemSymbol: .repeat)
                         .font(.custom("Poppins", size: 16, relativeTo: .subheadline))

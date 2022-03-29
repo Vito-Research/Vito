@@ -40,8 +40,7 @@ struct AlertLevelv3 {
             return 0
         }
     }
-    
-    mutating func calculateMedian(_ hr: Int, _ date: Date?) -> Double {
+    mutating func calculateMedianHRV(_ hr: Int, _ date: Date?, yellowThres: Int, redThres: Int) -> Double {
         
         switch self.state {
             
@@ -51,13 +50,13 @@ struct AlertLevelv3 {
             
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     alert.clusterCount += 1
                     
                     self.state = .Five(alert)
                     return 1
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
                     
                     self.state = .Three(Alert(hr: alert.hr))
                 } else {
@@ -74,11 +73,11 @@ struct AlertLevelv3 {
             alert.hr.append(hr)
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
                 
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     self.state = .Five(alert)
                     return 1
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
                     
                     self.state = .Three(Alert(hr: alert.hr))
                 } else {
@@ -92,11 +91,11 @@ struct AlertLevelv3 {
             
             alert.hr.append(hr)
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     self.state = .Four(alert)
                     
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
                     
                     self.state = .Three(Alert(hr: alert.hr))
                 } else {
@@ -113,7 +112,7 @@ struct AlertLevelv3 {
             alert.hr.append(hr)
             
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     
                     
@@ -121,7 +120,7 @@ struct AlertLevelv3 {
                     
                     self.state = .Five(alert)
                     return 1
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
                     
                     self.state = .Three(Alert(hr: alert.hr))
                 } else {
@@ -136,11 +135,11 @@ struct AlertLevelv3 {
             
             alert.hr.append(hr)
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     self.state = .Four(alert)
                     
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
                     
                     self.state = .Three(Alert(hr: alert.hr))
                 } else {
@@ -156,11 +155,147 @@ struct AlertLevelv3 {
             alert.hr.append(hr)
             
             if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
-                if hr >= Int(median) + 4 {
+                if hr <= Int(median) - redThres {
                     
                     self.state = .Two(alert)
                     
-                } else if hr == Int(median) + 3 {
+                } else if hr == Int(median) - yellowThres {
+                    
+                    self.state = .One(Alert(hr: alert.hr))
+                } else {
+                    
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            } else {
+                
+                self.state = .Zero(Alert(hr: alert.hr))
+            }
+            
+            return 0
+            
+        }
+       return 0
+    }
+    mutating func calculateMedian(_ hr: Int, _ date: Date?, yellowThres: Int, redThres: Int) -> Double {
+        
+        switch self.state {
+            
+        case .Five(var alert):
+            
+            alert.hr.append(hr)
+            
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                
+                if hr >= Int(median) + redThres {
+                    
+                    alert.clusterCount += 1
+                    
+                    self.state = .Five(alert)
+                    return 1
+                } else if hr == Int(median) + yellowThres {
+                    
+                    self.state = .Three(Alert(hr: alert.hr))
+                } else {
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            }
+            
+            
+            
+            
+        case .Four(var alert):
+            
+            
+            alert.hr.append(hr)
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                
+                if hr >= Int(median) + redThres {
+                    
+                    self.state = .Five(alert)
+                    return 1
+                } else if hr == Int(median) + yellowThres {
+                    
+                    self.state = .Three(Alert(hr: alert.hr))
+                } else {
+                    
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            }
+            return 0
+            break
+        case .Three(var alert):
+            
+            alert.hr.append(hr)
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                if hr >= Int(median) + redThres {
+                    
+                    self.state = .Four(alert)
+                    
+                } else if hr == Int(median) + yellowThres {
+                    
+                    self.state = .Three(Alert(hr: alert.hr))
+                } else {
+                    
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            }
+            
+            return 0
+            break
+            
+        case .Two(var alert):
+            
+            alert.hr.append(hr)
+            
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                if hr >= Int(median) + redThres {
+                    
+                    
+                    
+                    
+                    
+                    self.state = .Five(alert)
+                    return 1
+                } else if hr == Int(median) + yellowThres {
+                    
+                    self.state = .Three(Alert(hr: alert.hr))
+                } else {
+                    
+                    
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            }
+            return 0
+            break
+        case .One(var alert):
+            
+            alert.hr.append(hr)
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                if hr >= Int(median) + redThres {
+                    
+                    self.state = .Four(alert)
+                    
+                } else if hr == Int(median) + yellowThres {
+                    
+                    self.state = .Three(Alert(hr: alert.hr))
+                } else {
+                    
+                    self.state = .Zero(Alert(hr: alert.hr))
+                }
+            }
+            return 0
+            
+            break
+        case .Zero(var alert):
+            
+            alert.hr.append(hr)
+            
+            if let median = calculateMedian(array: alert.hr.map{Double($0)}) {
+                if hr >= Int(median) + redThres {
+                    
+                    self.state = .Two(alert)
+                    
+                } else if hr == Int(median) + yellowThres {
                     
                     self.state = .One(Alert(hr: alert.hr))
                 } else {

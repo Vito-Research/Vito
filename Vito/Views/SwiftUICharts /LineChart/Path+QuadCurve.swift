@@ -315,7 +315,7 @@ extension CGPoint {
     
     static func value(x: CGFloat, y: CGFloat, t: CGFloat, c1: CGFloat, c2: CGFloat) -> CGFloat {
         var value: CGFloat = 0.0
-        // (1-t)^3 * p0 + 3 * (1-t)^2 * t * c1 + 3 * (1-t) * t^2 * c2 + t^3 * p1
+        // (1-t)^3 * p0 + yellowThres * (1-t)^2 * t * c1 + yellowThres * (1-t) * t^2 * c2 + t^3 * p1
         value += pow(1-t, 3) * x
         value += 3 * pow(1-t, 2) * t * c1
         value += 3 * (1-t) * pow(t, 2) * c2

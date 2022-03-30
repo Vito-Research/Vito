@@ -118,7 +118,7 @@ class Healthv3: ObservableObject {
                     
                     for data in hr.activitiesHeart {
                         print(data)
-                        let date =  fitbitData
+                        let date = fitbitData
                             if let restingHR = data.value.restingHeartRate {
                                 var newData = HealthData(id: UUID().uuidString, type: .Health, title: "Fitbit", text: "Fitbit", date: fitbitData.key, data: Double(restingHR))
     //                    alertLvl.calculateMedian(Int(newData.data), newData.date)
@@ -159,6 +159,31 @@ class Healthv3: ObservableObject {
                
         } else {
             backgroundDelivery()
+        }
+        if let lastRisk = self.riskData.last?.risk {
+            let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
+            self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
+            
+            if lastRisk == 1 {
+                let content = UNMutableNotificationContent()
+                content.title = "Change in Physiological Pattern"
+                content.subtitle = "Your health data may indicate that you may be becoming sick"
+                content.sound = UNNotificationSound.default
+
+                // show this notification five seconds from now
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+                // choose a random identifier
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+                // add our notification request
+                UNUserNotificationCenter.current().add(request)
+//                LocalNotifications.schedule(permissionStrategy: .askSystemPermissionIfNeeded) {
+//                                                                           Today()
+//                                                                               .at(hour: Date().get(.hour), minute: Date().get(.minute) + 1)
+//                                                                               .schedule(title: "Significant P", body: "Your health data may indicate that you may be becoming sick, please consult your doctor")
+//                                                                       }
+            }
         }
     }
     // Called on class initialization
@@ -223,21 +248,21 @@ class Healthv3: ObservableObject {
                             
                         }
                     }
-                        if var newDataRR = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .respiratoryRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
-                            if newDataRR.data.isNormal {
-                            newDataRR.risk = self.alertLvlRR.calculateMedian(Int(newDataRR.data), newDataRR.date, yellowThres: 0, redThres: 1)
-                                //self.riskData.append(newDataRR)
-                                print(newDataRR)
-                            }
-                        }
-                            if var newDataHRV = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!, unit: HKUnit(from: "ms"), start: day, end: day.addingTimeInterval(86400)) {
-                                
-                                if newDataHRV.data.isNormal {
-                                    newDataHRV.risk = self.alertLvlHRV.calculateMedianHRV(Int(newDataHRV.data), newDataHRV.date, yellowThres: 4, redThres: 5)
-//                                    print(newDataHRV)
-//                                    self.riskData.append(newDataHRV)
-                                }
-                            }
+//                        if var newDataRR = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .respiratoryRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
+//                            if newDataRR.data.isNormal {
+//                            newDataRR.risk = self.alertLvlRR.calculateMedian(Int(newDataRR.data), newDataRR.date, yellowThres: 0, redThres: 1)
+//                                //self.riskData.append(newDataRR)
+//                                print(newDataRR)
+//                            }
+//                        }
+//                            if var newDataHRV = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!, unit: HKUnit(from: "ms"), start: day, end: day.addingTimeInterval(86400)) {
+//
+//                                if newDataHRV.data.isNormal {
+//                                    newDataHRV.risk = self.alertLvlHRV.calculateMedianHRV(Int(newDataHRV.data), newDataHRV.date, yellowThres: 4, redThres: 5)
+////                                    print(newDataHRV)
+////                                    self.riskData.append(newDataHRV)
+//                                }
+//                            }
                        
                             
                                

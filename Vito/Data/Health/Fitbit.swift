@@ -21,10 +21,10 @@ class Fitbit: ObservableObject {
 //        }
     }
     
-    func getHeartrate() async throws -> FitbitData? {
+    func getHeartrate(start: String, end: String) async throws -> FitbitData? {
         if let accessToken = accessToken {
             
-            var request = URLRequest(url: URL(string: "https://api.fitbit.com/1/user/-/activities/heart/date/2022-03-28/2022-03-29.json")!)
+            var request = URLRequest(url: URL(string: "https://api.fitbit.com/1/user/-/activities/heart/date/\(start)/\(end).json")!)
    //
             print("ACCESS TOKEN")
             print(accessToken)

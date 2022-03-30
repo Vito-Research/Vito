@@ -24,10 +24,12 @@ class Fitbit: ObservableObject {
     func getHeartrate() async throws -> FitbitData? {
         if let accessToken = accessToken {
             
-            var request = URLRequest(url: URL(string: "https://api.fitbit.com/1/user/-/activities/heart/date/2019-01-01/2019-01-31.json")!)
+            var request = URLRequest(url: URL(string: "https://api.fitbit.com/1/user/-/activities/heart/date/2022-03-28/2022-03-29.json")!)
    //
+            print("ACCESS TOKEN")
+            print(accessToken)
             request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-            request.setValue("application/json", forHTTPHeaderField: "content-type")
+           // request.setValue("application/json", forHTTPHeaderField: "Accept")
         print(request)
             let res = try await session.upload(
                  for: request,
@@ -36,10 +38,14 @@ class Fitbit: ObservableObject {
              )
             print(res.1)
             let jsonDecoder = JSONDecoder()
-            
+            print(String(data: res.0, encoding: .utf8)!)
+            //print(try? jsonDecoder.decode(FitbitData.self, from: res.0))
             return try jsonDecoder.decode(FitbitData.self, from: res.0)
+        } else {
+             //fatalError()
+            return nil
         }
-        return nil
+        //return nil
     //
     }
     func authorize(_ data: Data, to url: URL, type: String = "POST") async throws -> (Data, URLResponse)  {

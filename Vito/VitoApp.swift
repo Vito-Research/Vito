@@ -12,10 +12,10 @@ import HealthKit
 struct VitoApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    // @StateObject var healthv3 = Healthv3()
+    //@StateObject var healthv3 = Healthv3()
     @State var share = false
-   // @StateObject var fitbit = Fitbit()
-   // @StateObject var model = WebViewModel()
+//   @StateObject var fitbit = Fitbit()
+//   @StateObject var model = WebViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -23,25 +23,36 @@ struct VitoApp: App {
 //        WindowGroup {
 //            WebView(webView: model.webView)
 //                .onAppear() {
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0)  {
-//                        fitbit.accessToken = model.webView.url?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "")
-//                        let removeAfter = fitbit.accessToken?.components(separatedBy: "&user_id")
-//                        fitbit.accessToken = removeAfter?[0]
-//
-//                        print(fitbit.accessToken)
-//                        Task {
-//                            print(try await fitbit.getHeartrate())
-//                        }
-//
-//
-//                    }
-//                }
-//                .onChange(of: model.webView.url) { newValue in
-//                    fitbit.accessToken = newValue?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "")
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//                    fitbit.accessToken = model.webView.url?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "").components(separatedBy: "&user")[0]
 //                    Task {
-//                    print(try await fitbit.getHeartrate())
+//                        healthv3.fitbitData = [Date() : try await fitbit.getHeartrate()]
+//                        print(healthv3.fitbitData)
+//
+//                    }
+//
 //                    }
 //                }
+////                .onAppear() {
+////                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0)  {
+////                        fitbit.accessToken = model.webView.url?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "")
+////                        let removeAfter = fitbit.accessToken?.components(separatedBy: "&user_id")
+////                        fitbit.accessToken = removeAfter?[0]
+////
+////                        print(fitbit.accessToken)
+////                        Task {
+////                            print(try await fitbit.getHeartrate())
+////                        }
+////
+////
+////                    }
+////                }
+////                .onChange(of: model.webView.url) { newValue in
+////                    fitbit.accessToken = newValue?.absoluteString.replacingOccurrences(of: "https://andreasink.web.app/#access_token=", with: "").replacingOccurrences(of: "&user_id=3WJC7W&scope=sleep+activity+heartrate&token_type=Bearer&expires_in=2591460", with: "")
+////                    Task {
+////                        print(try await fitbit.getHeartrate())
+////                    }
+////                }
 //            //ContentView()
 //
 ////            EmptyView()

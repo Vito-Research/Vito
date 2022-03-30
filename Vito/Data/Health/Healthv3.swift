@@ -25,6 +25,8 @@ class Healthv3: ObservableObject {
     
     @UserDefault("uses2", defaultValue: 0)  var uses2: Int
     
+    @UserDefault("usingFitbit", defaultValue: true)  var usingFitbit: Bool
+    
     // Stores avg hr per night
     @Published var avgs: [HealthData] = [HealthData]()
     
@@ -94,9 +96,11 @@ class Healthv3: ObservableObject {
     var alertLvl = AlertLevelv3()
     var alertLvlRR = AlertLevelv3()
     var alertLvlHRV = AlertLevelv3()
+    
+    @State var fitbitData: [Date: FitbitData?] = [:]
     init() {
-        
-        backgroundDelivery()
+       
+        self.processData()
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 20.0) {
 //            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
 //            if let lastRisk = self.riskData.last?.risk {
@@ -104,6 +108,58 @@ class Healthv3: ObservableObject {
 //                self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
 //            }
 //        }
+    }
+    func processData() {
+        if usingFitbit {
+            print(fitbitData)
+            for fitbitData in fitbitData {
+                if let hr = fitbitData.value {
+                do {
+                    
+                    for data in hr.activitiesHeart {
+                        print(data)
+                        let date =  fitbitData
+                            if let restingHR = data.value.restingHeartRate {
+                                var newData = HealthData(id: UUID().uuidString, type: .Health, title: "Fitbit", text: "Fitbit", date: fitbitData.key, data: Double(restingHR))
+    //                    alertLvl.calculateMedian(Int(newData.data), newData.date)
+    //
+    //                    newData.risk = alertLvl.returnAlert()
+                            newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date, yellowThres: 3, redThres: 4)
+                            self.riskData.append(newData)
+                            self.hrData.append(newData)
+                    }
+                    }
+                    
+                } catch {
+                }
+            } else {
+            }
+            }
+                    
+                       
+                       
+                            
+                               
+                            
+                            
+                        
+                       
+                        
+                    
+                    
+                    
+    //                let (samples, _, _) = try await hv4.queryHealthKit(HKObjectType.quantityType(forIdentifier: .heartRate)!, startDate: day, endDate: day.addingTimeInterval(86400))
+    //                print(samples)
+    //                let atRestHR = samples?.filter{$0.metadata?.values.first as! NSNumber == 1}
+    //                let average = average(numbers: atRestHR.map{$0.map{$0.}})
+                    
+                    
+                
+                    
+               
+        } else {
+            backgroundDelivery()
+        }
     }
     // Called on class initialization
 //    init() {
@@ -712,30 +768,30 @@ class Healthv3: ObservableObject {
         return paths[0]
     }
     var session = URLSession.shared
-    func sendToRedCap() async throws -> FitbitData? {
-     
-            
-            var request = URLRequest(url: URL(string: "https://redcapdemo.vanderbilt.edu/api/")!)
-   //
-        ML().exportDataToCSV(data: healthData, codableRisk: codableRisk) { isDone in
-           
-        }
-        request.httpMethod = "POST"
-        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        let data = RedCapData(data: String(data: try Data(contentsOf: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv")), encoding: .utf8) ?? "")
-        print(data)
-        print(request)
-        
-            let res = try await session.upload(
-                 for: request,
-                 from: try JSONEncoder().encode(data)
-                    
-             )
-            print(res.1)
-            let jsonDecoder = JSONDecoder()
-            
-            return try jsonDecoder.decode(FitbitData.self, from: res.0)
-    //
-    }
+//    func sendToRedCap() async throws -> FitbitData? {
+//
+//
+//            var request = URLRequest(url: URL(string: "https://redcapdemo.vanderbilt.edu/api/")!)
+//   //
+//        ML().exportDataToCSV(data: healthData, codableRisk: codableRisk) { isDone in
+//
+//        }
+//        request.httpMethod = "POST"
+//        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+//
+//        let data = RedCapData(data: String(data: try Data(contentsOf: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv")), encoding: .utf8) ?? "")
+//        print(data)
+//        print(request)
+//
+//            let res = try await session.upload(
+//                 for: request,
+//                 from: try JSONEncoder().encode(data)
+//
+//             )
+//            print(res.1)
+//            let jsonDecoder = JSONDecoder()
+//
+//            return try jsonDecoder.decode(FitbitData.self, from: res.0)
+//    //
+//    }
 }

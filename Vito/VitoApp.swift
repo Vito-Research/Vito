@@ -19,6 +19,7 @@ struct VitoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            //PrivacyReportView()
         }
 //        WindowGroup {
 //            WebView(webView: model.webView)

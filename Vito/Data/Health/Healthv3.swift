@@ -25,7 +25,7 @@ class Healthv3: ObservableObject {
     
     @UserDefault("uses2", defaultValue: 0)  var uses2: Int
     
-    @UserDefault("usingFitbit", defaultValue: true)  var usingFitbit: Bool
+    @UserDefault("usingFitbit", defaultValue: false)  var usingFitbit: Bool
     
     // Stores avg hr per night
     @Published var avgs: [HealthData] = [HealthData]()
@@ -99,7 +99,7 @@ class Healthv3: ObservableObject {
     
     @State var fitbitData: [Date: FitbitData?] = [:]
     init() {
-       
+        //usingFitbit = false
         self.processData()
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 20.0) {
 //            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
@@ -160,6 +160,7 @@ class Healthv3: ObservableObject {
         } else {
             backgroundDelivery()
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 60 * 3) {
         if let lastRisk = self.riskData.last?.risk {
             let explanation =  lastRisk > 0 ? [Explanation(image: .exclamationmarkCircle, explanation: "Your heart rate while asleep is abnormally high compared to your previous data", detail: ""), Explanation(image: .app, explanation: "This can be a sign of disease, intoxication, lack of sleep, or other factors", detail: ""), Explanation(image: .stethoscope, explanation: "This is not medical advice or a diagnosis, it's simply a datapoint to bring up to your doctor", detail: "")] : [Explanation(image: .checkmark, explanation: "Your heart rate while asleep is normal compared to your previous data", detail: ""), Explanation(image: .stethoscope, explanation: "This is not a medical diagnosis or lack thereof, it's simply a datapoint to bring up to your doctor", detail: "")]
             self.risk = Risk(id: UUID().uuidString, risk: lastRisk, explanation: explanation)
@@ -185,7 +186,9 @@ class Healthv3: ObservableObject {
 //                                                                       }
             }
         }
+        }
     }
+    
     // Called on class initialization
 //    init() {
 //        // Gets when user is alseep, gets risk score, and enables background delivery

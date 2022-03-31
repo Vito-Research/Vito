@@ -83,6 +83,7 @@
 		ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED99067C27D92A1C0016F875 /* AlertLevel.swift */; };
 		ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */ = {isa = PBXBuildFile; fileRef = ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */; };
 		EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */; };
+		EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */; };
 		EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44C27E09BE400EE064B /* Fitbit.swift */; };
 		EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44E27E0B30A00EE064B /* WebView.swift */; };
 /* End PBXBuildFile section */
@@ -163,6 +164,7 @@
 		ED99067C27D92A1C0016F875 /* AlertLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLevel.swift; sourceTree = "<group>"; };
 		ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orig_NonFitbit_HR.csv; sourceTree = "<group>"; };
 		EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv4.swift; sourceTree = "<group>"; };
+		EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyReportView.swift; sourceTree = "<group>"; };
 		EDDFD44C27E09BE400EE064B /* Fitbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitbit.swift; sourceTree = "<group>"; };
 		EDDFD44E27E0B30A00EE064B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -279,6 +281,7 @@
 				E1A4C84926E838B80031C161 /* FeelingScoreView.swift */,
 				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
 				E1A4C84B26E838B80031C161 /* HomeView.swift */,
+				EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */,
 				E1A4C84C26E838B80031C161 /* ActionCardView.swift */,
 				E1A4C84626E838B80031C161 /* DataView.swift */,
 				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
@@ -545,6 +548,7 @@
 				ED96A2F827E4168600044435 /* RedCapData.swift in Sources */,
 				E1A4C8A126E838B80031C161 /* MagnifierRect.swift in Sources */,
 				EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */,
+				EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */,
 				E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */,
 				E1A4C89526E838B80031C161 /* LabelView.swift in Sources */,
 			);

@@ -20,6 +20,7 @@ struct ContentView: View {
         ZStack {
             Color.clear
                 .onAppear() {
+                    //health.processData()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                         withAnimation(.easeInOut(duration: 2.0)) {
                     intro = false

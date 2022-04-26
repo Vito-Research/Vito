@@ -11,40 +11,40 @@ import Accelerate
 private let store = HKHealthStore()
 actor Healthv4 {
     private let anchorKey = "anchorKey"
-//    private var anchor: HKQueryAnchor? {
-//        get {
-//            // If user defaults returns nil, just return it.
-//            guard let data = UserDefaults.standard.object(forKey: anchorKey) as? Data else {
-//                return nil
-//            }
-//
-//            // Otherwise, unarchive and return the data object.
-//            do {
-//                return try NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
-//            } catch {
-//                // If an error occurs while unarchiving, log the error and return nil.
-//               // logger.error("Unable to unarchive \(data): \(error.localizedDescription)")
-//                return nil
-//            }
-//        }
-//        set(newAnchor) {
-//            // If the new value is nil, save it.
-//            guard let newAnchor = newAnchor else {
-//                UserDefaults.standard.set(nil, forKey: anchorKey)
-//                return
-//            }
-//
-//            // Otherwise convert the anchor object to Data, and save it in user defaults.
-//            do {
-//                let data = try NSKeyedArchiver.archivedData(withRootObject: newAnchor, requiringSecureCoding: true)
-//                UserDefaults.standard.set(data, forKey: anchorKey)
-//            } catch {
-//                // If an error occurs while archiving the anchor, just log the error.
-//                // the value stored in user defaults is not changed.
-//              //  logger.error("Unable to archive \(newAnchor): \(error.localizedDescription)")
-//            }
-//        }
-//    }
+    private var anchor: HKQueryAnchor? {
+        get {
+            // If user defaults returns nil, just return it.
+            guard let data = UserDefaults.standard.object(forKey: anchorKey) as? Data else {
+                return nil
+            }
+
+            // Otherwise, unarchive and return the data object.
+            do {
+                return try NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: data)
+            } catch {
+                // If an error occurs while unarchiving, log the error and return nil.
+               // logger.error("Unable to unarchive \(data): \(error.localizedDescription)")
+                return nil
+            }
+        }
+        set(newAnchor) {
+            // If the new value is nil, save it.
+            guard let newAnchor = newAnchor else {
+                UserDefaults.standard.set(nil, forKey: anchorKey)
+                return
+            }
+
+            // Otherwise convert the anchor object to Data, and save it in user defaults.
+            do {
+                let data = try NSKeyedArchiver.archivedData(withRootObject: newAnchor, requiringSecureCoding: true)
+                UserDefaults.standard.set(data, forKey: anchorKey)
+            } catch {
+                // If an error occurs while archiving the anchor, just log the error.
+                // the value stored in user defaults is not changed.
+              //  logger.error("Unable to archive \(newAnchor): \(error.localizedDescription)")
+            }
+        }
+    }
     @discardableResult
     public func loadNewDataFromHealthKit(type: HKSampleType, unit: HKUnit, start: Date, end: Date) async throws -> HealthData? {
         
@@ -98,7 +98,7 @@ actor Healthv4 {
             let query = HKAnchoredObjectQuery(
                 type: type,
                 predicate: datePredicate,
-                anchor: nil,
+                anchor: anchor,
                 limit: HKObjectQueryNoLimit) { (_, samples, deletedSamples, newAnchor, error) in
                 //print(samples)
                 // When the query ends, check for errors.

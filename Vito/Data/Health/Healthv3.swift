@@ -23,12 +23,14 @@ class Healthv3: ObservableObject {
     // Saves median of averages to skip data query
     @UserDefault("medianOfAvgs", defaultValue: 0.0)  var medianOfAvgs: Double
     
+
+    
     @UserDefault("uses2", defaultValue: 0)  var uses2: Int
     
     @UserDefault("usingFitbit", defaultValue: false)  var usingFitbit: Bool
     
     // Stores avg hr per night
-    @Published var avgs: [HealthData] = [HealthData]()
+    @UserDefault("avgs", defaultValue: [HealthData]())  var avgs: [HealthData]
     
     // Current night's risk
     @Published var risk = Risk(id: UUID().uuidString, risk: 21, explanation: [Explanation(image: .return, explanation: "Loading", detail: "")])
@@ -37,10 +39,10 @@ class Healthv3: ObservableObject {
     @Published var queryDate = Query(id: "", durationType: .Day, duration: 1, anchorDate: Date())
     
     // Stores healthdata
-    @Published var healthData = [HealthData]()
+    @UserDefault("healthData", defaultValue: [HealthData]())  var healthData 
     
     // Stores risk data
-    @Published var riskData = [HealthData]()
+    @UserDefault("riskData", defaultValue: [HealthData]()) var riskData
     
     // Class to retrieve health data
     @Published var healthStore = HKHealthStore()
@@ -226,16 +228,21 @@ class Healthv3: ObservableObject {
    
    
     func backgroundDelivery() {
+        
         self.healthStore.requestAuthorization(toShare: [], read: self.readData) { (success, error) in
         if let rr =  HKObjectType.quantityType(forIdentifier: .respiratoryRate) {
             self.healthStore.enableBackgroundDelivery(for: rr, frequency: .daily) { [self] sucess, error in
-            if let earlyDate = Calendar.current.date(
-                byAdding: .month,
-                value: -3,
-                to: Date()) {
+                if let max = riskData.map({$0.date}).max() {
+                 let distance = max.distance(to: Date())
+                    print(distance)
+//            if let earlyDate = Calendar.current.date(
+//                byAdding: .month,
+//                value: distance,
+//                to: Date()) {
                 Task {
-                for day in Date.dates(from: earlyDate, to: Date()) {
-                  //  print(day)
+                    
+                    for day in Date.dates(from: Date().addingTimeInterval(-distance), to: Date()) {
+                  print(day)
                     
                 do {
                     let hv4 = Healthv4()
@@ -288,9 +295,46 @@ class Healthv3: ObservableObject {
                     
                 }
                 }
-            }
+                
+                    
+                } else {
+                    if let earlyDate = Calendar.current.date(
+                                  byAdding: .month,
+                                  value: -3,
+                                  to: Date()) {
+                    Task {
+                        
+                        for day in Date.dates(from: earlyDate, to: Date()) {
+                      print(day)
+                        
+                    do {
+                        let hv4 = Healthv4()
+                        if var newData = try await hv4.loadNewDataFromHealthKit(type: HKObjectType.quantityType(forIdentifier: .heartRate)!, unit: HKUnit(from: "count/min"), start: day, end: day.addingTimeInterval(86400)) {
+                            if newData.data.isNormal {
+        //                    alertLvl.calculateMedian(Int(newData.data), newData.date)
+        //
+        //                    newData.risk = alertLvl.returnAlert()
+                                newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date, yellowThres: 3, redThres: 4)
+                                self.riskData.append(newData)
+                                self.hrData.append(newData)
+                            } else {
+                                
+                            }
+                        }
+    
+                    
+                                
+         
+                        
+                    } catch {
+                    }
+                        
+                    
+                        }
+                    }
+                    }
         }
-        
+            }
         }
     }
     }

@@ -110,8 +110,8 @@ struct ContentView: View {
             }
             }
     }
-            if intro && onboarding != 0 {
-        IntroView()
+            if onboarding != 0  && health.progress < 1 {
+                IntroView(health: health)
             }
         }
     }

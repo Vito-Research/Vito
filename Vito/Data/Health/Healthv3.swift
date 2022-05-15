@@ -100,6 +100,8 @@ class Healthv3: ObservableObject {
     var alertLvlHRV = AlertLevelv3()
     
     @State var fitbitData: [Date: FitbitData?] = [:]
+    
+    @Published var progress: CGFloat = 0.0
     init() {
         //usingFitbit = false
         self.processData()
@@ -170,7 +172,7 @@ class Healthv3: ObservableObject {
             if lastRisk == 1 {
                 let content = UNMutableNotificationContent()
                 content.title = "Change in Physiological Pattern"
-                content.subtitle = "Your health data may indicate that you may be becoming sick"
+                content.subtitle = "Your health data may indicate a stress event"
                 content.sound = UNNotificationSound.default
 
                 // show this notification five seconds from now
@@ -254,6 +256,7 @@ class Healthv3: ObservableObject {
                             newData.risk = self.alertLvl.calculateMedian(Int(newData.data), newData.date, yellowThres: 3, redThres: 4)
                             self.riskData.append(newData)
                             self.hrData.append(newData)
+                            
                         } else {
                             
                         }
@@ -292,7 +295,7 @@ class Healthv3: ObservableObject {
                     
                 } catch {
                 }
-                    
+                        progress = (day.timeIntervalSince1970/distance) * 10
                 }
                 }
                 
@@ -300,10 +303,10 @@ class Healthv3: ObservableObject {
                 } else {
                     if let earlyDate = Calendar.current.date(
                                   byAdding: .month,
-                                  value: -3,
+                                  value: -12,
                                   to: Date()) {
                     Task {
-                        
+                        let distance = earlyDate.distance(to: Date())
                         for day in Date.dates(from: earlyDate, to: Date()) {
                       print(day)
                         
@@ -329,7 +332,7 @@ class Healthv3: ObservableObject {
                     } catch {
                     }
                         
-                    
+                            progress = (day.timeIntervalSince1970/distance) * 10
                         }
                     }
                     }

@@ -6,6 +6,8 @@ struct IntroView: View {
     @State var animate2 = false
     @State var pulse = false
     @State var timer = Timer.publish(every: 10.0, on: .main, in: .common).autoconnect()
+    @State var total = 1.0
+    @ObservedObject var health: Healthv3
     var body: some View {
         ZStack {
             Color(.white)
@@ -58,7 +60,7 @@ struct IntroView: View {
         }
                 Spacer()
                
-           
+                ProgressView("Processing Health Data", value: health.progress, total: 1)
             }
         }
     }

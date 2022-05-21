@@ -22,12 +22,14 @@ struct PrivacyReportView: View {
                 .background(LinearGradient(colors: [.accentColor, .cyan], startPoint: SwiftUI.UnitPoint.topLeading, endPoint: SwiftUI.UnitPoint.bottomTrailing).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.vertical, 15))
             }
             Section {
-                VStack {
+                VStack(alignment: .leading) {
         Text("Privacy is Important.")
                         .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
                         .padding(.vertical)
+                        .foregroundColor(Color.accentColor)
         Text("Here's how to see what network requests Vito makes according to Apple...")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
+                        .foregroundColor(Color.cyan)
                    // ScrollView {
         ForEach(howTo, id: \.self) { value in
             HStack {
@@ -49,6 +51,7 @@ struct PrivacyReportView: View {
                 VStack(alignment: .leading) {
         Text("TLDR...")
                         .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
+                        .foregroundColor(Color.accentColor)
         ForEach(apiCalls, id: \.self) { value in
         HStack {
            

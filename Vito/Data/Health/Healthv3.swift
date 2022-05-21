@@ -105,6 +105,7 @@ class Healthv3: ObservableObject {
     init() {
         //usingFitbit = false
         self.processData()
+        
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 20.0) {
 //            self.riskData = self.getRiskScorev3(self.hrData, avgs: self.hrData)
 //            if let lastRisk = self.riskData.last?.risk {

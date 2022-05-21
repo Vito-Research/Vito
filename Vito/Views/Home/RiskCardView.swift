@@ -34,15 +34,14 @@ struct RiskCardView: View {
                 Text("Heart Rate Score")
                     .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                 Spacer()
-                Button(action: {
-                    withAnimation(.easeOut) {
-                    explain.toggle()
-                    }
-                }) {
+               
+                NavigationLink(destination: PrivacyReportView()) {
+                 
                     Image(systemSymbol: .questionmarkCircle)
                         .font(.largeTitle)
-                    
+                        
                 }
+                
             }
             }
             

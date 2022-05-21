@@ -19,24 +19,25 @@ struct HomeView: View {
     @State var share = false
     var body: some View {
         NavigationView {
-        ScrollView {
-            
-            LazyVGrid(columns: gridLayout) {
+       // ScrollView {
+            VStack {
+            //LazyVGrid(columns: gridLayout) {
                 if !health.risk.id.isEmpty {
                 RiskCardView(health: health, date: Date())
                         .transition(.move(edge: .top))
                        
                 }
-               
+                Spacer()
                 CardView(card: Card( image: "data", title: "Learn More?", description: "Learn more about our values and how the algorithm works", cta: "Learn More"))
                     .padding()
 
-                
+                Spacer()
             }
                
            
             
-        } .navigationTitle("")
+       // }
+        .navigationTitle("")
                 .navigationBarHidden(true)
         .onAppear() {
             if UIDevice.current.userInterfaceIdiom == .pad {

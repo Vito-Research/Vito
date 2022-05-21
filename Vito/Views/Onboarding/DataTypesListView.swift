@@ -39,6 +39,7 @@ struct DataTypesListView: View {
                     Text(toggleData[i].explanation.detail)
                     .font(.custom("Poppins", size: 16, relativeTo: .headline))
                     .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(Color.cyan)
                     .padding(.top)
                     .multilineTextAlignment(.leading)
                     Spacer()

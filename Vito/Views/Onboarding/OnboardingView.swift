@@ -115,6 +115,7 @@ struct OnboardingDetail: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
                 .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(Color.accentColor)
             Text(onboarding.description)
                 .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                 .multilineTextAlignment(.center)

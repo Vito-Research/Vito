@@ -40,6 +40,7 @@ struct CardView: View {
                             show = true
                         }) {
                         Text(card.cta)
+                                .minimumScaleFactor(0.8)
                     } .buttonStyle(CTAButtonStyle())
                         
                     } .sheet(isPresented: $show) {

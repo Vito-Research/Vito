@@ -15,94 +15,106 @@ struct DataView: View {
     
     @Environment(\.calendar) var calendar
    
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         
-        VStack {
-            HStack {
-                Text("Average Heart Rate: " + String(round(average * 10) / 10.0))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .multilineTextAlignment(.leading)
-                    .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
-                Spacer()
-//                DatePicker("", selection: $health.queryDate.anchorDate, displayedComponents: .date)
-//                    .font(.custom("Poppins", size: 12, relativeTo: .headline))
-//                .datePickerStyle(CompactDatePickerStyle())
-//                .padding()
-                .onAppear() {
-                  //  health.queryDate.anchorDate = date
-                    let points = getHeartRateData().filter{!$0.data.isNaN}
-                    if points.count < 1 {
-                        average = points.first?.data ?? 0
-                        data.points = points.map{($0.title, $0.data)}
-                    } else {
-                    average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                    data.points = points.map{("\($0.date.get(.hour))", $0.data)}
-                    }
-
-                }
-            
-            }
-            HStack {
-                Spacer()
-//                TextField("Duration", value: $health.queryDate.duration, formatter: NumberFormatter())
-//                    .keyboardType(.numberPad)
-//                    .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
-//                    .onChange(of: health.queryDate.duration) { value in
-//
-//                            let points = getHeartRateDataAsDoubleArr()
-//                            average = health.average(numbers: points)
-//                            data.points = points.map{("", $0)}
-//                    }
-                ForEach(DurationType.allCases, id: \.self) { value in
-                    if value != .Year {
-                    Button(action: {
-                        withAnimation(.easeInOut) {
-                        health.queryDate.durationType = value
-                            let points = getHeartRateData()
-                            average = health.average(numbers: points.map{$0.data}.filter{$0.isNormal})
+        NavigationView {
+            ScrollView {
+                VStack {
+                    HStack {
+                        Text("Average Heart Rate: " + String(round(average * 10) / 10.0))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.leading)
+                            .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
+                        Spacer()
+        //                DatePicker("", selection: $health.queryDate.anchorDate, displayedComponents: .date)
+        //                    .font(.custom("Poppins", size: 12, relativeTo: .headline))
+        //                .datePickerStyle(CompactDatePickerStyle())
+        //                .padding()
+                        .onAppear() {
+                          //  health.queryDate.anchorDate = date
+                            let points = getHeartRateData().filter{!$0.data.isNaN}
+                            if points.count < 1 {
+                                average = points.first?.data ?? 0
+                                data.points = points.map{($0.title, $0.data)}
+                            } else {
+                            average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
                             data.points = points.map{("\($0.date.get(.hour))", $0.data)}
-                            
-                            print(data.points)
+                            }
+
                         }
-                    }) {
-                        Text(value.rawValue)
-                            .font(.custom("Poppins", size: 12, relativeTo: .subheadline))
-                            .foregroundColor(value == health.queryDate.durationType ?  .white : .blue)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(value == health.queryDate.durationType ?  .blue : .white))
-                            //.scaleEffect(value == health.queryDate.durationType ? 1.1 : 1)
+                    
                     }
-                }
-                }
-               
-            }
-        
-                //.opacity(isTutorial ? (tutorialNum == 1 ? 1.0 : 0.1) : 1.0)
-            .onChange(of: health.queryDate.anchorDate, perform: { value in
-            
-                let points = getHeartRateData().filter{!$0.data.isNaN}
+                    HStack {
+                        Spacer()
+        //                TextField("Duration", value: $health.queryDate.duration, formatter: NumberFormatter())
+        //                    .keyboardType(.numberPad)
+        //                    .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
+        //                    .onChange(of: health.queryDate.duration) { value in
+        //
+        //                            let points = getHeartRateDataAsDoubleArr()
+        //                            average = health.average(numbers: points)
+        //                            data.points = points.map{("", $0)}
+        //                    }
+                        ForEach(DurationType.allCases, id: \.self) { value in
+                            if value != .Year {
+                            Button(action: {
+                                withAnimation(.easeInOut) {
+                                health.queryDate.durationType = value
+                                    let points = getHeartRateData()
+                                    average = health.average(numbers: points.map{$0.data}.filter{$0.isNormal})
+                                    data.points = points.map{("\($0.date.get(.hour))", $0.data)}
+                                    
+                                    print(data.points)
+                                }
+                            }) {
+                                Text(value.rawValue)
+                                    .font(.custom("Poppins", size: 12, relativeTo: .subheadline))
+                                    .foregroundColor(value == health.queryDate.durationType ?  .white : .blue)
+                                    .padding()
+                                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(value == health.queryDate.durationType ?  .blue : .white))
+                                    //.scaleEffect(value == health.queryDate.durationType ? 1.1 : 1)
+                            }
+                        }
+                        }
+                       
+                    }
                 
-                average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                data.points = points.map{("\($0.date.get(.hour))", $0.data)}
-              
-                  
-                })
-            if !health.risk.id.isEmpty {
-                RiskCardView(health: health, date: health.queryDate.anchorDate, isCalendar: true)
-                    .transition(.move(edge: .top))
+                        //.opacity(isTutorial ? (tutorialNum == 1 ? 1.0 : 0.1) : 1.0)
+                    .onChange(of: health.queryDate.anchorDate, perform: { value in
+                    
+                        let points = getHeartRateData().filter{!$0.data.isNaN}
+                        
+                        average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
+                        data.points = points.map{("\($0.date.get(.hour))", $0.data)}
+                      
+                          
+                        })
+                    if !health.risk.id.isEmpty {
+                        RiskCardView(health: health, date: health.queryDate.anchorDate, isCalendar: true)
+                            .transition(.move(edge: .top))
+                    }
+                    HStack {
+                        Text("Heart Rate")
+                            .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
+                        Spacer()
+                    }  //.opacity(isTutorial ? (tutorialNum == 2 ? 1.0 : 0.1) : 1.0)
+                    
+                        
+                    BarChartView(data: $data, title: "Heart Rate")
+                       
+                   
+                    Spacer()
+                } .padding()
             }
-            HStack {
-                Text("Heart Rate")
-                    .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
-                Spacer()
-            }  //.opacity(isTutorial ? (tutorialNum == 2 ? 1.0 : 0.1) : 1.0)
-            
-                
-            BarChartView(data: $data, title: "Heart Rate")
-               
-           
-            Spacer()
-        } .padding()
+            .navigationBarItems(trailing: Button (action: {
+                dismiss.callAsFunction()
+            }, label: {
+                Text("Done")
+            }))
+            .navigationBarTitle("Data View")
+        }
            
         }
 

@@ -8,10 +8,10 @@
 import SwiftUI
 import HealthKit
 import NiceNotifications
-//import TabularData
+
 struct ContentView: View {
     @StateObject var health = Healthv3()
-    //@StateObject var ml = ML()
+  
     @State var share = false
     @State var intro = true
     @State var onboarding = UserDefaults.standard.integer(forKey: "onboarding")
@@ -20,7 +20,7 @@ struct ContentView: View {
         ZStack {
             Color.clear
                 .onAppear() {
-                    //health.processData()
+                   
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                         withAnimation(.easeInOut(duration: 2.0)) {
                     intro = false
@@ -30,14 +30,11 @@ struct ContentView: View {
                 .onChange(of: scenePhase) { value in
                     withAnimation(.easeOut) {
                     if value == .active {
-                    //intro = true
-                        
-                        #warning("disbled")
-                   // health.backgroundDelivery()
+                    
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                             withAnimation(.easeInOut(duration: 2.0)) {
-                       // intro = false
+                       
                             }
                         }
                 }
@@ -55,32 +52,10 @@ struct ContentView: View {
                
                
             .onAppear() {
-//                do {
-//                let df = try DataFrame(contentsOfCSVFile: Bundle.main.url(forResource: "P355472-AppleWatch-hr", withExtension: "csv")!)
-//                ml.importCSV(data: df) { data in
-//                    health.healthData = data
-//                    let risk = health.getRiskScoreAll(bedTime: 6, wakeUpTime: 10, data: data)
-//                    //print(risk.1)
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-//                        let filtered = risk.1.filter {
-//                        return $0.risk != 0 && $0.risk != 21
-//                    }
-//                    //print(health.codableRisk.count)
-//                        print(filtered.count)
-//                    }
-//                }
-//                } catch {
-                    
-                //}
+
                 LocalNotifications.schedule(permissionStrategy: .askSystemPermissionIfNeeded) {
                 }
                
-              
-//                for type in health.readData {
-//                health.getHealthData(type: type, dateDistanceType: .Month, dateDistance: 24) { _ in
-//
-//                }
-                //}
                
             }
             .onChange(of: health.codableRisk) { value in
@@ -100,9 +75,6 @@ struct ContentView: View {
                     
                     
                 }
-//                ml.exportDataToCSV(data: health.healthData) { _ in
-//                    share = true
-//                }
             }
             .sheet(isPresented: $share) {
                // ShareSheet(activityItems: [ml.getDocumentsDirectory().appendingPathComponent("A.csv")])

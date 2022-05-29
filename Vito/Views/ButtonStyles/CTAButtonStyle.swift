@@ -15,6 +15,5 @@ struct CTAButtonStyle: ButtonStyle {
             .padding()
             .background(RoundedRectangle(cornerRadius: 25).foregroundColor(Color("blue")))
             .scaleEffect(configuration.isPressed ? 1.1 : 1)
-            //.animation(.easeOut(duration: 0.2))
     }
 }

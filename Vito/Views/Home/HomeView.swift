@@ -14,14 +14,13 @@ struct HomeView: View {
     @State private var orientation = UIDeviceOrientation.unknown
     @State var gridLayout: [GridItem] = [ ]
     @ObservedObject var health: Healthv3
-    //@ObservedObject var ml: ML
    
     @State var share = false
     var body: some View {
         NavigationView {
-       // ScrollView {
+    
             VStack {
-            //LazyVGrid(columns: gridLayout) {
+           
                 if !health.risk.id.isEmpty {
                 RiskCardView(health: health, date: Date())
                         .transition(.move(edge: .top))
@@ -33,11 +32,8 @@ struct HomeView: View {
 
                 Spacer()
             }
-               
-           
-            
-       // }
-        .navigationTitle("")
+
+                .navigationTitle("")
                 .navigationBarHidden(true)
         .onAppear() {
             if UIDevice.current.userInterfaceIdiom == .pad {
@@ -59,53 +55,12 @@ struct HomeView: View {
         .onAppear() {
         }
             
-               //if type == .heartRate {
-//                exportDataToCSV(data: health.healthData) { _ in
-//                               DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//                               share = true
-//                               }
-//
-//                           }
-            
-               
-               
-                
-            
-//        .onReceive(health.healthData.publisher) { value in
-//            exportDataToCSV(data: health.healthData) { _ in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//                share = true
-//                }
-//
-//           // }
-//        }
-//        }
+
         .sheet(isPresented: $share) {
             //ShareSheet(activityItems: [ml.getDocumentsDirectory().appendingPathComponent("A.csv")])
             
         }
     }
-//    func exportDataToCSV(data: [HealthData], completionHandler: @escaping (Bool) -> Void) {
-//        DispatchQueue.main.async {
-//        var trainingData = DataFrame()
-//        let filteredToHeartRate = data.filter { data in
-//            return data.title == HKQuantityTypeIdentifier.heartRate.rawValue
-//        }
-//        let filteredToNight = filteredToHeartRate.filter { data in
-//            return data.date.get(.hour) >  12 && data.date.get(.hour) <  8
-//        }
-//        let nightlyHeartRateColumn = Column(name: "Heartrate", contents: filteredToNight)
-//        trainingData.append(column: nightlyHeartRateColumn)
-//        do {
-//            try trainingData.writeCSV(to: ml.getDocumentsDirectory().appendingPathComponent("A.csv"))
-//            print(ml.getDocumentsDirectory().appendingPathComponent("A.csv").dataRepresentation)
-//        } catch {
-//            print(error)
-//            
-//        }
-//        completionHandler(true)
-//    }
-//    }
     func openDataSharingAgreement() {
         
     }

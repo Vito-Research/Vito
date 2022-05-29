@@ -39,10 +39,8 @@
 		E1A4C88926E838B80031C161 /* CTAButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84426E838B80031C161 /* CTAButtonStyle.swift */; };
 		E1A4C88A26E838B80031C161 /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84626E838B80031C161 /* DataView.swift */; };
 		E1A4C88B26E838B80031C161 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84826E838B80031C161 /* CardView.swift */; };
-		E1A4C88C26E838B80031C161 /* FeelingScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84926E838B80031C161 /* FeelingScoreView.swift */; };
 		E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84A26E838B80031C161 /* CalenderView.swift */; };
 		E1A4C88E26E838B80031C161 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84B26E838B80031C161 /* HomeView.swift */; };
-		E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84C26E838B80031C161 /* ActionCardView.swift */; };
 		E1A4C89026E838B80031C161 /* DataViewv2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84D26E838B80031C161 /* DataViewv2.swift */; };
 		E1A4C89126E838B80031C161 /* RiskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84E26E838B80031C161 /* RiskCardView.swift */; };
 		E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84F26E838B80031C161 /* ShareSheet.swift */; };
@@ -126,10 +124,8 @@
 		E1A4C84426E838B80031C161 /* CTAButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTAButtonStyle.swift; sourceTree = "<group>"; };
 		E1A4C84626E838B80031C161 /* DataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
 		E1A4C84826E838B80031C161 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		E1A4C84926E838B80031C161 /* FeelingScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeelingScoreView.swift; sourceTree = "<group>"; };
 		E1A4C84A26E838B80031C161 /* CalenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderView.swift; sourceTree = "<group>"; };
 		E1A4C84B26E838B80031C161 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		E1A4C84C26E838B80031C161 /* ActionCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCardView.swift; sourceTree = "<group>"; };
 		E1A4C84D26E838B80031C161 /* DataViewv2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewv2.swift; sourceTree = "<group>"; };
 		E1A4C84E26E838B80031C161 /* RiskCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiskCardView.swift; sourceTree = "<group>"; };
 		E1A4C84F26E838B80031C161 /* ShareSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
@@ -206,6 +202,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E19240FD284307B200A05F9C /* DataViews */ = {
+			isa = PBXGroup;
+			children = (
+				E1A4C84626E838B80031C161 /* DataView.swift */,
+				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
+				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
+			);
+			path = DataViews;
+			sourceTree = "<group>";
+		};
 		E1A4C81426E837620031C161 = {
 			isa = PBXGroup;
 			children = (
@@ -276,11 +282,11 @@
 		E1A4C84226E838B80031C161 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1A4C86726E838B80031C161 /* ContentView.swift */,
+				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
 				E1A4C84326E838B80031C161 /* ButtonStyles */,
 				E1A4C84526E838B80031C161 /* Home */,
 				E1A4C85026E838B80031C161 /* SwiftUICharts  */,
-				E1A4C86626E838B80031C161 /* IntroView.swift */,
-				E1A4C86726E838B80031C161 /* ContentView.swift */,
 				E1A4C86826E838B80031C161 /* Onboarding */,
 			);
 			path = Views;
@@ -297,17 +303,12 @@
 		E1A4C84526E838B80031C161 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				E1A4C84826E838B80031C161 /* CardView.swift */,
-				E1A4C84926E838B80031C161 /* FeelingScoreView.swift */,
-				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
 				E1A4C84B26E838B80031C161 /* HomeView.swift */,
-				EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */,
-				E1A4C84C26E838B80031C161 /* ActionCardView.swift */,
-				E1A4C84626E838B80031C161 /* DataView.swift */,
-				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
-				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 				E1A4C84E26E838B80031C161 /* RiskCardView.swift */,
-				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
+				E1A4C84826E838B80031C161 /* CardView.swift */,
+				EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */,
+				E19240FD284307B200A05F9C /* DataViews */,
+				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -365,6 +366,7 @@
 			isa = PBXGroup;
 			children = (
 				E1A4C86926E838B80031C161 /* DataTypesListView.swift */,
+				E1A4C86626E838B80031C161 /* IntroView.swift */,
 				E1A4C86A26E838B80031C161 /* OnboardingView.swift */,
 			);
 			path = Onboarding;
@@ -520,7 +522,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1A4C88C26E838B80031C161 /* FeelingScoreView.swift in Sources */,
 				E1A4C89926E838B80031C161 /* PieChartRow.swift in Sources */,
 				E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */,
 				E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */,
@@ -573,7 +574,6 @@
 				EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */,
 				E19240F92843070900A05F9C /* ArrayExt.swift in Sources */,
 				EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */,
-				E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */,
 				E1A4C89526E838B80031C161 /* LabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

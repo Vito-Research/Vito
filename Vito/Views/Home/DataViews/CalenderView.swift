@@ -80,10 +80,10 @@ struct CalendarView<DateView>: View where DateView: View {
                
             ForEach(Array(zip(months, months.indices)), id: \.1) { (month, i) in
                     VStack {
-                       // header(for: month)
+                     
                            
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 30, maximum: 40)), count: 7), spacing: 0) {
-            //   if month.get(.month) >= Date().get(.month) - 2 && month.get(.month) <= Date().get(.month)  {
+           
                 Section(header: header(for: month)) {
                     ForEach(days(for: month), id: \.self) { date in
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
@@ -120,8 +120,7 @@ struct CalendarView<DateView>: View where DateView: View {
                     } .tag(i)
             }
         } .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-            //}
-            //Spacer()
+           
 
     }
     

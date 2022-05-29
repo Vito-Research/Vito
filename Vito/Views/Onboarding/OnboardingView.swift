@@ -13,7 +13,7 @@ struct OnboardingView: View {
     let healthStore = HKHealthStore()
     
     @State var onboardingViews = [Onboarding(id: UUID(), image: "bird", title: "Your Heart Rate While Asleep is a Key Indicator of Health", description: "A higher heart rate while asleep may indicate signs of distress from your body"), Onboarding(id: UUID(), image: "data", title: "HR and RR while asleep are indicators of health", description: "Learn how you can use your data by tapping the data below.", toggleData: [ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .heart, explanation: "Heart Rate", detail: "Abnormally high heart rate while asleep can be a sign of distress from your body")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .lungs, explanation: "Respiratory Rate", detail: "High respiratory rate while asleep can be a sign of distress from your body")), ToggleData(id: UUID(), toggle: false, explanation:  Explanation(image: .figureWalk , explanation: "Steps", detail: "Utilized to detect when you are alseep")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .flame, explanation: "Active Energy", detail: "Utilized to detect when you are alseep"))]), Onboarding(id: UUID(), image: "privacy", title: "Vito Believes Privacy is Vital", description: "Here's how we protect your privacy...", toggleData: [ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .person, explanation: "You Are In Control", detail: "Your data is your data, you can delete it or modify it at anytime")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .lock, explanation: "By Default, Data is Stored and Processed On-Device", detail: "All data is saved on-device")), ToggleData(id: UUID(), toggle: false, explanation: Explanation(image: .paperplane, explanation: "Sharing Data is Optional And When Shared is Anonymous and Encrypted", detail: "Privacy is vital. We do collect data upon opt-in to help refine our algorithm."))]), Onboarding(id: UUID(), image: "doc", title: "Always Consult With Your Doctor", description: "This is not a medical app, therefore it does not provide medical advice or diagnose anyone, rather a health app that allows the user to learn more about their data and discuss it with their doctor.")]
-    //Explanation(image: .paperplane, explanation: "Sharing Data is Optional And When Shared is Anonymous and Encrypted", detail: "Privacy is vital.")
+
     @State var slideNum = 0
     @Binding var isOnboarding: Int
     @State var time = 0
@@ -39,13 +39,10 @@ struct OnboardingView: View {
                     UserDefaults.standard.set(true, forKey: "onboarding")
                     
                 }
-                //setting.onOff = false
+             
             }) {
                 ZStack {
-//                    RoundedRectangle(cornerRadius: 25.0)
-//                        .foregroundColor(Color(.lightGray))
-//                        .frame(height: 75)
-//                        .padding()
+
                     Text("No")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                         .foregroundColor(.white)
@@ -58,7 +55,7 @@ struct OnboardingView: View {
                 if onboardingViews[slideNum].title.contains("Noti") {
                     LocalNotifications.requestPermission(strategy: .askSystemPermissionIfNeeded) { success in
                         if success {
-//                            setting.onOff = true
+
                         }
                     }
                     
@@ -88,10 +85,7 @@ struct OnboardingView: View {
                 
             }) {
                 ZStack {
-//                    RoundedRectangle(cornerRadius: 25.0)
-//                        .foregroundColor(Color("teal"))
-//                        .frame(height: 75)
-//                        .padding()
+
                     Text(onboardingViews[slideNum].title.contains("Can") ? "Yes" : "Continue")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                         .foregroundColor(.white)

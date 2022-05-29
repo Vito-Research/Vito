@@ -1,7 +1,6 @@
 import SwiftUI
 struct IntroView: View {
    
-    //@StateObject var ml = ML()
     @State var animate1 = false
     @State var animate2 = false
     @State var pulse = false
@@ -24,18 +23,13 @@ struct IntroView: View {
                         withAnimation(.easeInOut(duration: 1.0)) {
                         animate1 = true
                         }
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-//                            animate2 = true
-                        
-                        
+
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             withAnimation(.easeInOut(duration: 1.0)) {
                             animate2 = true
                             }
                             
                         }
-                        
-                //}
                     }
                 }
             VStack {

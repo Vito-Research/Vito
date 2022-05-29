@@ -30,7 +30,7 @@ struct PrivacyReportView: View {
         Text("Here's how to see what network requests Vito makes according to Apple...")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                         .foregroundColor(Color.cyan)
-                   // ScrollView {
+                   
         ForEach(howTo, id: \.self) { value in
             HStack {
                

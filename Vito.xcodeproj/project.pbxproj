@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A3C4E28433F69001F36A2 /* AnimationExt.swift */; };
 		E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */ = {isa = PBXBuildFile; fileRef = E176BCD827152AD900B8946F /* AW_rhr.csv */; };
+		E19240F62843070900A05F9C /* DoubleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F02843070900A05F9C /* DoubleExt.swift */; };
+		E19240F72843070900A05F9C /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F12843070900A05F9C /* StringExt.swift */; };
+		E19240F82843070900A05F9C /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F22843070900A05F9C /* UserDefaultExt.swift */; };
+		E19240F92843070900A05F9C /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F32843070900A05F9C /* ArrayExt.swift */; };
+		E19240FA2843070900A05F9C /* ViewExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F42843070900A05F9C /* ViewExt.swift */; };
+		E19240FB2843070900A05F9C /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F52843070900A05F9C /* DateExt.swift */; };
 		E1A4C82126E837620031C161 /* VitoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C82026E837620031C161 /* VitoApp.swift */; };
 		E1A4C82526E837640031C161 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1A4C82426E837640031C161 /* Assets.xcassets */; };
 		E1A4C82826E837640031C161 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1A4C82726E837640031C161 /* Preview Assets.xcassets */; };
@@ -33,10 +40,8 @@
 		E1A4C88926E838B80031C161 /* CTAButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84426E838B80031C161 /* CTAButtonStyle.swift */; };
 		E1A4C88A26E838B80031C161 /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84626E838B80031C161 /* DataView.swift */; };
 		E1A4C88B26E838B80031C161 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84826E838B80031C161 /* CardView.swift */; };
-		E1A4C88C26E838B80031C161 /* FeelingScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84926E838B80031C161 /* FeelingScoreView.swift */; };
 		E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84A26E838B80031C161 /* CalenderView.swift */; };
 		E1A4C88E26E838B80031C161 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84B26E838B80031C161 /* HomeView.swift */; };
-		E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84C26E838B80031C161 /* ActionCardView.swift */; };
 		E1A4C89026E838B80031C161 /* DataViewv2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84D26E838B80031C161 /* DataViewv2.swift */; };
 		E1A4C89126E838B80031C161 /* RiskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84E26E838B80031C161 /* RiskCardView.swift */; };
 		E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84F26E838B80031C161 /* ShareSheet.swift */; };
@@ -62,22 +67,18 @@
 		E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86726E838B80031C161 /* ContentView.swift */; };
 		E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86926E838B80031C161 /* DataTypesListView.swift */; };
 		E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86A26E838B80031C161 /* OnboardingView.swift */; };
-		E1A4C8A926E838B80031C161 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86D26E838B80031C161 /* Health.swift */; };
 		E1A4C8AA26E838B80031C161 /* TimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86E26E838B80031C161 /* TimeData.swift */; };
 		E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86F26E838B80031C161 /* HealthData.swift */; };
 		E1A4C8AC26E838B80031C161 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87026E838B80031C161 /* Card.swift */; };
 		E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87126E838B80031C161 /* Onboarding.swift */; };
 		E1A4C8AE26E838B80031C161 /* MLData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87326E838B80031C161 /* MLData.swift */; };
 		E1A4C8AF26E838B80031C161 /* ML.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87426E838B80031C161 /* ML.swift */; };
-		E1A4C8B026E838B80031C161 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87526E838B80031C161 /* Extensions.swift */; };
 		E1A4C8B426E839500031C161 /* NiceNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B326E839500031C161 /* NiceNotifications */; };
 		E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B626E839630031C161 /* SFSafeSymbols */; };
 		E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B926E839700031C161 /* HKCombine */; };
 		E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A4C8BD26E83BA60031C161 /* HealthKit.framework */; };
 		E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */ = {isa = PBXBuildFile; productRef = E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */; };
-		ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A7FF427980F58000EEB57 /* HealthV2.swift */; };
 		ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EA827A7AA8F00C51DDA /* Healthv3.swift */; };
-		ED926EAB27A7AACA00C51DDA /* UserDefaultExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */; };
 		ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F527E40BA000044435 /* FitbitData.swift */; };
 		ED96A2F827E4168600044435 /* RedCapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F727E4168600044435 /* RedCapData.swift */; };
 		ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED99067C27D92A1C0016F875 /* AlertLevel.swift */; };
@@ -89,7 +90,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E16A3C4E28433F69001F36A2 /* AnimationExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExt.swift; sourceTree = "<group>"; };
 		E176BCD827152AD900B8946F /* AW_rhr.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AW_rhr.csv; sourceTree = "<group>"; };
+		E19240F02843070900A05F9C /* DoubleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExt.swift; sourceTree = "<group>"; };
+		E19240F12843070900A05F9C /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
+		E19240F22843070900A05F9C /* UserDefaultExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
+		E19240F32843070900A05F9C /* ArrayExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; };
+		E19240F42843070900A05F9C /* ViewExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExt.swift; sourceTree = "<group>"; };
+		E19240F52843070900A05F9C /* DateExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		E1A4C81D26E837620031C161 /* Vito.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vito.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1A4C82026E837620031C161 /* VitoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitoApp.swift; sourceTree = "<group>"; };
 		E1A4C82426E837640031C161 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,10 +124,8 @@
 		E1A4C84426E838B80031C161 /* CTAButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTAButtonStyle.swift; sourceTree = "<group>"; };
 		E1A4C84626E838B80031C161 /* DataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
 		E1A4C84826E838B80031C161 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		E1A4C84926E838B80031C161 /* FeelingScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeelingScoreView.swift; sourceTree = "<group>"; };
 		E1A4C84A26E838B80031C161 /* CalenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalenderView.swift; sourceTree = "<group>"; };
 		E1A4C84B26E838B80031C161 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		E1A4C84C26E838B80031C161 /* ActionCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCardView.swift; sourceTree = "<group>"; };
 		E1A4C84D26E838B80031C161 /* DataViewv2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewv2.swift; sourceTree = "<group>"; };
 		E1A4C84E26E838B80031C161 /* RiskCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiskCardView.swift; sourceTree = "<group>"; };
 		E1A4C84F26E838B80031C161 /* ShareSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
@@ -145,20 +151,16 @@
 		E1A4C86726E838B80031C161 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E1A4C86926E838B80031C161 /* DataTypesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypesListView.swift; sourceTree = "<group>"; };
 		E1A4C86A26E838B80031C161 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		E1A4C86D26E838B80031C161 /* Health.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
 		E1A4C86E26E838B80031C161 /* TimeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeData.swift; sourceTree = "<group>"; };
 		E1A4C86F26E838B80031C161 /* HealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
 		E1A4C87026E838B80031C161 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		E1A4C87126E838B80031C161 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		E1A4C87326E838B80031C161 /* MLData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLData.swift; sourceTree = "<group>"; };
 		E1A4C87426E838B80031C161 /* ML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ML.swift; sourceTree = "<group>"; };
-		E1A4C87526E838B80031C161 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E1A4C8B126E838D30031C161 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E1A4C8BB26E83BA60031C161 /* Vito.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vito.entitlements; sourceTree = "<group>"; };
 		E1A4C8BD26E83BA60031C161 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		ED4A7FF427980F58000EEB57 /* HealthV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthV2.swift; sourceTree = "<group>"; };
 		ED926EA827A7AA8F00C51DDA /* Healthv3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv3.swift; sourceTree = "<group>"; };
-		ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultExt.swift; sourceTree = "<group>"; };
 		ED96A2F527E40BA000044435 /* FitbitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitbitData.swift; sourceTree = "<group>"; };
 		ED96A2F727E4168600044435 /* RedCapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedCapData.swift; sourceTree = "<group>"; };
 		ED99067C27D92A1C0016F875 /* AlertLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLevel.swift; sourceTree = "<group>"; };
@@ -185,6 +187,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E19240EF2843070900A05F9C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E19240F02843070900A05F9C /* DoubleExt.swift */,
+				E19240F12843070900A05F9C /* StringExt.swift */,
+				E19240F22843070900A05F9C /* UserDefaultExt.swift */,
+				E19240F32843070900A05F9C /* ArrayExt.swift */,
+				E19240F42843070900A05F9C /* ViewExt.swift */,
+				E19240F52843070900A05F9C /* DateExt.swift */,
+				E16A3C4E28433F69001F36A2 /* AnimationExt.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E19240FD284307B200A05F9C /* DataViews */ = {
+			isa = PBXGroup;
+			children = (
+				E1A4C84626E838B80031C161 /* DataView.swift */,
+				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
+				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
+			);
+			path = DataViews;
+			sourceTree = "<group>";
+		};
 		E1A4C81426E837620031C161 = {
 			isa = PBXGroup;
 			children = (
@@ -209,8 +235,7 @@
 				E1A4C8B126E838D30031C161 /* Info.plist */,
 				E1A4C82026E837620031C161 /* VitoApp.swift */,
 				E1A4C86B26E838B80031C161 /* Data */,
-				E1A4C87526E838B80031C161 /* Extensions.swift */,
-				ED926EAA27A7AACA00C51DDA /* UserDefaultExt.swift */,
+				E19240EF2843070900A05F9C /* Extensions */,
 				E1A4C82E26E838B70031C161 /* Poppins */,
 				E1A4C84226E838B80031C161 /* Views */,
 				E1A4C82426E837640031C161 /* Assets.xcassets */,
@@ -256,11 +281,11 @@
 		E1A4C84226E838B80031C161 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1A4C86726E838B80031C161 /* ContentView.swift */,
+				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
 				E1A4C84326E838B80031C161 /* ButtonStyles */,
 				E1A4C84526E838B80031C161 /* Home */,
 				E1A4C85026E838B80031C161 /* SwiftUICharts  */,
-				E1A4C86626E838B80031C161 /* IntroView.swift */,
-				E1A4C86726E838B80031C161 /* ContentView.swift */,
 				E1A4C86826E838B80031C161 /* Onboarding */,
 			);
 			path = Views;
@@ -277,17 +302,12 @@
 		E1A4C84526E838B80031C161 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				E1A4C84826E838B80031C161 /* CardView.swift */,
-				E1A4C84926E838B80031C161 /* FeelingScoreView.swift */,
-				E1A4C84A26E838B80031C161 /* CalenderView.swift */,
 				E1A4C84B26E838B80031C161 /* HomeView.swift */,
-				EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */,
-				E1A4C84C26E838B80031C161 /* ActionCardView.swift */,
-				E1A4C84626E838B80031C161 /* DataView.swift */,
-				E1A4C84D26E838B80031C161 /* DataViewv2.swift */,
-				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 				E1A4C84E26E838B80031C161 /* RiskCardView.swift */,
-				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
+				E1A4C84826E838B80031C161 /* CardView.swift */,
+				EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */,
+				E19240FD284307B200A05F9C /* DataViews */,
+				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -345,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				E1A4C86926E838B80031C161 /* DataTypesListView.swift */,
+				E1A4C86626E838B80031C161 /* IntroView.swift */,
 				E1A4C86A26E838B80031C161 /* OnboardingView.swift */,
 			);
 			path = Onboarding;
@@ -364,8 +385,6 @@
 		E1A4C86C26E838B80031C161 /* Health */ = {
 			isa = PBXGroup;
 			children = (
-				E1A4C86D26E838B80031C161 /* Health.swift */,
-				ED4A7FF427980F58000EEB57 /* HealthV2.swift */,
 				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
 				EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */,
 				EDDFD44C27E09BE400EE064B /* Fitbit.swift */,
@@ -500,21 +519,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1A4C88C26E838B80031C161 /* FeelingScoreView.swift in Sources */,
 				E1A4C89926E838B80031C161 /* PieChartRow.swift in Sources */,
 				E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */,
 				E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */,
+				E19240FA2843070900A05F9C /* ViewExt.swift in Sources */,
 				E1A4C89D26E838B80031C161 /* IndicatorPoint.swift in Sources */,
 				E1A4C8AF26E838B80031C161 /* ML.swift in Sources */,
 				E1A4C8A026E838B80031C161 /* LineChartView.swift in Sources */,
 				E1A4C89326E838B80031C161 /* BarChartView.swift in Sources */,
-				ED926EAB27A7AACA00C51DDA /* UserDefaultExt.swift in Sources */,
 				E1A4C89C26E838B80031C161 /* PieChartView.swift in Sources */,
+				E19240F72843070900A05F9C /* StringExt.swift in Sources */,
+				E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */,
 				ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */,
 				E1A4C89F26E838B80031C161 /* Legend.swift in Sources */,
 				E1A4C82126E837620031C161 /* VitoApp.swift in Sources */,
 				E1A4C8AA26E838B80031C161 /* TimeData.swift in Sources */,
-				E1A4C8B026E838B80031C161 /* Extensions.swift in Sources */,
 				E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */,
 				E1A4C8A426E838B80031C161 /* Line.swift in Sources */,
 				EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */,
@@ -526,7 +545,8 @@
 				E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */,
 				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
 				E1A4C89426E838B80031C161 /* BarChartRow.swift in Sources */,
-				E1A4C8A926E838B80031C161 /* Health.swift in Sources */,
+				E19240FB2843070900A05F9C /* DateExt.swift in Sources */,
+				E19240F82843070900A05F9C /* UserDefaultExt.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,
 				E1A4C8AC26E838B80031C161 /* Card.swift in Sources */,
 				EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */,
@@ -537,7 +557,7 @@
 				E1A4C89726E838B80031C161 /* ChartView.swift in Sources */,
 				E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */,
 				E1A4C88926E838B80031C161 /* CTAButtonStyle.swift in Sources */,
-				ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */,
+				E19240F62843070900A05F9C /* DoubleExt.swift in Sources */,
 				E1A4C89B26E838B80031C161 /* PieChartCell.swift in Sources */,
 				E1A4C89826E838B80031C161 /* Helpers.swift in Sources */,
 				E1A4C89A26E838B80031C161 /* PieChartHelpers.swift in Sources */,
@@ -548,8 +568,8 @@
 				ED96A2F827E4168600044435 /* RedCapData.swift in Sources */,
 				E1A4C8A126E838B80031C161 /* MagnifierRect.swift in Sources */,
 				EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */,
+				E19240F92843070900A05F9C /* ArrayExt.swift in Sources */,
 				EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */,
-				E1A4C88F26E838B80031C161 /* ActionCardView.swift in Sources */,
 				E1A4C89526E838B80031C161 /* LabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -680,7 +700,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Vito/Vito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
 				DEVELOPMENT_TEAM = 9NG3C5HP77;
 				ENABLE_PREVIEWS = YES;
@@ -714,7 +734,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Vito/Vito.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
 				DEVELOPMENT_TEAM = 9NG3C5HP77;
 				ENABLE_PREVIEWS = YES;

@@ -28,12 +28,9 @@ struct DataView: View {
                             .multilineTextAlignment(.leading)
                             .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
                         Spacer()
-        //                DatePicker("", selection: $health.queryDate.anchorDate, displayedComponents: .date)
-        //                    .font(.custom("Poppins", size: 12, relativeTo: .headline))
-        //                .datePickerStyle(CompactDatePickerStyle())
-        //                .padding()
+       
                         .onAppear() {
-                          //  health.queryDate.anchorDate = date
+                         
                             let points = getHeartRateData().filter{!$0.data.isNaN}
                             if points.count < 1 {
                                 average = points.first?.data ?? 0
@@ -48,15 +45,7 @@ struct DataView: View {
                     }
                     HStack {
                         Spacer()
-        //                TextField("Duration", value: $health.queryDate.duration, formatter: NumberFormatter())
-        //                    .keyboardType(.numberPad)
-        //                    .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
-        //                    .onChange(of: health.queryDate.duration) { value in
-        //
-        //                            let points = getHeartRateDataAsDoubleArr()
-        //                            average = health.average(numbers: points)
-        //                            data.points = points.map{("", $0)}
-        //                    }
+       
                         ForEach(DurationType.allCases, id: \.self) { value in
                             if value != .Year {
                             Button(action: {
@@ -74,14 +63,13 @@ struct DataView: View {
                                     .foregroundColor(value == health.queryDate.durationType ?  .white : .blue)
                                     .padding()
                                     .background(RoundedRectangle(cornerRadius: 10).foregroundColor(value == health.queryDate.durationType ?  .blue : .white))
-                                    //.scaleEffect(value == health.queryDate.durationType ? 1.1 : 1)
+                                   
                             }
                         }
                         }
                        
                     }
                 
-                        //.opacity(isTutorial ? (tutorialNum == 1 ? 1.0 : 0.1) : 1.0)
                     .onChange(of: health.queryDate.anchorDate, perform: { value in
                     
                         let points = getHeartRateData().filter{!$0.data.isNaN}
@@ -99,7 +87,7 @@ struct DataView: View {
                         Text("Heart Rate")
                             .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
                         Spacer()
-                    }  //.opacity(isTutorial ? (tutorialNum == 2 ? 1.0 : 0.1) : 1.0)
+                    }
                     
                         
                     BarChartView(data: $data, title: "Heart Rate")
@@ -113,8 +101,8 @@ struct DataView: View {
             }, label: {
                 Text("Done")
             }))
-            .navigationBarTitle("Data View")
-        }
+            .navigationBarTitle("Details View")
+        } .animation(.none)
            
         }
 
@@ -130,7 +118,7 @@ struct DataView: View {
     func lastDayOfMonth(date: Date) -> Date {
         guard
             let monthInterval = calendar.dateInterval(of: .month, for: date)?.end
-      //  let monthLastWeek = calendar.dateInterval(of: .day, for: monthInterval.end)?.end
+      
            
         else { print("OOOF")
             return date }

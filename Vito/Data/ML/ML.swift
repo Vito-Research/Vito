@@ -105,14 +105,13 @@ class ML: ObservableObject {
         for i in filteredToRisk.indices {
             recordsArr.append(UUID().uuidString)
         }
-        //let records = Column(name: "record_id", contents: recordsArr)
-        //trainingData.append(column: records)
+     
         do {
             
             trainingData.append(trainingData2)
-        try trainingData.writeCSV(to: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv"))
+            try trainingData.writeCSV(to: getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv"))
             try trainingData2.writeCSV(to: getDocumentsDirectory().appendingPathComponent("Vito_Risk_Data.csv"))
-            //print(getDocumentsDirectory().appendingPathComponent("A.csv").dataRepresentation)
+            
         } catch {
             print(error)
             
@@ -141,11 +140,7 @@ class ML: ObservableObject {
         }
        print(filteredToTarget3)
            print(filteredToTarget2)
-           
-            
-          
-                
-               // print(trainingData.summary())
+       
         var dataArray = filteredToTarget3.isEmpty ?  filteredToTarget.map{Double($0.data)} : filteredToTarget3.map{Double($0.data)}
         var dataArray2 = filteredToTarget4.isEmpty ?  filteredToTarget2.map{Double($0.data)} : filteredToTarget4.map{Double($0.data)}
         
@@ -177,8 +172,7 @@ class ML: ObservableObject {
         
         var targetOneData = DataFrame()
         var targetTwoData = DataFrame()
-        
-//        trainingData.append(column: dateColumn)
+
         targetOneData.append(column: column)
         targetOneData.append(column: dateColumn)
         targetTwoData.append(column: column2)
@@ -186,29 +180,22 @@ class ML: ObservableObject {
         trainingData = targetOneData.joined(targetTwoData, on: "Date")
                     
         print(trainingData.columns.map{$0.name})
-//        trainingData = trainingData.grouped(by: "Date", timeUnit: .weekday)
-//
-//        trainingData = trainingData.grouped(by: "Date", timeUnit: .weekOfYear)
-//
-//        trainingData = trainingData.grouped(by: "Date", timeUnit: .year)
+
         let randomSplit = trainingData.randomSplit(by: 0.5)
-        //print(randomSplit)
+       
         let testingData = DataFrame(randomSplit.0)
         trainingData = DataFrame(randomSplit.1)
         do {
             let model = try MLRandomForestRegressor(trainingData: trainingData, targetColumn: "left." + target)
            
-           // try model.write(to: getDocumentsDirectory().appendingPathComponent(DataType.HappinessScore.rawValue + ".mlmodel"))
+           
             print(model.trainingMetrics)
             print(model.validationMetrics)
             let predictions = try model.predictions(from: testingData)
             print(average(numbers: predictions.map{($0.unsafelyUnwrapped) as! Double}))
-            //let testingDataAsDouble =  trainingData.rows.map{$0.map{$0.unsafelyUnwrapped as! Double}}
+           
            var doubleArray = [Double]()
-           // for data in testingDataAsDouble {
-                //doubleArray.append(contentsOf: data)
-           // }
-             
+          
             mlData = ModelResponse(type: target, predicted: predictions.map{($0.unsafelyUnwrapped) as! Double}, actual: doubleArray, accuracy: model.trainingMetrics.rootMeanSquaredError)
             completionHandler(mlData)
         } catch {
@@ -220,7 +207,6 @@ class ML: ObservableObject {
     }
     
     func average(numbers: [Double]) -> Double {
-       // print(numbers)
        return Double(numbers.reduce(0,+))/Double(numbers.count)
    }
     func getDocumentsDirectory() -> URL {

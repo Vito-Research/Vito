@@ -86,7 +86,7 @@ struct AlertLevelv3 {
                 }
             }
             return 0
-            break
+            
         case .Three(var alert):
             
             alert.hr.append(hr)
@@ -105,7 +105,6 @@ struct AlertLevelv3 {
             }
             
             return 0
-            break
             
         case .Two(var alert):
             
@@ -130,7 +129,6 @@ struct AlertLevelv3 {
                 }
             }
             return 0
-            break
         case .One(var alert):
             
             alert.hr.append(hr)
@@ -149,7 +147,6 @@ struct AlertLevelv3 {
             }
             return 0
             
-            break
         case .Zero(var alert):
             
             alert.hr.append(hr)
@@ -222,7 +219,7 @@ struct AlertLevelv3 {
                 }
             }
             return 0
-            break
+            
         case .Three(var alert):
             
             alert.hr.append(hr)
@@ -241,7 +238,7 @@ struct AlertLevelv3 {
             }
             
             return 0
-            break
+            
             
         case .Two(var alert):
             
@@ -266,7 +263,7 @@ struct AlertLevelv3 {
                 }
             }
             return 0
-            break
+            
         case .One(var alert):
             
             alert.hr.append(hr)
@@ -285,7 +282,7 @@ struct AlertLevelv3 {
             }
             return 0
             
-            break
+            
         case .Zero(var alert):
             
             alert.hr.append(hr)
@@ -325,7 +322,7 @@ struct AlertLevelv3 {
         return nil
     }
     func average(numbers: [Double]) -> Double {
-        // print(numbers)
+    
         return vDSP.mean(numbers)
     }
 }

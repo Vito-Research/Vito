@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "chartview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppPear/ChartView",
+      "state" : {
+        "revision" : "caa75ecbc0d68f2b50d714909566406f80214186",
+        "version" : "2.0.0-beta.2"
+      }
+    },
+    {
       "identity" : "datebuilder",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicephoton/DateBuilder",

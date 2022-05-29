@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D8D4D58228440EEA00DC8ED6 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D8D4D58128440EEA00DC8ED6 /* SwiftUICharts */; };
 		E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A3C4E28433F69001F36A2 /* AnimationExt.swift */; };
 		E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */ = {isa = PBXBuildFile; fileRef = E176BCD827152AD900B8946F /* AW_rhr.csv */; };
 		E19240F62843070900A05F9C /* DoubleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F02843070900A05F9C /* DoubleExt.swift */; };
@@ -45,24 +46,6 @@
 		E1A4C89026E838B80031C161 /* DataViewv2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84D26E838B80031C161 /* DataViewv2.swift */; };
 		E1A4C89126E838B80031C161 /* RiskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84E26E838B80031C161 /* RiskCardView.swift */; };
 		E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C84F26E838B80031C161 /* ShareSheet.swift */; };
-		E1A4C89326E838B80031C161 /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85226E838B80031C161 /* BarChartView.swift */; };
-		E1A4C89426E838B80031C161 /* BarChartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85326E838B80031C161 /* BarChartRow.swift */; };
-		E1A4C89526E838B80031C161 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85426E838B80031C161 /* LabelView.swift */; };
-		E1A4C89626E838B80031C161 /* BarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85526E838B80031C161 /* BarChartCell.swift */; };
-		E1A4C89726E838B80031C161 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85626E838B80031C161 /* ChartView.swift */; };
-		E1A4C89826E838B80031C161 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85726E838B80031C161 /* Helpers.swift */; };
-		E1A4C89926E838B80031C161 /* PieChartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85926E838B80031C161 /* PieChartRow.swift */; };
-		E1A4C89A26E838B80031C161 /* PieChartHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85A26E838B80031C161 /* PieChartHelpers.swift */; };
-		E1A4C89B26E838B80031C161 /* PieChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85B26E838B80031C161 /* PieChartCell.swift */; };
-		E1A4C89C26E838B80031C161 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85C26E838B80031C161 /* PieChartView.swift */; };
-		E1A4C89D26E838B80031C161 /* IndicatorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85E26E838B80031C161 /* IndicatorPoint.swift */; };
-		E1A4C89E26E838B80031C161 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C85F26E838B80031C161 /* LineView.swift */; };
-		E1A4C89F26E838B80031C161 /* Legend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86026E838B80031C161 /* Legend.swift */; };
-		E1A4C8A026E838B80031C161 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86126E838B80031C161 /* LineChartView.swift */; };
-		E1A4C8A126E838B80031C161 /* MagnifierRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86226E838B80031C161 /* MagnifierRect.swift */; };
-		E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86326E838B80031C161 /* Path+QuadCurve.swift */; };
-		E1A4C8A326E838B80031C161 /* MultiLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86426E838B80031C161 /* MultiLineChartView.swift */; };
-		E1A4C8A426E838B80031C161 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86526E838B80031C161 /* Line.swift */; };
 		E1A4C8A526E838B80031C161 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86626E838B80031C161 /* IntroView.swift */; };
 		E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86726E838B80031C161 /* ContentView.swift */; };
 		E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86926E838B80031C161 /* DataTypesListView.swift */; };
@@ -129,24 +112,6 @@
 		E1A4C84D26E838B80031C161 /* DataViewv2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataViewv2.swift; sourceTree = "<group>"; };
 		E1A4C84E26E838B80031C161 /* RiskCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiskCardView.swift; sourceTree = "<group>"; };
 		E1A4C84F26E838B80031C161 /* ShareSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
-		E1A4C85226E838B80031C161 /* BarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
-		E1A4C85326E838B80031C161 /* BarChartRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartRow.swift; sourceTree = "<group>"; };
-		E1A4C85426E838B80031C161 /* LabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
-		E1A4C85526E838B80031C161 /* BarChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartCell.swift; sourceTree = "<group>"; };
-		E1A4C85626E838B80031C161 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
-		E1A4C85726E838B80031C161 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		E1A4C85926E838B80031C161 /* PieChartRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartRow.swift; sourceTree = "<group>"; };
-		E1A4C85A26E838B80031C161 /* PieChartHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartHelpers.swift; sourceTree = "<group>"; };
-		E1A4C85B26E838B80031C161 /* PieChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartCell.swift; sourceTree = "<group>"; };
-		E1A4C85C26E838B80031C161 /* PieChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
-		E1A4C85E26E838B80031C161 /* IndicatorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorPoint.swift; sourceTree = "<group>"; };
-		E1A4C85F26E838B80031C161 /* LineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
-		E1A4C86026E838B80031C161 /* Legend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Legend.swift; sourceTree = "<group>"; };
-		E1A4C86126E838B80031C161 /* LineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
-		E1A4C86226E838B80031C161 /* MagnifierRect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnifierRect.swift; sourceTree = "<group>"; };
-		E1A4C86326E838B80031C161 /* Path+QuadCurve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Path+QuadCurve.swift"; sourceTree = "<group>"; };
-		E1A4C86426E838B80031C161 /* MultiLineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiLineChartView.swift; sourceTree = "<group>"; };
-		E1A4C86526E838B80031C161 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		E1A4C86626E838B80031C161 /* IntroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		E1A4C86726E838B80031C161 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E1A4C86926E838B80031C161 /* DataTypesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypesListView.swift; sourceTree = "<group>"; };
@@ -179,6 +144,7 @@
 				E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */,
 				E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */,
 				E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */,
+				D8D4D58228440EEA00DC8ED6 /* SwiftUICharts in Frameworks */,
 				E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */,
 				E1A4C8B426E839500031C161 /* NiceNotifications in Frameworks */,
 			);
@@ -285,7 +251,6 @@
 				E1A4C84F26E838B80031C161 /* ShareSheet.swift */,
 				E1A4C84326E838B80031C161 /* ButtonStyles */,
 				E1A4C84526E838B80031C161 /* Home */,
-				E1A4C85026E838B80031C161 /* SwiftUICharts  */,
 				E1A4C86826E838B80031C161 /* Onboarding */,
 			);
 			path = Views;
@@ -310,55 +275,6 @@
 				E176BCD827152AD900B8946F /* AW_rhr.csv */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		E1A4C85026E838B80031C161 /* SwiftUICharts  */ = {
-			isa = PBXGroup;
-			children = (
-				E1A4C85126E838B80031C161 /* BarChart */,
-				E1A4C85626E838B80031C161 /* ChartView.swift */,
-				E1A4C85726E838B80031C161 /* Helpers.swift */,
-				E1A4C85826E838B80031C161 /* PieChart */,
-				E1A4C85D26E838B80031C161 /* LineChart */,
-			);
-			path = "SwiftUICharts ";
-			sourceTree = "<group>";
-		};
-		E1A4C85126E838B80031C161 /* BarChart */ = {
-			isa = PBXGroup;
-			children = (
-				E1A4C85226E838B80031C161 /* BarChartView.swift */,
-				E1A4C85326E838B80031C161 /* BarChartRow.swift */,
-				E1A4C85426E838B80031C161 /* LabelView.swift */,
-				E1A4C85526E838B80031C161 /* BarChartCell.swift */,
-			);
-			path = BarChart;
-			sourceTree = "<group>";
-		};
-		E1A4C85826E838B80031C161 /* PieChart */ = {
-			isa = PBXGroup;
-			children = (
-				E1A4C85926E838B80031C161 /* PieChartRow.swift */,
-				E1A4C85A26E838B80031C161 /* PieChartHelpers.swift */,
-				E1A4C85B26E838B80031C161 /* PieChartCell.swift */,
-				E1A4C85C26E838B80031C161 /* PieChartView.swift */,
-			);
-			path = PieChart;
-			sourceTree = "<group>";
-		};
-		E1A4C85D26E838B80031C161 /* LineChart */ = {
-			isa = PBXGroup;
-			children = (
-				E1A4C85E26E838B80031C161 /* IndicatorPoint.swift */,
-				E1A4C85F26E838B80031C161 /* LineView.swift */,
-				E1A4C86026E838B80031C161 /* Legend.swift */,
-				E1A4C86126E838B80031C161 /* LineChartView.swift */,
-				E1A4C86226E838B80031C161 /* MagnifierRect.swift */,
-				E1A4C86326E838B80031C161 /* Path+QuadCurve.swift */,
-				E1A4C86426E838B80031C161 /* MultiLineChartView.swift */,
-				E1A4C86526E838B80031C161 /* Line.swift */,
-			);
-			path = LineChart;
 			sourceTree = "<group>";
 		};
 		E1A4C86826E838B80031C161 /* Onboarding */ = {
@@ -437,6 +353,7 @@
 				E1A4C8B626E839630031C161 /* SFSafeSymbols */,
 				E1A4C8B926E839700031C161 /* HKCombine */,
 				E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */,
+				D8D4D58128440EEA00DC8ED6 /* SwiftUICharts */,
 			);
 			productName = Vito;
 			productReference = E1A4C81D26E837620031C161 /* Vito.app */;
@@ -471,6 +388,7 @@
 				E1A4C8B526E839630031C161 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */,
 				E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */,
+				D8D4D58028440EEA00DC8ED6 /* XCRemoteSwiftPackageReference "ChartView" */,
 			);
 			productRefGroup = E1A4C81E26E837620031C161 /* Products */;
 			projectDirPath = "";
@@ -519,32 +437,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1A4C89926E838B80031C161 /* PieChartRow.swift in Sources */,
 				E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */,
 				E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */,
 				E19240FA2843070900A05F9C /* ViewExt.swift in Sources */,
-				E1A4C89D26E838B80031C161 /* IndicatorPoint.swift in Sources */,
 				E1A4C8AF26E838B80031C161 /* ML.swift in Sources */,
-				E1A4C8A026E838B80031C161 /* LineChartView.swift in Sources */,
-				E1A4C89326E838B80031C161 /* BarChartView.swift in Sources */,
-				E1A4C89C26E838B80031C161 /* PieChartView.swift in Sources */,
 				E19240F72843070900A05F9C /* StringExt.swift in Sources */,
 				E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */,
 				ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */,
-				E1A4C89F26E838B80031C161 /* Legend.swift in Sources */,
 				E1A4C82126E837620031C161 /* VitoApp.swift in Sources */,
 				E1A4C8AA26E838B80031C161 /* TimeData.swift in Sources */,
 				E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */,
-				E1A4C8A426E838B80031C161 /* Line.swift in Sources */,
 				EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */,
-				E1A4C8A326E838B80031C161 /* MultiLineChartView.swift in Sources */,
-				E1A4C89626E838B80031C161 /* BarChartCell.swift in Sources */,
 				E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */,
 				ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */,
 				E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */,
-				E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */,
 				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
-				E1A4C89426E838B80031C161 /* BarChartRow.swift in Sources */,
 				E19240FB2843070900A05F9C /* DateExt.swift in Sources */,
 				E19240F82843070900A05F9C /* UserDefaultExt.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,
@@ -554,23 +461,16 @@
 				E1A4C88A26E838B80031C161 /* DataView.swift in Sources */,
 				E1A4C88E26E838B80031C161 /* HomeView.swift in Sources */,
 				E1A4C8AE26E838B80031C161 /* MLData.swift in Sources */,
-				E1A4C89726E838B80031C161 /* ChartView.swift in Sources */,
 				E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */,
 				E1A4C88926E838B80031C161 /* CTAButtonStyle.swift in Sources */,
 				E19240F62843070900A05F9C /* DoubleExt.swift in Sources */,
-				E1A4C89B26E838B80031C161 /* PieChartCell.swift in Sources */,
-				E1A4C89826E838B80031C161 /* Helpers.swift in Sources */,
-				E1A4C89A26E838B80031C161 /* PieChartHelpers.swift in Sources */,
 				E1A4C8A526E838B80031C161 /* IntroView.swift in Sources */,
 				E1A4C89126E838B80031C161 /* RiskCardView.swift in Sources */,
-				E1A4C89E26E838B80031C161 /* LineView.swift in Sources */,
 				E1A4C88B26E838B80031C161 /* CardView.swift in Sources */,
 				ED96A2F827E4168600044435 /* RedCapData.swift in Sources */,
-				E1A4C8A126E838B80031C161 /* MagnifierRect.swift in Sources */,
 				EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */,
 				E19240F92843070900A05F9C /* ArrayExt.swift in Sources */,
 				EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */,
-				E1A4C89526E838B80031C161 /* LabelView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,7 +602,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
-				DEVELOPMENT_TEAM = 9NG3C5HP77;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vito/Info.plist;
@@ -736,7 +636,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Vito/Preview Content\"";
-				DEVELOPMENT_TEAM = 9NG3C5HP77;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vito/Info.plist;
@@ -785,6 +685,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D8D4D58028440EEA00DC8ED6 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = exactVersion;
+				version = "2.0.0-beta.2";
+			};
+		};
 		E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nicephoton/NiceNotifications.git";
@@ -820,6 +728,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D8D4D58128440EEA00DC8ED6 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8D4D58028440EEA00DC8ED6 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
 		E1A4C8B326E839500031C161 /* NiceNotifications */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */;

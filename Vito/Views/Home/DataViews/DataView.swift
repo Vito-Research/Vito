@@ -7,11 +7,14 @@
 //
 import SwiftUI
 import HealthKit
+import SwiftUICharts
+
 struct DataView: View {
     @State private var date = Date()
     @State private var average = 0.0
     @ObservedObject var health: Healthv3
-    @State var data = ChartData(values: [("", 0.0)])
+    //@State var data = ChartData(values: [("", 0.0)])
+    @State var data: [(String, Double)] = [("",0.0)]
     
     @Environment(\.calendar) var calendar
    
@@ -34,10 +37,10 @@ struct DataView: View {
                             let points = getHeartRateData().filter{!$0.data.isNaN}
                             if points.count < 1 {
                                 average = points.first?.data ?? 0
-                                data.points = points.map{($0.title, $0.data)}
+                                data = points.map{($0.title, $0.data)}
                             } else {
                             average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                            data.points = points.map{("\($0.date.get(.hour))", $0.data)}
+                            data = points.map{("\($0.date.get(.hour))", $0.data)}
                             }
 
                         }
@@ -53,9 +56,9 @@ struct DataView: View {
                                 health.queryDate.durationType = value
                                     let points = getHeartRateData()
                                     average = health.average(numbers: points.map{$0.data}.filter{$0.isNormal})
-                                    data.points = points.map{("\($0.date.get(.hour))", $0.data)}
+                                    data = points.map{("\($0.date.get(.hour))", $0.data)}
                                     
-                                    print(data.points)
+                                    print(data)
                                 }
                             }) {
                                 Text(value.rawValue)
@@ -75,7 +78,7 @@ struct DataView: View {
                         let points = getHeartRateData().filter{!$0.data.isNaN}
                         
                         average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                        data.points = points.map{("\($0.date.get(.hour))", $0.data)}
+                        data = points.map{("\($0.date.get(.hour))", $0.data)}
                       
                           
                         })
@@ -90,8 +93,23 @@ struct DataView: View {
                     }
                     
                         
-                    BarChartView(data: $data, title: "Heart Rate")
-                       
+//                    BarChartView(data: $data, title: "Heart Rate")
+                    VStack {
+                        HStack {
+                            Text("Heart Rate")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                        BarChart()
+                            .data(data)
+                            .chartStyle(ChartStyle(backgroundColor: .clear, foregroundColor: [ColorGradient(.white)]))
+                            .frame(maxWidth: .infinity, minHeight: 100)
+                        
+                    }
+                    .padding()
+                    .background(Color("teal"))
+                    .mask(RoundedRectangle(cornerRadius: 20))
                    
                     Spacer()
                 } .padding()
@@ -207,14 +225,14 @@ struct DataView: View {
                 }
     func loadData( completionHandler: @escaping (String) -> Void) {
        
-        data = ChartData(values: [("", 0.0)])
+        data = [("", 0.0)]
         
         
         let filtered = health.codableRisk.filter { data in
             return data.date.get(.weekOfYear) == date.get(.weekOfYear) && date.get(.year) == data.date.get(.year)
         }
         print(filtered)
-        let scorePoints = ChartData(values: [("", 0.0)])
+        var scorePoints =  [("", 0.0)]
         
         for day in 0...7 {
             
@@ -227,7 +245,7 @@ struct DataView: View {
             
             let averageScore =  health.average(numbers: filteredDay.map{$0.risk})
            
-            scorePoints.points.append(("\(DayOfWeek(rawValue: day) ?? .Monday)", averageScore))
+            scorePoints.append(("\(DayOfWeek(rawValue: day) ?? .Monday)", averageScore))
             
             
            

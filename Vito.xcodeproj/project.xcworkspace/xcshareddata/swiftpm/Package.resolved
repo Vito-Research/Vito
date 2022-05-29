@@ -1,52 +1,50 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "DateBuilder",
-        "repositoryURL": "https://github.com/nicephoton/DateBuilder",
-        "state": {
-          "branch": null,
-          "revision": "3cb1361a7c4c6564b8e6c8e4c2a7767ea8808c8a",
-          "version": "0.1.0"
-        }
-      },
-      {
-        "package": "HKCombine",
-        "repositoryURL": "https://github.com/javierdemartin/HKCombine.git",
-        "state": {
-          "branch": "main",
-          "revision": "fef1eb3a08831bb5c2a4f452b7b502260edc69a9",
-          "version": null
-        }
-      },
-      {
-        "package": "NiceNotifications",
-        "repositoryURL": "https://github.com/nicephoton/NiceNotifications.git",
-        "state": {
-          "branch": "main",
-          "revision": "ea753d0c2cc83a96bb297e25aed9ce3d92be63e6",
-          "version": null
-        }
-      },
-      {
-        "package": "SFSafeSymbols",
-        "repositoryURL": "https://github.com/piknotech/SFSafeSymbols.git",
-        "state": {
-          "branch": "stable",
-          "revision": "4fda3f8f7d4748c3fb9ea463dde5305b3b5512b5",
-          "version": null
-        }
-      },
-      {
-        "package": "SigmaSwiftStatistics",
-        "repositoryURL": "https://github.com/evgenyneu/SigmaSwiftStatistics.git",
-        "state": {
-          "branch": null,
-          "revision": "d36db09f97a1739edc8c63897220c7ecbb5de684",
-          "version": "9.0.2"
-        }
+  "pins" : [
+    {
+      "identity" : "datebuilder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicephoton/DateBuilder",
+      "state" : {
+        "revision" : "3cb1361a7c4c6564b8e6c8e4c2a7767ea8808c8a",
+        "version" : "0.1.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "hkcombine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/javierdemartin/HKCombine.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "fef1eb3a08831bb5c2a4f452b7b502260edc69a9"
+      }
+    },
+    {
+      "identity" : "nicenotifications",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicephoton/NiceNotifications.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ea753d0c2cc83a96bb297e25aed9ce3d92be63e6"
+      }
+    },
+    {
+      "identity" : "sfsafesymbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/piknotech/SFSafeSymbols.git",
+      "state" : {
+        "branch" : "stable",
+        "revision" : "4fda3f8f7d4748c3fb9ea463dde5305b3b5512b5"
+      }
+    },
+    {
+      "identity" : "sigmaswiftstatistics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/SigmaSwiftStatistics.git",
+      "state" : {
+        "revision" : "d36db09f97a1739edc8c63897220c7ecbb5de684",
+        "version" : "9.0.2"
+      }
+    }
+  ],
+  "version" : 2
 }

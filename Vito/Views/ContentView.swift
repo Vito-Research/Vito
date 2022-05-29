@@ -22,7 +22,7 @@ struct ContentView: View {
                 .onAppear() {
                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
-                        withAnimation(.easeInOut(duration: 2.0)) {
+                        withAnimation(.beat) {
                     intro = false
                         }
                     }

@@ -19,6 +19,9 @@ struct RiskCardView: View {
     @State var risk = Risk(id: "nodata", risk: 21.0, explanation: [Explanation]())
     
     @State var isCalendar = false
+    @State var scale = 0.8
+    
+    
     var body: some View {
         VStack {
             if !isCalendar {
@@ -27,18 +30,30 @@ struct RiskCardView: View {
                  
                     Image(systemSymbol: .chartBar)
                         .font(.title)
-                        
+                        .scaleEffect(scale)
+                        .onAppear() {
+                            withAnimation(.beat.delay(0.5)) {
+                                scale = 1.0
+                            }
+                            withAnimation(.beat.delay(1.0)) {
+                                scale = 1.0
+                            }
+                           
+                        }
                 }
                 
-               
+      
+                   
                 Text("Heart Rate Score")
                     .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
+                
                 Spacer()
                
                 NavigationLink(destination: PrivacyReportView()) {
                  
                     Image(systemSymbol: .questionmarkCircle)
                         .font(.largeTitle)
+                        .scaleEffect(scale)
                         
                 }
                 
@@ -104,7 +119,7 @@ struct HalvedCircularBar: View {
     @Binding var min: CGFloat
     @Binding var max: CGFloat
     
-    
+    @State var heartScale = 0.8
     var body: some View {
         VStack {
             
@@ -119,13 +134,25 @@ struct HalvedCircularBar: View {
                     .frame( height: 125)
                     .padding(.vertical)
                   
-               
+                HStack {
+                    Image(systemSymbol: .heart)
+                        .font(.title)
+                        .scaleEffect(heartScale)
+                        .foregroundColor(.white)
+                        .onAppear() {
+                            withAnimation(.beat.delay( progress > 0.5 ? 0.0 : 0.5).repeatForever()) {
+                                heartScale = 1.0
+                            }
+                           
+                           
+                        }
+                    
                 Text(progress == 21 ? "Not Enough Data" : progress > 0.5 ? "Alert" : "OK")
                     .font(.custom("Poppins-Bold", size: 20, relativeTo: .headline))
                   
                     .foregroundColor(.white)
 
-                
+                }
             } .onAppear() {
                 print(progress)
 
@@ -142,7 +169,9 @@ struct HalvedCircularBar: View {
             let riskData = health.riskData.sliced(by: [.day, .month, .year], for: \.date)
             let components = Calendar.current.dateComponents([.day, .month, .year], from: health.queryDate.anchorDate)
             let date2 = Calendar.current.date(from: components)!
+            withAnimation(.beat) {
             progress = CGFloat(riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal}.last ?? 0.0)
+        }
         }
     }
     

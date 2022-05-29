@@ -101,8 +101,8 @@ struct DataView: View {
             }, label: {
                 Text("Done")
             }))
-            .navigationBarTitle("Data View")
-        }
+            .navigationBarTitle("Details View")
+        } .animation(.none)
            
         }
 

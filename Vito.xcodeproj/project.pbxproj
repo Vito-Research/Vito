@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A3C4E28433F69001F36A2 /* AnimationExt.swift */; };
 		E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */ = {isa = PBXBuildFile; fileRef = E176BCD827152AD900B8946F /* AW_rhr.csv */; };
 		E19240F62843070900A05F9C /* DoubleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F02843070900A05F9C /* DoubleExt.swift */; };
 		E19240F72843070900A05F9C /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F12843070900A05F9C /* StringExt.swift */; };
@@ -89,6 +90,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E16A3C4E28433F69001F36A2 /* AnimationExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExt.swift; sourceTree = "<group>"; };
 		E176BCD827152AD900B8946F /* AW_rhr.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AW_rhr.csv; sourceTree = "<group>"; };
 		E19240F02843070900A05F9C /* DoubleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExt.swift; sourceTree = "<group>"; };
 		E19240F12843070900A05F9C /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				E19240F32843070900A05F9C /* ArrayExt.swift */,
 				E19240F42843070900A05F9C /* ViewExt.swift */,
 				E19240F52843070900A05F9C /* DateExt.swift */,
+				E16A3C4E28433F69001F36A2 /* AnimationExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				E1A4C89326E838B80031C161 /* BarChartView.swift in Sources */,
 				E1A4C89C26E838B80031C161 /* PieChartView.swift in Sources */,
 				E19240F72843070900A05F9C /* StringExt.swift in Sources */,
+				E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */,
 				ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */,
 				E1A4C89F26E838B80031C161 /* Legend.swift in Sources */,
 				E1A4C82126E837620031C161 /* VitoApp.swift in Sources */,

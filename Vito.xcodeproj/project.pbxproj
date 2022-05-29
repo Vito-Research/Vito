@@ -66,7 +66,6 @@
 		E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86726E838B80031C161 /* ContentView.swift */; };
 		E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86926E838B80031C161 /* DataTypesListView.swift */; };
 		E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86A26E838B80031C161 /* OnboardingView.swift */; };
-		E1A4C8A926E838B80031C161 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86D26E838B80031C161 /* Health.swift */; };
 		E1A4C8AA26E838B80031C161 /* TimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86E26E838B80031C161 /* TimeData.swift */; };
 		E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C86F26E838B80031C161 /* HealthData.swift */; };
 		E1A4C8AC26E838B80031C161 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87026E838B80031C161 /* Card.swift */; };
@@ -78,7 +77,6 @@
 		E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B926E839700031C161 /* HKCombine */; };
 		E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A4C8BD26E83BA60031C161 /* HealthKit.framework */; };
 		E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */ = {isa = PBXBuildFile; productRef = E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */; };
-		ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A7FF427980F58000EEB57 /* HealthV2.swift */; };
 		ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EA827A7AA8F00C51DDA /* Healthv3.swift */; };
 		ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F527E40BA000044435 /* FitbitData.swift */; };
 		ED96A2F827E4168600044435 /* RedCapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F727E4168600044435 /* RedCapData.swift */; };
@@ -151,7 +149,6 @@
 		E1A4C86726E838B80031C161 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E1A4C86926E838B80031C161 /* DataTypesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypesListView.swift; sourceTree = "<group>"; };
 		E1A4C86A26E838B80031C161 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		E1A4C86D26E838B80031C161 /* Health.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
 		E1A4C86E26E838B80031C161 /* TimeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeData.swift; sourceTree = "<group>"; };
 		E1A4C86F26E838B80031C161 /* HealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthData.swift; sourceTree = "<group>"; };
 		E1A4C87026E838B80031C161 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -161,7 +158,6 @@
 		E1A4C8B126E838D30031C161 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E1A4C8BB26E83BA60031C161 /* Vito.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vito.entitlements; sourceTree = "<group>"; };
 		E1A4C8BD26E83BA60031C161 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		ED4A7FF427980F58000EEB57 /* HealthV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthV2.swift; sourceTree = "<group>"; };
 		ED926EA827A7AA8F00C51DDA /* Healthv3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv3.swift; sourceTree = "<group>"; };
 		ED96A2F527E40BA000044435 /* FitbitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitbitData.swift; sourceTree = "<group>"; };
 		ED96A2F727E4168600044435 /* RedCapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedCapData.swift; sourceTree = "<group>"; };
@@ -386,8 +382,6 @@
 		E1A4C86C26E838B80031C161 /* Health */ = {
 			isa = PBXGroup;
 			children = (
-				E1A4C86D26E838B80031C161 /* Health.swift */,
-				ED4A7FF427980F58000EEB57 /* HealthV2.swift */,
 				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
 				EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */,
 				EDDFD44C27E09BE400EE064B /* Fitbit.swift */,
@@ -547,7 +541,6 @@
 				E1A4C8A226E838B80031C161 /* Path+QuadCurve.swift in Sources */,
 				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
 				E1A4C89426E838B80031C161 /* BarChartRow.swift in Sources */,
-				E1A4C8A926E838B80031C161 /* Health.swift in Sources */,
 				E19240FB2843070900A05F9C /* DateExt.swift in Sources */,
 				E19240F82843070900A05F9C /* UserDefaultExt.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,
@@ -560,7 +553,6 @@
 				E1A4C89726E838B80031C161 /* ChartView.swift in Sources */,
 				E1A4C89226E838B80031C161 /* ShareSheet.swift in Sources */,
 				E1A4C88926E838B80031C161 /* CTAButtonStyle.swift in Sources */,
-				ED4A7FF527980F58000EEB57 /* HealthV2.swift in Sources */,
 				E19240F62843070900A05F9C /* DoubleExt.swift in Sources */,
 				E1A4C89B26E838B80031C161 /* PieChartCell.swift in Sources */,
 				E1A4C89826E838B80031C161 /* Helpers.swift in Sources */,

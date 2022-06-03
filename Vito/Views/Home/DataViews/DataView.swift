@@ -37,7 +37,7 @@ struct DataView: View {
                             let points = getHeartRateData().filter{!$0.data.isNaN}
                             if points.count < 1 {
                                 average = points.first?.data ?? 0
-                                data = points.map{($0.title, $0.data)}
+                             //   data = points.map{($0.title, $0.data)}
                             } else {
                             average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
                             data = points.map{("\($0.date.get(.hour))", $0.data)}
@@ -125,12 +125,12 @@ struct DataView: View {
         }
 
     func getHeartRateData() -> [HealthData] {
-
+        
         let components = Calendar.current.dateComponents(health.queryDate.durationType == .Month ? [.month, .year] : health.queryDate.durationType == .Week ? [.weekOfMonth, .month, .year] : [.day, .month, .year], from: health.queryDate.anchorDate)
         let date = Calendar.current.date(from: components)!
 
-       
-        return (health.queryDate.durationType == .Month ? health.hrData.sliced(by: [.month, .year], for: \.date)[date] : health.queryDate.durationType == .Week ? health.hrData.sliced(by: [.weekOfMonth, .month, .year], for: \.date)[date] : health.hrData.sliced(by: [.day, .month, .year], for: \.date)[date]) ?? [HealthData]()
+        self.data = health.hrData.sliced(by: [.hour, .day, .month, .year], for: \.date)
+        return health.hrData
 
     }
     func lastDayOfMonth(date: Date) -> Date {

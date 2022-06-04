@@ -22,6 +22,16 @@ struct OnboardingView: View {
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
+            HStack {
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Image(systemSymbol: .xmark)
+                        .font(.headline)
+                } .padding()
+                Spacer()
+            }
             TabView(selection: $slideNum) {
                 ForEach(onboardingViews.indices, id: \.self) { i in
                     OnboardingDetail(onboarding: onboardingViews[i])
@@ -84,12 +94,17 @@ struct OnboardingView: View {
                 }
                 
             }) {
+                 if onboardingViews[slideNum].title == "Learn More" {
+                    Link("Learn More", destination: URL(string: "http://vito-website.vercel.app/")!)
+                 } else {
                 ZStack {
-
+                     
                     Text(onboardingViews[slideNum].title.contains("Can") ? "Yes" : "Continue")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                         .foregroundColor(.white)
+                    
                 }
+                 }
             } .buttonStyle(CTAButtonStyle())
                
                 .padding()

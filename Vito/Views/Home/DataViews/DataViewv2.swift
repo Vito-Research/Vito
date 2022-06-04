@@ -99,8 +99,8 @@ struct DataViewv2: View {
                 
                 Text(String(self.calendar.component(.day, from: date)))
                     .frame(width: 40, height: 40, alignment: .center)
-                    .background((date < Date() && (riskData[date2]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal} ?? [0.0]) ) > 0) ? .red : .green : .white)
-                    .foregroundColor((date < Date() && (riskData[date2]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal} ?? [0.0]) ) > 0) ? .white : .white : .gray.opacity(0.6))
+                    .background((date < Date() && (riskData[date2]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal} ?? [0.0]) ) > 0) ?  Color("red") :  Color("green") :  Color("back"))
+                    .foregroundColor((date < Date() && (riskData[date2]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date2]?.map{$0.risk ?? .nan}.filter{$0.isNormal} ?? [0.0]) ) > 0) ? Color("text") : Color(.white) : Color(.white))
                 
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }

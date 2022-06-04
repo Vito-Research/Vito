@@ -23,7 +23,7 @@ struct PrivacyReportView: View {
             }
             Section {
                 VStack(alignment: .leading) {
-        Text("Privacy is Important.")
+        Text("Privacy is Vital.")
                         .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
                         .padding(.vertical)
                         .foregroundColor(Color.accentColor)

@@ -129,7 +129,7 @@ struct DataView: View {
         let components = Calendar.current.dateComponents(health.queryDate.durationType == .Month ? [.month, .year] : health.queryDate.durationType == .Week ? [.weekOfMonth, .month, .year] : [.day, .month, .year], from: health.queryDate.anchorDate)
         let date = Calendar.current.date(from: components)!
 
-        self.data = health.hrData.sliced(by: [.hour, .day, .month, .year], for: \.date)
+        //self.data = health.hrData.sliced(by: [.hour, .day, .month, .year], for: \.date)
         return health.hrData
 
     }

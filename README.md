@@ -8,7 +8,7 @@ Vito is creating software that uses vitals to detect infection in realtime. Rece
 
 ### What devices is Vito compatible with?
 * Android 
-* IOS
+* iOS
 
 ### Questions about security
 Vito is an application that runs all computations completely on your mobile device. With this, we ensure that your data stays your data and isn't being sent to a server to be manipulated or observed. Vito highly emphasises confidentiality so we built an application that uses data that is available already from your smarthwatch, such as heart rate and oxidation levels, and just runs it through models to see if there are any abnormalities.

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D8D4D58228440EEA00DC8ED6 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D8D4D58128440EEA00DC8ED6 /* SwiftUICharts */; };
+		E111ADD32858F94E00A7CCBB /* VitoKit in Frameworks */ = {isa = PBXBuildFile; productRef = E111ADD22858F94E00A7CCBB /* VitoKit */; };
+		E11F72E0285809BD004F33C9 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11F72DF285809BD004F33C9 /* TestView.swift */; };
 		E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A3C4E28433F69001F36A2 /* AnimationExt.swift */; };
 		E176BCD927152AD900B8946F /* AW_rhr.csv in Resources */ = {isa = PBXBuildFile; fileRef = E176BCD827152AD900B8946F /* AW_rhr.csv */; };
 		E19240F62843070900A05F9C /* DoubleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19240F02843070900A05F9C /* DoubleExt.swift */; };
@@ -57,22 +59,19 @@
 		E1A4C8AE26E838B80031C161 /* MLData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87326E838B80031C161 /* MLData.swift */; };
 		E1A4C8AF26E838B80031C161 /* ML.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A4C87426E838B80031C161 /* ML.swift */; };
 		E1A4C8B426E839500031C161 /* NiceNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B326E839500031C161 /* NiceNotifications */; };
-		E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B626E839630031C161 /* SFSafeSymbols */; };
-		E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */ = {isa = PBXBuildFile; productRef = E1A4C8B926E839700031C161 /* HKCombine */; };
 		E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A4C8BD26E83BA60031C161 /* HealthKit.framework */; };
-		E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */ = {isa = PBXBuildFile; productRef = E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */; };
-		ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED926EA827A7AA8F00C51DDA /* Healthv3.swift */; };
+		E1B8E1B228584222004FDFF9 /* Healthv3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8E1B128584221004FDFF9 /* Healthv3.swift */; };
 		ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F527E40BA000044435 /* FitbitData.swift */; };
 		ED96A2F827E4168600044435 /* RedCapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED96A2F727E4168600044435 /* RedCapData.swift */; };
-		ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED99067C27D92A1C0016F875 /* AlertLevel.swift */; };
 		ED99D38427AE724B00B6915F /* Orig_NonFitbit_HR.csv in Resources */ = {isa = PBXBuildFile; fileRef = ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */; };
-		EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */; };
 		EDB6AAC127F65C480035F25B /* PrivacyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */; };
 		EDDFD44D27E09BE400EE064B /* Fitbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44C27E09BE400EE064B /* Fitbit.swift */; };
 		EDDFD44F27E0B30A00EE064B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDFD44E27E0B30A00EE064B /* WebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E111ADD02858F88100A7CCBB /* VitoKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = VitoKit; path = ../../../../Applications/VitoKit; sourceTree = "<group>"; };
+		E11F72DF285809BD004F33C9 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		E16A3C4E28433F69001F36A2 /* AnimationExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationExt.swift; sourceTree = "<group>"; };
 		E176BCD827152AD900B8946F /* AW_rhr.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AW_rhr.csv; sourceTree = "<group>"; };
 		E19240F02843070900A05F9C /* DoubleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExt.swift; sourceTree = "<group>"; };
@@ -125,12 +124,10 @@
 		E1A4C8B126E838D30031C161 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E1A4C8BB26E83BA60031C161 /* Vito.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vito.entitlements; sourceTree = "<group>"; };
 		E1A4C8BD26E83BA60031C161 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		ED926EA827A7AA8F00C51DDA /* Healthv3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv3.swift; sourceTree = "<group>"; };
+		E1B8E1B128584221004FDFF9 /* Healthv3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Healthv3.swift; path = ../../../../Vito/Vito/Data/Health/Healthv3.swift; sourceTree = "<group>"; };
 		ED96A2F527E40BA000044435 /* FitbitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitbitData.swift; sourceTree = "<group>"; };
 		ED96A2F727E4168600044435 /* RedCapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedCapData.swift; sourceTree = "<group>"; };
-		ED99067C27D92A1C0016F875 /* AlertLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLevel.swift; sourceTree = "<group>"; };
 		ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orig_NonFitbit_HR.csv; sourceTree = "<group>"; };
-		EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Healthv4.swift; sourceTree = "<group>"; };
 		EDB6AAC027F65C480035F25B /* PrivacyReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyReportView.swift; sourceTree = "<group>"; };
 		EDDFD44C27E09BE400EE064B /* Fitbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitbit.swift; sourceTree = "<group>"; };
 		EDDFD44E27E0B30A00EE064B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
@@ -141,11 +138,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1A4C8BA26E839700031C161 /* HKCombine in Frameworks */,
 				E1A4C8BE26E83BA60031C161 /* HealthKit.framework in Frameworks */,
-				E1CB535E2712AB7A00CB7746 /* SigmaSwiftStatistics in Frameworks */,
+				E111ADD32858F94E00A7CCBB /* VitoKit in Frameworks */,
 				D8D4D58228440EEA00DC8ED6 /* SwiftUICharts in Frameworks */,
-				E1A4C8B726E839630031C161 /* SFSafeSymbols in Frameworks */,
 				E1A4C8B426E839500031C161 /* NiceNotifications in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,6 +148,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E111ADCF2858F88100A7CCBB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				E111ADD02858F88100A7CCBB /* VitoKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		E19240EF2843070900A05F9C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +183,7 @@
 		E1A4C81426E837620031C161 = {
 			isa = PBXGroup;
 			children = (
+				E111ADCF2858F88100A7CCBB /* Packages */,
 				E1A4C81F26E837620031C161 /* Vito */,
 				E1A4C81E26E837620031C161 /* Products */,
 				E1A4C8BC26E83BA60031C161 /* Frameworks */,
@@ -281,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				E1A4C86926E838B80031C161 /* DataTypesListView.swift */,
+				E11F72DF285809BD004F33C9 /* TestView.swift */,
 				E1A4C86626E838B80031C161 /* IntroView.swift */,
 				E1A4C86A26E838B80031C161 /* OnboardingView.swift */,
 			);
@@ -301,13 +306,11 @@
 		E1A4C86C26E838B80031C161 /* Health */ = {
 			isa = PBXGroup;
 			children = (
-				ED926EA827A7AA8F00C51DDA /* Healthv3.swift */,
-				EDAF7ECF27F18D3800A04B30 /* Healthv4.swift */,
 				EDDFD44C27E09BE400EE064B /* Fitbit.swift */,
+				E1B8E1B128584221004FDFF9 /* Healthv3.swift */,
 				ED96A2F527E40BA000044435 /* FitbitData.swift */,
 				ED96A2F727E4168600044435 /* RedCapData.swift */,
 				EDDFD44E27E0B30A00EE064B /* WebView.swift */,
-				ED99067C27D92A1C0016F875 /* AlertLevel.swift */,
 				ED99D38327AE724B00B6915F /* Orig_NonFitbit_HR.csv */,
 				E1A4C86E26E838B80031C161 /* TimeData.swift */,
 				E1A4C86F26E838B80031C161 /* HealthData.swift */,
@@ -350,10 +353,8 @@
 			name = Vito;
 			packageProductDependencies = (
 				E1A4C8B326E839500031C161 /* NiceNotifications */,
-				E1A4C8B626E839630031C161 /* SFSafeSymbols */,
-				E1A4C8B926E839700031C161 /* HKCombine */,
-				E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */,
 				D8D4D58128440EEA00DC8ED6 /* SwiftUICharts */,
+				E111ADD22858F94E00A7CCBB /* VitoKit */,
 			);
 			productName = Vito;
 			productReference = E1A4C81D26E837620031C161 /* Vito.app */;
@@ -385,10 +386,8 @@
 			mainGroup = E1A4C81426E837620031C161;
 			packageReferences = (
 				E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */,
-				E1A4C8B526E839630031C161 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
-				E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */,
-				E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */,
 				D8D4D58028440EEA00DC8ED6 /* XCRemoteSwiftPackageReference "ChartView" */,
+				E111ADD12858F92700A7CCBB /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = E1A4C81E26E837620031C161 /* Products */;
 			projectDirPath = "";
@@ -439,11 +438,12 @@
 			files = (
 				E1A4C8AB26E838B80031C161 /* HealthData.swift in Sources */,
 				E1A4C8A626E838B80031C161 /* ContentView.swift in Sources */,
+				E1B8E1B228584222004FDFF9 /* Healthv3.swift in Sources */,
 				E19240FA2843070900A05F9C /* ViewExt.swift in Sources */,
 				E1A4C8AF26E838B80031C161 /* ML.swift in Sources */,
+				E11F72E0285809BD004F33C9 /* TestView.swift in Sources */,
 				E19240F72843070900A05F9C /* StringExt.swift in Sources */,
 				E16A3C4F28433F69001F36A2 /* AnimationExt.swift in Sources */,
-				ED99067D27D92A1C0016F875 /* AlertLevel.swift in Sources */,
 				E1A4C82126E837620031C161 /* VitoApp.swift in Sources */,
 				E1A4C8AA26E838B80031C161 /* TimeData.swift in Sources */,
 				E1A4C8A726E838B80031C161 /* DataTypesListView.swift in Sources */,
@@ -451,12 +451,10 @@
 				E1A4C88D26E838B80031C161 /* CalenderView.swift in Sources */,
 				ED96A2F627E40BA000044435 /* FitbitData.swift in Sources */,
 				E1A4C8A826E838B80031C161 /* OnboardingView.swift in Sources */,
-				ED926EA927A7AA8F00C51DDA /* Healthv3.swift in Sources */,
 				E19240FB2843070900A05F9C /* DateExt.swift in Sources */,
 				E19240F82843070900A05F9C /* UserDefaultExt.swift in Sources */,
 				E1A4C8AD26E838B80031C161 /* Onboarding.swift in Sources */,
 				E1A4C8AC26E838B80031C161 /* Card.swift in Sources */,
-				EDAF7ED027F18D3800A04B30 /* Healthv4.swift in Sources */,
 				E1A4C89026E838B80031C161 /* DataViewv2.swift in Sources */,
 				E1A4C88A26E838B80031C161 /* DataView.swift in Sources */,
 				E1A4C88E26E838B80031C161 /* HomeView.swift in Sources */,
@@ -693,36 +691,20 @@
 				version = "2.0.0-beta.2";
 			};
 		};
+		E111ADD12858F92700A7CCBB /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols.git";
+			requirement = {
+				branch = stable;
+				kind = branch;
+			};
+		};
 		E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nicephoton/NiceNotifications.git";
 			requirement = {
 				branch = main;
 				kind = branch;
-			};
-		};
-		E1A4C8B526E839630031C161 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/piknotech/SFSafeSymbols.git";
-			requirement = {
-				branch = stable;
-				kind = branch;
-			};
-		};
-		E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/javierdemartin/HKCombine.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/evgenyneu/SigmaSwiftStatistics.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -733,25 +715,14 @@
 			package = D8D4D58028440EEA00DC8ED6 /* XCRemoteSwiftPackageReference "ChartView" */;
 			productName = SwiftUICharts;
 		};
+		E111ADD22858F94E00A7CCBB /* VitoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VitoKit;
+		};
 		E1A4C8B326E839500031C161 /* NiceNotifications */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E1A4C8B226E839500031C161 /* XCRemoteSwiftPackageReference "NiceNotifications" */;
 			productName = NiceNotifications;
-		};
-		E1A4C8B626E839630031C161 /* SFSafeSymbols */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E1A4C8B526E839630031C161 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
-			productName = SFSafeSymbols;
-		};
-		E1A4C8B926E839700031C161 /* HKCombine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E1A4C8B826E839700031C161 /* XCRemoteSwiftPackageReference "HKCombine" */;
-			productName = HKCombine;
-		};
-		E1CB535D2712AB7A00CB7746 /* SigmaSwiftStatistics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E1CB535C2712AB7A00CB7746 /* XCRemoteSwiftPackageReference "SigmaSwiftStatistics" */;
-			productName = SigmaSwiftStatistics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

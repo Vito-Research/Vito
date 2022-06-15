@@ -8,6 +8,7 @@
 import SwiftUI
 import NiceNotifications
 import HealthKit
+import VitoKit
 
 struct OnboardingView: View {
     let healthStore = HKHealthStore()
@@ -17,16 +18,27 @@ struct OnboardingView: View {
     @State var slideNum = 0
     @Binding var isOnboarding: Int
     @State var time = 0
-    @ObservedObject var health: Healthv3
+    @ObservedObject var health: Vito
     //@Binding var setting: Setting
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
+            HStack {
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Image(systemSymbol: .xmark)
+                        .font(.headline)
+                } .padding()
+                Spacer()
+            }
             TabView(selection: $slideNum) {
                 ForEach(onboardingViews.indices, id: \.self) { i in
                     OnboardingDetail(onboarding: onboardingViews[i])
                         .tag(i)
                 }
+                
             }
             .tabViewStyle(PageTabViewStyle())
             if onboardingViews[slideNum].title.contains("Can") {
@@ -51,6 +63,7 @@ struct OnboardingView: View {
                     .frame(width: .infinity)
                     .padding()
             }
+            
             Button(action: {
                 if onboardingViews[slideNum].title.contains("Noti") {
                     LocalNotifications.requestPermission(strategy: .askSystemPermissionIfNeeded) { success in
@@ -59,20 +72,8 @@ struct OnboardingView: View {
                         }
                     }
                     
-                } else if onboardingViews[slideNum].title.contains("Can we Access Your Health Data?") {
-                    let readData = Set([
-                        HKObjectType.quantityType(forIdentifier: .heartRateVariabilitySDNN)!,
-                        HKObjectType.quantityType(forIdentifier: .restingHeartRate)!,
-                        HKObjectType.quantityType(forIdentifier: .walkingHeartRateAverage)!,
-                        HKObjectType.quantityType(forIdentifier: .heartRate)!,
-                        HKObjectType.quantityType(forIdentifier: .oxygenSaturation)!,
-                        HKObjectType.quantityType(forIdentifier: .respiratoryRate)!,
-                        HKObjectType.quantityType(forIdentifier: .stepCount)!
-                    ])
-                    
-                    self.healthStore.requestAuthorization(toShare: [], read: readData) { (success, error) in
-                        
-                    }
+                } else if onboardingViews[slideNum].toggleData.map{$0.explanation.image}.contains(.heart) {
+                    health.auth()
                 }
                 if slideNum + 1 < onboardingViews.count  {
                     slideNum += 1
@@ -80,18 +81,25 @@ struct OnboardingView: View {
                     // dismiss sheet
                    isOnboarding += 1
                    UserDefaults.standard.set(isOnboarding, forKey: "onboarding")
-                    health.backgroundDelivery()
+                    for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
+                    health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date())
+                    }
                 }
                 
             }) {
+                 if onboardingViews[slideNum].title == "Learn More" {
+                    Link("Learn More", destination: URL(string: "http://vito-website.vercel.app/")!)
+                 } else {
                 ZStack {
-
+                     
                     Text(onboardingViews[slideNum].title.contains("Can") ? "Yes" : "Continue")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
                         .foregroundColor(.white)
+                    
                 }
+                 }
             } .buttonStyle(CTAButtonStyle())
-               
+             
                 .padding()
             
         }
@@ -125,7 +133,8 @@ struct OnboardingDetail: View {
             }
            
             if !onboarding.toggleData.isEmpty {
-                DataTypesListView(toggleData: onboarding.toggleData)
+                DataTypesListView(toggleData: onboarding.toggleData, title: "", caption: "", showBtn: false)
+               
             }
         }
         }

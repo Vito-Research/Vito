@@ -8,9 +8,10 @@
 import SwiftUI
 import HealthKit
 import NiceNotifications
+import VitoKit
 
 struct ContentView: View {
-    @StateObject var health = Healthv3()
+    @StateObject var health = Vito()
   
     @State var share = false
     @State var intro = true
@@ -30,7 +31,11 @@ struct ContentView: View {
                 .onChange(of: scenePhase) { value in
                     withAnimation(.easeOut) {
                     if value == .active {
-                    
+//                        for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
+                     
+                        for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
+                            health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
+                       }
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                             withAnimation(.easeInOut(duration: 2.0)) {
@@ -58,31 +63,31 @@ struct ContentView: View {
                
                
             }
-            .onChange(of: health.codableRisk) { value in
-                
-                let encoder = JSONEncoder()
-                if let encoded = try? encoder.encode(health.codableRisk) {
-                    if let json = String(data: encoded, encoding: .utf8) {
-                      
-                        do {
-                            let url = health.getDocumentsDirectory().appendingPathComponent("risk.txt")
-                            try json.write(to: url, atomically: false, encoding: String.Encoding.utf8)
-                            
-                        } catch {
-                            print("erorr")
-                        }
-                    }
-                    
-                    
-                }
-            }
+//            .onChange(of: health.codableRisk) { value in
+//
+//                let encoder = JSONEncoder()
+//                if let encoded = try? encoder.encode(health.codableRisk) {
+//                    if let json = String(data: encoded, encoding: .utf8) {
+//
+//                        do {
+//                            let url = health.getDocumentsDirectory().appendingPathComponent("risk.txt")
+//                            try json.write(to: url, atomically: false, encoding: String.Encoding.utf8)
+//
+//                        } catch {
+//                            print("erorr")
+//                        }
+//                    }
+//
+//
+//                }
+//            }
             .sheet(isPresented: $share) {
                // ShareSheet(activityItems: [ml.getDocumentsDirectory().appendingPathComponent("A.csv")])
                 
             }
             }
     }
-            if onboarding != 0  && health.progress < 1 {
+            if onboarding != 0  && health.progress < 0.99 {
                 IntroView(health: health)
             }
         }

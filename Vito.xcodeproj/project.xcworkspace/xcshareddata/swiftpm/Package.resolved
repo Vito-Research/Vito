@@ -19,39 +19,21 @@
       }
     },
     {
-      "identity" : "hkcombine",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/javierdemartin/HKCombine.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "fef1eb3a08831bb5c2a4f452b7b502260edc69a9"
-      }
-    },
-    {
       "identity" : "nicenotifications",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nicephoton/NiceNotifications.git",
       "state" : {
         "branch" : "main",
-        "revision" : "ea753d0c2cc83a96bb297e25aed9ce3d92be63e6"
+        "revision" : "cb677617767eb61e0234b90c3883193e4594ebce"
       }
     },
     {
       "identity" : "sfsafesymbols",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/piknotech/SFSafeSymbols.git",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols.git",
       "state" : {
         "branch" : "stable",
-        "revision" : "4fda3f8f7d4748c3fb9ea463dde5305b3b5512b5"
-      }
-    },
-    {
-      "identity" : "sigmaswiftstatistics",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/evgenyneu/SigmaSwiftStatistics.git",
-      "state" : {
-        "revision" : "d36db09f97a1739edc8c63897220c7ecbb5de684",
-        "version" : "9.0.2"
+        "revision" : "c8c33d947d8a1c883aa19fd24e14fd738b06e369"
       }
     }
   ],

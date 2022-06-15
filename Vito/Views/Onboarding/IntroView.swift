@@ -1,4 +1,5 @@
 import SwiftUI
+import VitoKit
 struct IntroView: View {
    
     @State var animate1 = false
@@ -6,7 +7,7 @@ struct IntroView: View {
     @State var pulse = false
     @State var timer = Timer.publish(every: 10.0, on: .main, in: .common).autoconnect()
     @State var total = 1.0
-    @ObservedObject var health: Healthv3
+    @ObservedObject var health: Vito
     var body: some View {
         ZStack {
             Color(.white)
@@ -54,7 +55,8 @@ struct IntroView: View {
         }
                 Spacer()
                
-                ProgressView("Processing Health Data", value: health.progress, total: 1)
+                ProgressView("Loading Health Data", value: health.progress, total: 1)
+                    .padding(.horizontal)
             }
         }
     }

@@ -8,11 +8,16 @@
 import SwiftUI
 import HealthKit
 import SwiftUICharts
+import VitoKit
 
 struct DataView: View {
-    @State private var date = Date()
-    @State private var average = 0.0
-    @ObservedObject var health: Healthv3
+   // @State var date = Date()
+    @State var data2: HealthData
+    
+    @State var average = 0.0
+    @State var min: CGFloat = 0.0
+    @State var max: CGFloat = 0.0
+    @ObservedObject var health: Vito
     //@State var data = ChartData(values: [("", 0.0)])
     @State var data: [(String, Double)] = [("",0.0)]
     
@@ -23,77 +28,28 @@ struct DataView: View {
     var body: some View {
         
         NavigationView {
-            ScrollView {
-                VStack {
+          //  ScrollView {
+                VStack(alignment: .leading) {
                     HStack {
-                        Text("Average Heart Rate: " + String(round(average * 10) / 10.0))
+                        
+                        Text("Average Heart Rate: " + String(round(data2.data * 10) / 10.0))
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.leading)
                             .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
-                        Spacer()
-       
-                        .onAppear() {
-                         
-                            let points = getHeartRateData().filter{!$0.data.isNaN}
-                            if points.count < 1 {
-                                average = points.first?.data ?? 0
-                             //   data = points.map{($0.title, $0.data)}
-                            } else {
-                            average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                            data = points.map{("\($0.date.get(.hour))", $0.data)}
-                            }
-
-                        }
-                    
-                    }
-                    HStack {
-                        Spacer()
-       
-                        ForEach(DurationType.allCases, id: \.self) { value in
-                            if value != .Year {
-                            Button(action: {
-                                withAnimation(.easeInOut) {
-                                health.queryDate.durationType = value
-                                    let points = getHeartRateData()
-                                    average = health.average(numbers: points.map{$0.data}.filter{$0.isNormal})
-                                    data = points.map{("\($0.date.get(.hour))", $0.data)}
-                                    
-                                    print(data)
-                                }
-                            }) {
-                                Text(value.rawValue)
-                                    .font(.custom("Poppins", size: 12, relativeTo: .subheadline))
-                                    .foregroundColor(value == health.queryDate.durationType ?  .white : .blue)
-                                    .padding()
-                                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(value == health.queryDate.durationType ?  .blue : .white))
-                                   
-                            }
-                        }
-                        }
-                       
-                    }
-                
-                    .onChange(of: health.queryDate.anchorDate, perform: { value in
-                    
-                        let points = getHeartRateData().filter{!$0.data.isNaN}
                         
-                        average = health.average(numbers: points.map{$0.data}.filter{!$0.isNaN})
-                        data = points.map{("\($0.date.get(.hour))", $0.data)}
-                      
-                          
-                        })
-                    if !health.risk.id.isEmpty {
-                        RiskCardView(health: health, date: health.queryDate.anchorDate, isCalendar: true)
-                            .transition(.move(edge: .top))
+                        Spacer()
+       
+                   
                     }
+
+                    Spacer()
                     HStack {
                         Text("Heart Rate")
                             .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
                         Spacer()
                     }
                     
-                        
-//                    BarChartView(data: $data, title: "Heart Rate")
+                    Spacer()
                     VStack {
                         HStack {
                             Text("Heart Rate")
@@ -101,38 +57,61 @@ struct DataView: View {
                                 .foregroundColor(.white)
                             Spacer()
                         }
+                      //  .padding(.top, 100)
+                        HalvedCircularBar(data: data2, progress: $data2.risk, health: health, min: $min, max: $max, date: Date())
+                        VStack {
+                        HStack {
+                            VStack {
+                                
+                                Text(String(data2.dataPoints.map{$0.value}.max() ?? 0))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(String(data2.dataPoints.map{$0.value}.min() ?? 0))
+                                    .foregroundColor(.white)
+                            }
                         BarChart()
                             .data(data)
                             .chartStyle(ChartStyle(backgroundColor: .clear, foregroundColor: [ColorGradient(.white)]))
-                            .frame(maxWidth: .infinity, minHeight: 100)
+                            .frame(maxWidth: .infinity, minHeight: 250)
+                            .padding(.top)
+                            
+                        }
+                            Text("Hour")
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                        .background(Color("teal"))
+                            .mask(RoundedRectangle(cornerRadius: 20))
+                    } .onAppear() {
+                        for b in data2.dataPoints.sliced(by: [.hour], for: \.date) {
                         
-                    }
+                            data.append((b.key.formatted(date: .omitted, time: .shortened), health.average(numbers: b.value.map{$0.value})))
+                                
+                            }
+                                                       
+                                                                                                               }
+                                                       
+                                                                                                               
+                    
                     .padding()
-                    .background(Color("teal"))
-                    .mask(RoundedRectangle(cornerRadius: 20))
-                   
-                    Spacer()
-                } .padding()
+                    
+                    
+                }
+                  //  Spacer()
+              //  }
+                .padding()
+                .navigationBarItems(trailing: Button (action: {
+                    dismiss.callAsFunction()
+                }, label: {
+                    Text("Done")
+                        .animation(nil)
+                }))
+                .navigationBarTitle("Details View")
             }
-            .navigationBarItems(trailing: Button (action: {
-                dismiss.callAsFunction()
-            }, label: {
-                Text("Done")
-            }))
-            .navigationBarTitle("Details View")
-        } .animation(.none)
-           
+          
         }
+           
 
-    func getHeartRateData() -> [HealthData] {
-        
-        let components = Calendar.current.dateComponents(health.queryDate.durationType == .Month ? [.month, .year] : health.queryDate.durationType == .Week ? [.weekOfMonth, .month, .year] : [.day, .month, .year], from: health.queryDate.anchorDate)
-        let date = Calendar.current.date(from: components)!
-
-        //self.data = health.hrData.sliced(by: [.hour, .day, .month, .year], for: \.date)
-        return health.hrData
-
-    }
     func lastDayOfMonth(date: Date) -> Date {
         guard
             let monthInterval = calendar.dateInterval(of: .month, for: date)?.end
@@ -152,68 +131,7 @@ struct DataView: View {
         print(monthLastWeek)
         return monthLastWeek
     }
-    func groupByDay(query: Query, data: [HealthData]) -> [HealthData] {
-        
-        var healthData =  [HealthData]()
-        for month in health.months {
-            
-            for day in  0...32 {
-            // Filter to day and to month that's not today
-            let filteredToDay = data.filter {
-                return $0.date.get(.day) == day &&  $0.date.get(.month) == month.get(.month)
-            }
-                let filteredTo = query.durationType == .Week ? filteredToDay.filter{$0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)}.filter{!$0.data.isNaN}.map{$0.data} : filteredToDay.filter{!$0.data.isNaN}.map{$0.data}
-            // Get average for that day
-                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: DateFormatter.localizedString(from: (filteredToDay.last?.date ?? Date()), dateStyle: .short, timeStyle: .none), text: "", date: month, data: health.average(numbers: filteredTo)))
-          
-        }
-        }
-            return healthData
-        
-        
-    }
-    func groupByHour(query: Query, data: [HealthData]) -> [HealthData] {
-        
-        var healthData =  [HealthData]()
-        for month in health.months {
-            if month.get(.month) == query.anchorDate.get(.month) {
-            for day in  0...24 {
-            // Filter to day and to month that's not today
-            let filteredToDay = data.filter {
-                return $0.date.get(.hour) == day &&  $0.date.get(.month) == month.get(.month) &&  $0.date.get(.weekday) == query.anchorDate.get(.weekday)  &&  $0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)
-            }
-                let filteredTo = filteredToDay.map{$0.data}
-            // Get average for that day
-                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: DateFormatter.localizedString(from: (filteredToDay.last?.date ?? Date()), dateStyle: .none, timeStyle: .short), text: "", date: month, data: health.average(numbers: filteredTo)))
-          
-        }
-            }
-        }
-            return healthData
-        
-        
-    }
-    func groupByWeek(query: Query, data: [HealthData]) -> [HealthData] {
-        
-        var healthData =  [HealthData]()
-        for month in health.months {
-            if month.get(.month) == query.anchorDate.get(.month) {
-            for day in  0...7 {
-            // Filter to day and to month that's not today
-            let filteredToDay = data.filter {
-                return $0.date.get(.weekday) == day &&  $0.date.get(.month) == month.get(.month) &&  $0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)
-            }
-                let filteredTo = filteredToDay.filter{$0.date.get(.weekOfYear) == query.anchorDate.get(.weekOfYear)}.filter{!$0.data.isNaN}.map{$0.data}
-            // Get average for that day
-                healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: "\(DayOfWeek(rawValue: day) ?? .Monday)", text: "", date: month, data: health.average(numbers: filteredTo)))
-          
-        }
-            }
-        }
-            return healthData
-        
-        
-    }
+  
     func getDateRange(query: Query, date: Date) -> Bool {
         var isWithinTimePeriod = false
         let scaledDuration = query.durationType == .Week ? query.duration * 86400 * 7 : query.durationType == .Month ? query.duration  * 86400 * 30 : query.durationType == .Year ? query.duration  * 86400 * 365 : 86400 * query.duration
@@ -223,38 +141,7 @@ struct DataView: View {
         }
                 return isWithinTimePeriod
                 }
-    func loadData( completionHandler: @escaping (String) -> Void) {
-       
-        data = [("", 0.0)]
-        
-        
-        let filtered = health.codableRisk.filter { data in
-            return data.date.get(.weekOfYear) == date.get(.weekOfYear) && date.get(.year) == data.date.get(.year)
-        }
-        print(filtered)
-        var scorePoints =  [("", 0.0)]
-        
-        for day in 0...7 {
-            
-       
-            let filteredDay = filtered.filter { data in
-               
-                return data.date.get(.weekday) == day
-            }
-            
-            
-            let averageScore =  health.average(numbers: filteredDay.map{$0.risk})
-           
-            scorePoints.append(("\(DayOfWeek(rawValue: day) ?? .Monday)", averageScore))
-            
-            
-           
-           
- 
-            self.data = scorePoints
-        
-        }
-    }
+
     }
 
 

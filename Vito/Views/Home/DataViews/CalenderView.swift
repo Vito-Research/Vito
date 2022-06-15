@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import VitoKit
 
 fileprivate extension DateFormatter {
     static var month: DateFormatter {
@@ -49,14 +50,14 @@ fileprivate extension DateFormatter {
 
 struct CalendarView<DateView>: View where DateView: View {
     @Environment(\.calendar) var calendar
-    @ObservedObject var health: Healthv3
+    @ObservedObject var health: Vito
     @State var showData = false
     let interval: DateInterval
     let showHeaders: Bool
     let content: (Date) -> DateView
 
     init(
-        health: Healthv3,
+        health: Vito,
         interval: DateInterval,
         showHeaders: Bool = true,
         @ViewBuilder content: @escaping (Date) -> DateView
@@ -74,8 +75,9 @@ struct CalendarView<DateView>: View where DateView: View {
         self.content = content
     }
     @State var selectedDate = 12
+    @State var i = -1
     var body: some View {
-       // ScrollView() {
+
         TabView(selection: $selectedDate) {
                
             ForEach(Array(zip(months, months.indices)), id: \.1) { (month, i) in
@@ -85,23 +87,35 @@ struct CalendarView<DateView>: View where DateView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 30, maximum: 40)), count: 7), spacing: 0) {
            
                 Section(header: header(for: month)) {
-                    ForEach(days(for: month), id: \.self) { date in
+                 
+                    ForEach(Array(zip(days(for: month), days(for: month).indices)), id: \.1) { date, i2 in
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
-                            Button(action: {
-                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date)
+                           // Button(action: {
+                                // self.date = date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date
+                               // health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date)
                                
-                                showData.toggle()
-                            }) {
+                                //showData.toggle()
+                           // }) {
 
-                            content(date).id(date)
+                                content(date).id(date)
                                 .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
-                            } .padding()
-                            .sheet(isPresented: $showData) {
-                                DataView(health: health)
-                            }
+                            //}
+                            .padding()
+                                .opacity(month == months.first ? (self.i > i2 ? 1 : 0) : 1)
+                                .scaleEffect(month == months.first ? (self.i > i2 ? 0.9 : 0) : 1)
+                                    .onAppear() {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(i2/5)) {
+                                            
+                                        withAnimation(.beat) {
+                                            self.i += 1
+                                        }
+                                        }
+                                    }
+                            
                         } else {
                             Button(action: {
-                                health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
+                               // health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
+                               // self.date = date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date
                                 showData.toggle()
                             }) {
                             content(date).hidden()
@@ -109,9 +123,7 @@ struct CalendarView<DateView>: View where DateView: View {
 
                             }
 
-                            .sheet(isPresented: $showData) {
-                                DataView(health: health)
-                            }
+                           
                         }
 
                     }

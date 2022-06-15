@@ -7,24 +7,7 @@
 
 import SwiftUI
 import SFSafeSymbols
-struct HealthData: Identifiable, Codable, Hashable, Sendable {
-    var id: String
-    var type: DataType
-    var title: String
-    var text: String
-    var date: Date
-    var endDate: Date?
-    var data: Double
-    var risk: Double?
-    
-    
-}
-enum DataType: String, Codable, CaseIterable {
-    case HRV = "HRV"
-    case Health = "Health"
-    case Feeling = "Feeling"
-    case Risk = "Risk"
-}
+
 
 struct CodableRisk: Identifiable, Codable, Hashable {
     var id: String
@@ -32,11 +15,7 @@ struct CodableRisk: Identifiable, Codable, Hashable {
     var risk: CGFloat
     var explanation: [String]
 }
-struct Risk: Hashable {
-    var id: String
-    var risk: CGFloat
-    var explanation: [Explanation]
-}
+
 
 
 enum DayOfWeek: Int, Codable, CaseIterable  {

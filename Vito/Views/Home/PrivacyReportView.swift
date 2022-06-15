@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import VitoKit
 struct PrivacyReportView: View {
     let apiCalls = [Explanation(image: .arrowDown, explanation: "Fitbit API", detail: "Used to autheticate, request, and get data from your Fitbit"), Explanation(image: .arrowDown, explanation: "Fitbit Redirect Website", detail: "Used to access your Fitbit authetication token")]
     
@@ -74,7 +74,7 @@ struct PrivacyReportView: View {
         } .fixedSize(horizontal: false, vertical: true)
     .padding(.top)
     }
-}
+        } 
     }
 }
 struct PrivacyReportView_Previews: PreviewProvider {

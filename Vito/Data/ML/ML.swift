@@ -12,24 +12,25 @@ import CoreML
 import CreateML
 import TabularData
 import HealthKit
+import VitoKit
 @available(iOS 15, *)
 class ML: ObservableObject {
     @Published var mlData = ModelResponse(type: "", predicted: [Double](), actual: [Double](), accuracy: 0.0)
     
-    func importCSV(data: DataFrame, completionHandler: @escaping ([HealthData]) -> Void) {
-        var healthData = [HealthData]()
-       
-        for row in data.rows {
-            //print(row)
-            let date = ((row["datetime"] as! String)).toDate()!
-          //  let date = ((row["Start_Date"] as! String) + " " + (row["Start_Time"] as! String)).toDate()!
-            healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date, data: Double(row["heartrate"] as! Int)))
-            print(date)
-            //print(healthData.map{$).data})
-        }
-        
-        completionHandler(healthData)
-    }
+//    func importCSV(data: DataFrame, completionHandler: @escaping ([HealthData]) -> Void) {
+//        var healthData = [HealthData]()
+//       
+//        for row in data.rows {
+//            //print(row)
+//            let date = ((row["datetime"] as! String)).toDate()!
+//          //  let date = ((row["Start_Date"] as! String) + " " + (row["Start_Time"] as! String)).toDate()!
+//            //healthData.append(HealthData(id: UUID().uuidString, type: .Health, title: HKQuantityTypeIdentifier.heartRate.rawValue, text: HKQuantityTypeIdentifier.heartRate.rawValue, date: date, data: Double(row["heartrate"] as! Int)))
+//            print(date)
+//            //print(healthData.map{$).data})
+//        }
+//        
+//        completionHandler(healthData)
+//    }
     func exportDataToCSV(data: [HealthData], codableRisk: [CodableRisk], completionHandler: @escaping (Bool) -> Void) {
         var trainingData = DataFrame()
         var trainingData2 = DataFrame()
@@ -38,7 +39,7 @@ class ML: ObservableObject {
             return data.title == HKQuantityTypeIdentifier.heartRate.rawValue  && (data.risk != nil)
         }
         let filteredToRisk = data.filter { data in
-            return (data.risk != nil) && data.risk != 21.0
+            return (data.risk != nil) && data.risk != Int(21.0)
         }
         
         let filteredToSteps = data.filter { data in

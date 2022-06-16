@@ -8,6 +8,7 @@
 import SwiftUI
 import SFSafeSymbols
 import TabularData
+import HealthKit
 import VitoKit
 struct DataViewv2: View {
     @Environment(\.calendar) var calendar
@@ -22,8 +23,10 @@ struct DataViewv2: View {
             HStack {
                 
                 Button(action: {
-                   // health.sync()
-                    //health.backgroundDelivery()
+                    
+                    for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
+                        health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
+                   }
                 }) {
                     Label("Sync", systemSymbol: .repeat)
                         .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
@@ -88,7 +91,7 @@ struct DataViewv2: View {
                         //                        .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
                     }
                     .sheet(isPresented: $share) {
-                        //  ShareSheet(activityItems: [ML().getDocumentsDirectory().appendingPathComponent("Vito_Health_Data.csv"), ML().getDocumentsDirectory().appendingPathComponent("Vito_Risk_Data.csv")])
+      
                         
                     }
                 }
@@ -96,38 +99,64 @@ struct DataViewv2: View {
             
           
          //   let riskData = health.healthData.sliced(by: [.day, .month, .year], for: \.date)
-            
-            CalendarView(health: health, interval: year) { date in
-                Button(String(self.calendar.component(.day, from: date))) {
-                    data = health.healthData.filter{$0.date.asDay() == date.asDay()}.first
-                }
-             
-                    .frame(width: 40, height: 40, alignment: .center)
-                    .foregroundColor(Color.white)
-                    .background(content: {
-                        Group {
-                        if (health.healthData.filter{$0.date.asDay() == date.asDay()}.map{$0.risk}.filter{$0 == 1}.count ) > 0 {
-                            Color("red")
-                        } else if !(health.healthData.filter{$0.date.asDay() == date.asDay()}.isEmpty) {
-                            Color("green")
-                        } else {
-                            Color("back")
+            ScrollView {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 40)), count: 7), spacing: 0) {
+                let sorted = self.health.healthData.sorted(by: { a, b in
+                    return a.date < b.date
+                })
+                ForEach(Array(zip(sorted, sorted.indices)), id: \.1) { (value, i) in
+                    if sorted.indices.contains(i - 1) {
+                        let component = calendar.component(.month, from: value.date)
+                        let formatter = component == 1 ? DateFormatter.monthAndYear : .month
+                        if sorted[i - 1].date.get(.month) != value.date.get(.month) {
+                           // withAnimation(.beat.delay(Double(i/2))) {
+                                Spacer()
+                            Text(formatter.string(from: value.date))
+                                .font(.custom("Poppins", size: 10, relativeTo: .footnote))
+                                .fixedSize()
+                                .animation(.beat.delay(Double(i/4)), value: i)
+                                //.padding()
+                            
+                            Spacer()
                         }
-                        } .clipShape(RoundedRectangle(cornerRadius: 10)) //.animation(.beat, value: health.healthData.filter{$0.date.asDay() == date.asDay()})
-                    })
-                    .id(date)
-                    .sheet(item: $data) { data in
-                        DataView(data2: data, health: health)
+                        //}
+                        //let date2 = Calendar.current.date(from: components)!
+                        CalendarCell(i: i, op: 0, scale: 0, date: value.date, monthsData: value, health: health)
                     }
-                       
+                }
+                }
+//                        .onAppear() {
+//                            self.i += 1
+//                        }
                     }
+            
+//            CalendarView(health: health, interval: year) { date in
+//                Button(String(self.calendar.component(.day, from: date))) {
+//                    data = health.healthData.filter{$0.date.asDay() == date.asDay()}.first
+//                }
+//
+//                    .frame(width: 40, height: 40, alignment: .center)
+//                    .foregroundColor(Color.white)
+//                    .background(content: {
+//                        Group {
+//                        if (health.healthData.filter{$0.date.asDay() == date.asDay()}.map{$0.risk}.filter{$0 == 1}.count ) > 0 {
+//                            Color("red")
+//                        } else if !(health.healthData.filter{$0.date.asDay() == date.asDay()}.isEmpty) {
+//                            Color("green")
+//                        } else {
+//                            Color("back")
+//                        }
+//                        } .clipShape(RoundedRectangle(cornerRadius: 10))
+//                    })
+//
+//                    .sheet(item: $data) { data in
+//                        DataView(data2: data, health: health)
+//                    }
+//
+//                    }
                   
-                    .onAppear() {
-                        //print(riskData)
-                    }
-//                    .background((date < Date() && (riskData[date]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date]?.map{Double($0.risk )}.filter{$0.isNormal} ?? [0.0]) ) > 0) ?  Color("red") :  Color("green") :  Color("back"))
-//                    .foregroundColor((date < Date() && (riskData[date2]?.count ?? 0) > 0) ? ((health.average(numbers: riskData[date]?.map{Double($0.risk )}.filter{$0.isNormal} ?? [0.0]) ) > 0) ? Color("text") : Color(.white) : Color(.white))
-                    //.animation(.beat, value: riskData[date2])
+                
+
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -137,3 +166,59 @@ struct DataViewv2: View {
 }
 
 
+struct CalendarCell: View {
+    @State var i: Int = 0
+    @State var op: CGFloat = 0
+    @State var scale: CGFloat = 0
+    @State var date = Date()
+    @State var monthsData: HealthData
+    @State var isStrong = false
+    @State var showData = false
+    @Environment(\.calendar) var calendar
+    private var year: DateInterval {
+           calendar.dateInterval(of: .year, for: Date())!
+       }
+    @ObservedObject var health: Vito
+    var body: some View {
+        Button {
+            showData = true
+            
+        } label: {
+          
+        ZStack {
+            
+            Text(String(monthsData.date.get(.day)))
+                        .frame(width: 40, height: 40, alignment: .center)
+                        //.foregroundColor(((monthsData.filter{$0.startDate.get(.day) == date.get(.day)}.last?.value ?? 0) > 2 ? Color.clear : Color.accentColor))
+                        .font(.custom("Poppins", size: 12, relativeTo: .subheadline))
+                        .foregroundColor(monthsData.risk == 1 ? Color.white : Color.white)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                              
+                                .foregroundColor(monthsData.risk == 1 ? Color("red") : Color("green"))
+
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            )
+                       
+
+                      //  .transition(.opacity.combined(with: .scale(scale: 1)))
+
+
+        }
+        }
+    
+        .opacity(op)
+            .scaleEffect(scale)
+            .padding()
+            .onAppear() {
+                withAnimation(.beat.delay(Double(i/4))) {
+                    op = 1
+                    scale = 1
+                }
+            }
+            .sheet(isPresented: $showData) {
+                DataView(data2: monthsData, health: health)
+            }
+    }
+    
+}

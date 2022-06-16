@@ -34,7 +34,7 @@ struct ContentView: View {
 //                        for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
                      
                         for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
-                            health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
+                            health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 6), to: Date(), filterToActivity: .active)
                        }
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {

@@ -8,7 +8,7 @@
 import SwiftUI
 import VitoKit
 
-fileprivate extension DateFormatter {
+ extension DateFormatter {
     static var month: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM"
@@ -90,32 +90,17 @@ struct CalendarView<DateView>: View where DateView: View {
                  
                     ForEach(Array(zip(days(for: month), days(for: month).indices)), id: \.1) { date, i2 in
                         if calendar.isDate(date, equalTo: month, toGranularity: .month) {
-                           // Button(action: {
-                                // self.date = date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date
-                               // health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date)
-                               
-                                //showData.toggle()
-                           // }) {
+                        
 
-                                content(date).id(date)
+                                content(date)
                                 .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
-                            //}
-                            .padding()
-                                .opacity(month == months.first ? (self.i > i2 ? 1 : 0) : 1)
-                                .scaleEffect(month == months.first ? (self.i > i2 ? 0.9 : 0) : 1)
-                                    .onAppear() {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(i2/5)) {
-                                            
-                                        withAnimation(.beat) {
-                                            self.i += 1
-                                        }
-                                        }
-                                    }
+                        
+                                .padding()
+
                             
                         } else {
                             Button(action: {
-                               // health.queryDate = Query(id: UUID().uuidString, durationType: .Day, duration: 1, anchorDate: date)
-                               // self.date = date.formatted(date: .abbreviated, time: .omitted).toDate() ?? date
+                         
                                 showData.toggle()
                             }) {
                             content(date).hidden()
@@ -129,7 +114,7 @@ struct CalendarView<DateView>: View where DateView: View {
                     }
                 }
                 }
-                    } .tag(i)
+                    }
             }
         } .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
            

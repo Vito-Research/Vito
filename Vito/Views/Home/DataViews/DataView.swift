@@ -35,6 +35,7 @@ struct DataView: View {
                         Text("Average Heart Rate: " + String(round(data2.data * 10) / 10.0))
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.leading)
+                            .foregroundColor(.accentColor)
                             .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
                         
                         Spacer()
@@ -47,16 +48,11 @@ struct DataView: View {
                         Text("Heart Rate")
                             .font(.custom("Poppins-Bold", size: 24, relativeTo: .headline))
                         Spacer()
-                    }
+                    } .padding(.top)
                     
-                    Spacer()
+                   
                     VStack {
-                        HStack {
-                            Text("Heart Rate")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
+                     
                       //  .padding(.top, 100)
                         HalvedCircularBar(data: data2, progress: $data2.risk, health: health, min: $min, max: $max, date: Date())
                         VStack {

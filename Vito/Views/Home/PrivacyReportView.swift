@@ -8,7 +8,8 @@
 import SwiftUI
 import VitoKit
 struct PrivacyReportView: View {
-    let apiCalls = [Explanation(image: .arrowDown, explanation: "Fitbit API", detail: "Used to autheticate, request, and get data from your Fitbit"), Explanation(image: .arrowDown, explanation: "Fitbit Redirect Website", detail: "Used to access your Fitbit authetication token")]
+    let apiCalls = [Explanation(image: .arrowDown, explanation: "Fitbit API", detail: "Used to autheticate, request, and get data from your Fitbit"), Explanation(image: .arrowDown, explanation: "Fitbit Redirect Website", detail: "Used to access your Fitbit authetication token"),
+                    Explanation(image: .arrowUp, explanation: "Vito Analytics", detail: "If opted in, you may share anonymous health data with Vito to improve the app")]
     
     let howTo = [Explanation(image: .lock, explanation: "Open Settings on Your iPhone", detail: ""), Explanation(image: .lock, explanation: "Navigate to Privacy", detail: ""), Explanation(image: .lock, explanation: "Scroll down to App Privacy Report and tap on it", detail: ""), Explanation(image: .lock, explanation: "Press Show All and Find Vito (should be near the bottom)", detail: "")]
     var body: some View {
@@ -29,7 +30,7 @@ struct PrivacyReportView: View {
                         .foregroundColor(Color.accentColor)
         Text("Here's how to see what network requests Vito makes according to Apple...")
                         .font(.custom("Poppins-Bold", size: 18, relativeTo: .headline))
-                        .foregroundColor(Color.cyan)
+                        .foregroundColor(Color.accentColor.opacity(0.6))
                    
         ForEach(howTo, id: \.self) { value in
             HStack {

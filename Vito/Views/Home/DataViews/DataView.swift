@@ -12,7 +12,7 @@ import VitoKit
 
 struct DataView: View {
    // @State var date = Date()
-    @State var data2: HealthData
+    @Binding var data2: HealthData
     
     @State var average = 0.0
     @State var min: CGFloat = 0.0
@@ -28,7 +28,7 @@ struct DataView: View {
     var body: some View {
         
         NavigationView {
-          //  ScrollView {
+        ScrollView {
                 VStack(alignment: .leading) {
                     HStack {
                         
@@ -55,14 +55,18 @@ struct DataView: View {
                      
                       //  .padding(.top, 100)
                         HalvedCircularBar(data: data2, progress: $data2.risk, health: health, min: $min, max: $max, date: Date())
+                        
+                        ContextView(contextStr: $data2.context)
+                        
+                        
                         VStack {
                         HStack {
                             VStack {
                                 
-                                Text(String(data2.dataPoints.map{$0.value}.max() ?? 0))
+                                Text(String(data2.dataPoints.map{$0.value.rounded()}.max() ?? 0))
                                     .foregroundColor(.white)
                                 Spacer()
-                                Text(String(data2.dataPoints.map{$0.value}.min() ?? 0))
+                                Text(String(data2.dataPoints.map{$0.value.rounded()}.min() ?? 0))
                                     .foregroundColor(.white)
                             }
                         BarChart()
@@ -94,13 +98,14 @@ struct DataView: View {
                     
                 }
                   //  Spacer()
-              //  }
+                }
                 .padding()
                 .navigationBarItems(trailing: Button (action: {
                     dismiss.callAsFunction()
                 }, label: {
                     Text("Done")
                         .animation(nil)
+                        .font(.custom("Poppins-Bold", size: 16, relativeTo: .headline))
                 }))
                 .navigationBarTitle("Details View")
             }

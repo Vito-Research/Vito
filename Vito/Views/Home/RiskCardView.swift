@@ -53,9 +53,9 @@ struct RiskCardView: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                
-                NavigationLink(destination: PrivacyReportView()) {
+                NavigationLink(destination: SettingsView(health: health)) {
                  
-                    Image(systemSymbol: .questionmarkCircle)
+                    Image(systemSymbol: .gear)
                         .font(.largeTitle)
                         .scaleEffect(scale)
                         

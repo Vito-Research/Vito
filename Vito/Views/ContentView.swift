@@ -11,7 +11,7 @@ import NiceNotifications
 import VitoKit
 
 struct ContentView: View {
-    @StateObject var health = Vito()
+    @StateObject var health = Vito(selectedTypes: [.Vitals])
   
     @State var share = false
     @State var intro = true
@@ -29,21 +29,25 @@ struct ContentView: View {
                     }
                 }
                 .onChange(of: scenePhase) { value in
-                    withAnimation(.easeOut) {
+                 //   withAnimation(.easeOut) {
                     if value == .active {
 //                        for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
-                     
-                        for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
-                            health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 6), to: Date(), filterToActivity: .active)
-                       }
+                       // health.healthData = []
+                        //for type in HKQuantityTypeIdentifier.Vitals {
+                            
+                        for type in HKQuantityTypeIdentifier.Vitals.filter({$0.type == .heartRate}) {
+                            
+                            health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
+                        }
+                        }
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
                             withAnimation(.easeInOut(duration: 2.0)) {
                        
-                            }
+                          //  }
                         }
                 }
-                }
+               // }
                 }
             
         
@@ -90,7 +94,16 @@ struct ContentView: View {
             if onboarding != 0  && health.progress < 0.99 {
                 IntroView(health: health)
             }
-        }
+        }  .sheet(isPresented: $health.autheticated, onDismiss: {
+            for type in HKQuantityTypeIdentifier.Vitals.filter({$0.type == .heartRate}) {
+                
+                health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
+            }
+        }) {
+                        DataTypesListView(toggleData: [.Vitals, .Activity, .Mobilty], title: "Health Data", caption: "Abnormally high heart rate while asleep can be a sign of distress from your body, to detect this stress, we collect this data on-device", showBtn: true, vito: health)
+                          
+                        
+                    }
     }
 }
 

@@ -60,7 +60,7 @@ struct HomeView: View {
         .onChange(of: health.healthData, perform: { newValue in
             if newValue.last?.date.asDay()?.addingTimeInterval(-.day) == Date().asDay() {
                 if let newVal = newValue.last {
-                    self.healthData = newVal
+                    //self.healthData = newVal
                     let alert = [Explanation(image: .stethoscope, explanation: "Not Medical Advice/Diagnosis/Treatment", detail: "Always consult your doctor, this is only a data point to discuss"),
                                  Explanation(image: .heart, explanation: "Heart Rate Higher Than Normal", detail: "Stress may be caused by many things including infection, intense excersise, etc"),
                                  Explanation(image: .checkmark, explanation: "Reasons for an Alert", detail: "Stress may be caused by many things including infection, intense excersise, etc"),

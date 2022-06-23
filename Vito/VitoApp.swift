@@ -8,6 +8,7 @@
 import SwiftUI
 import TabularData
 import HealthKit
+import FirebaseCore
 @main
 struct VitoApp: App {
 
@@ -27,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
     private var useCount = UserDefaults.standard.integer(forKey: "useCount")
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-      //  backgroundDelivery()
+        FirebaseApp.configure()
         return true
     }
 

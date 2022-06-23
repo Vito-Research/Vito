@@ -35,10 +35,9 @@ struct ContentView: View {
                        // health.healthData = []
                         //for type in HKQuantityTypeIdentifier.Vitals {
                             
-                        for type in HKQuantityTypeIdentifier.Vitals.filter({$0.type == .heartRate}) {
-                            
-                            health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
-                        }
+                     
+                            health.outliers(for: Outlier(), unit: HKUnit(from: "count/min"), with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
+                        
                         }
                     print("FIRED")
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3.2) {
@@ -95,10 +94,10 @@ struct ContentView: View {
                 IntroView(health: health)
             }
         }  .sheet(isPresented: $health.autheticated, onDismiss: {
-            for type in HKQuantityTypeIdentifier.Vitals.filter({$0.type == .heartRate}) {
+            
                 
-                health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
-            }
+                health.outliers(for: Outlier(), unit: HKUnit(from: "count/min"), with: Date().addingTimeInterval(.month * 3), to: Date(), filterToActivity: .active)
+            
         }) {
                         DataTypesListView(toggleData: [.Vitals, .Activity, .Mobilty], title: "Health Data", caption: "Abnormally high heart rate while asleep can be a sign of distress from your body, to detect this stress, we collect this data on-device", showBtn: true, vito: health)
                           

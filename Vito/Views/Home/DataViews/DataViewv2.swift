@@ -24,9 +24,11 @@ struct DataViewv2: View {
                 
                 Button(action: {
                     
-                    for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
-                        health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
-                   }
+                    
+                    for type in HKQuantityTypeIdentifier.Vitals {
+                        
+                        health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
+                    }
                 }) {
                     Label("Sync", systemSymbol: .repeat)
                         .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
@@ -114,7 +116,8 @@ struct DataViewv2: View {
                             Text(formatter.string(from: value.date))
                                 .font(.custom("Poppins", size: 10, relativeTo: .footnote))
                                 .fixedSize()
-                                .animation(.beat.delay(Double(i/4)), value: i)
+                            
+                                .animation(.beat.delay(Double(i/30)), value: i)
                                 //.padding()
                             
                             Spacer()
@@ -169,7 +172,7 @@ struct DataViewv2: View {
 struct CalendarCell: View {
     @State var i: Int = 0
     @State var op: CGFloat = 0
-    @State var scale: CGFloat = 0
+    @State var scale: CGFloat = 0.5
     @State var date = Date()
     @State var monthsData: HealthData
     @State var isStrong = false
@@ -211,7 +214,7 @@ struct CalendarCell: View {
             .scaleEffect(scale)
             .padding()
             .onAppear() {
-                withAnimation(.beat.delay(Double(i/4))) {
+                withAnimation(.beat.delay(Double(i/25))) {
                     op = 1
                     scale = 1
                 }

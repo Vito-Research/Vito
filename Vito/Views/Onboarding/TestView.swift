@@ -10,7 +10,7 @@ import VitoKit
 import HealthKit
 
 struct TestView: View {
-    @StateObject var vito = Vito()
+    @StateObject var vito = Vito(selectedTypes: [.Vitals])
     
    
     var body: some View {
@@ -34,7 +34,10 @@ struct TestView: View {
                     .onAppear() {
 
 
-                        vito.vitoState(for: .Vitals, with: Date(), to: Date(), filterToActivity: .active)
+                        for type in HKQuantityTypeIdentifier.Vitals {
+                            
+                            vito.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
+                        }
                         
                     }
             } else {

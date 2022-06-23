@@ -35,7 +35,7 @@ struct OnboardingView: View {
             }
             TabView(selection: $slideNum) {
                 ForEach(onboardingViews.indices, id: \.self) { i in
-                    OnboardingDetail(onboarding: onboardingViews[i])
+                    OnboardingDetail(onboarding: onboardingViews[i], vito: health)
                         .tag(i)
                 }
                 
@@ -73,7 +73,7 @@ struct OnboardingView: View {
                     }
                     
                 } else if onboardingViews[slideNum].toggleData.map{$0.explanation.image}.contains(.heart) {
-                    health.auth()
+                    health.auth(selectedTypes: [.Vitals])
                 }
                 if slideNum + 1 < onboardingViews.count  {
                     slideNum += 1
@@ -81,8 +81,9 @@ struct OnboardingView: View {
                     // dismiss sheet
                    isOnboarding += 1
                    UserDefaults.standard.set(isOnboarding, forKey: "onboarding")
-                    for (type, unit) in Array(zip(HKQuantityTypeIdentifier.Vitals, HKUnit.Vitals)) {
-                    health.outliers(for: type, unit: unit, with: Date().addingTimeInterval(.month * 4), to: Date())
+                    for type in HKQuantityTypeIdentifier.Vitals {
+                        
+                        health.outliers(for: type, unit: type.unit, with: Date().addingTimeInterval(.month * 4), to: Date(), filterToActivity: .active)
                     }
                 }
                 
@@ -108,7 +109,7 @@ struct OnboardingView: View {
 
 struct OnboardingDetail: View {
     @State var onboarding: Onboarding
-    
+    @ObservedObject var vito: Vito
     var body: some View {
         ScrollView(showsIndicators: false) {
         VStack {
@@ -133,7 +134,7 @@ struct OnboardingDetail: View {
             }
            
             if !onboarding.toggleData.isEmpty {
-                DataTypesListView(toggleData: onboarding.toggleData, title: "", caption: "", showBtn: false)
+                DataTypesListView(toggleData: onboarding.toggleData, title: "", caption: "", showBtn: false, vito: vito)
                
             }
         }

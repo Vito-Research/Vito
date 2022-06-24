@@ -50,18 +50,17 @@ struct SettingsView: View {
             
             Section("Export Data") {
                 VStack(alignment: .leading) {
-                Button {
 #if targetEnvironment(simulator)
 
 #else
-                    ML().exportAsCSV(health.healthData)
-#endif
+      
+                Button {
+              ML().exportAsCSV(health.healthData)
+
                 } label: {
                     Text("Download Spreadsheet")
                 }
-#if targetEnvironment(simulator)
 
-#else
                 .sheet(isPresented: $share) {
                     ShareSheet(activityItems: [ML().getDocumentsDirectory().appendingPathComponent("HealthData.csv")])
                 }
@@ -73,12 +72,10 @@ struct SettingsView: View {
                 }
                 VStack(alignment: .leading) {
                 Button {
-                    do {
+                   
                     
-                    try fire.saveDataToFirebase(HealthQuery(health: health.healthData))
-                    } catch {
-                        print(error)
-                    }
+                     fire.saveDataToFirebase(HealthQuery(health: health.healthData))
+                    
                 } label: {
                     Text("Export Data to Vito")
                 }

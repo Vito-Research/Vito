@@ -10,6 +10,7 @@ import HealthKit
 import TabularData
 import CoreML
 import VitoKit
+import NiceNotifications
 
 struct HomeView: View {
     @State private var orientation = UIDeviceOrientation.unknown
@@ -71,6 +72,22 @@ struct HomeView: View {
     
                     ]
                     health.risk = Risk(id: UUID().uuidString, risk: CGFloat(newVal.risk), explanation: newVal.risk == 1 ? alert : ok)
+                    
+                    if newVal.risk == 1 {
+                        let content = UNMutableNotificationContent()
+                        content.title = "Stress Alert"
+                        content.subtitle = "Your heart rate was abnormally high"
+                        content.sound = UNNotificationSound.default
+
+                        // show this notification five seconds from now
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+                        // choose a random identifier
+                        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+                        // add our notification request
+                        UNUserNotificationCenter.current().add(request)
+                    }
                 }
             }
         })

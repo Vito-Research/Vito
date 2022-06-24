@@ -34,32 +34,30 @@ struct DataViewv2: View {
                         .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
                 }
                 Spacer()
+#if targetEnvironment(simulator)
+
+#else
+         
                // if #available(iOS 15, *) {
                     Button(action: {
                         
                     
                 
-#if targetEnvironment(simulator)
-
-#else
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            ML().exportAsCSV(health.healthData)
+               DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                   ML().exportAsCSV(health.healthData)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             share = true
                             }
                         }
-                        #endif
+               
                         
                     }) {
                         //                    Label("Export", systemSymbol: .paperplane)
                         //                        .font(.custom("Poppins", size: 16, relativeTo: .subheadline))
                     }
-#if targetEnvironment(simulator)
-
-#else
-                    .sheet(isPresented: $share) {
+          .sheet(isPresented: $share) {
       
-                        ShareSheet(activityItems: ML().getDocumentsDirectory().appendingPathComponent("HealthData.csv"))
+                        ShareSheet(activityItems: [ML().getDocumentsDirectory().appendingPathComponent("HealthData.csv")])
                     }
 #endif
               //  }
